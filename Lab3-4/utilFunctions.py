@@ -170,5 +170,27 @@ def getMinimum(studentList, paramList):
             
     return (minValue)
 
+def filterProperty(sign, score, studentList):
+    '''
+    Returns a list of students whose average corresponds to the expression "< = > value"
+    @param:
+        - sign = integer representing the type of comparation
+            - 0: a == b
+            - 1: a > b
+            - 2: a < b 
+        - score = integer representing the average score to compare with
+        - studentList = list of students
+    @return:
+        - filteredList = list of students with the above property
+    '''
+    filteredList = []
     
+    for i in range(len(studentList)):
+        averageScore = studentAverage(studentList[i])
+        if     (sign == 0 and averageScore == score) \
+            or (sign == 1 and averageScore > score)  \
+            or (sign == 2 and averageScore < score):
+                filteredList.append(studentList[i])
+                
+    return filteredList
     

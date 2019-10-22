@@ -119,24 +119,3 @@ def printStudentByGrade(studentList, count, problem):
         printStudent(studentList[i[0]], i[0])
     
 
-def listAllWithProperty(sign, score, studentList):
-    '''
-    Prints all students whose average corresponds to the expression "< = > value"
-    @param:
-        - sign = integer representing the type of comparation
-            - 0: a == b
-            - 1: a > b
-            - 2: a < b 
-        - score = integer representing the average score to compare with
-        - studentList = list of students
-    @return:
-        - None
-    '''
-    for i in range(len(studentList)):
-        averageScore = studentAverage(studentList[i])
-        if     (sign == 0 and averageScore == score) \
-            or (sign == 1 and averageScore > score)  \
-            or (sign == 2 and averageScore < score):
-                printStudent(studentList[i], i)
-
-
