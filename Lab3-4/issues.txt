@@ -1,0 +1,11 @@
+1. error handling
+	- add and implement isValidParamLen
+2. test the validators
+3. add error types to function specification
+4. separate insert and add
+5. separate the validators into ones which return a value (number, position), and other which just check (paramLen)
+
+====
+
+1. actually test the sort functions
+2. i should have the validators raise exception when not working / return the expected value (or True) when working

@@ -1,0 +1,64 @@
+#assignment 2 - due on 15 Oct 2019
+'''
+sequences 
+    - 3 = nr. having the same modulus
+    - 8 = nr. with 0 <= modulus <= 10
+'''
+
+from myComplex import *
+
+def sameModulus(x, y):
+    #checks if Complex values x and y have the same modulus;
+    #returns a boolean value;
+    return x.modulus() == y.modulus()
+
+def modulusInRange(x):
+    #checks if the modulus of a Complex value is in the range [0, 10];
+    #because I'm working with the square of the modulus, I use 100;
+    #also, the modulus is always >= 0, thus I don't need to check that
+    return x.modulus() <= 100
+
+def readList():
+    #reads an integer 'n' and 'n' complex numbers;
+    #returns a list of these numbers
+    nrList = []
+    
+    n = int(input())
+    for i in range(n):
+        com = Complex()
+        com.readValue()
+        nrList.append(com)
+        
+    for i in nrList:
+        i.printValue()
+        
+    return nrList
+
+def displayMenu():
+    print ("1. Read a list of complex numbers")
+    print ("2. Display the list")
+    print ("3. Display list sequences")
+    print ("4. Exit program")
+
+def getInput():
+    found = False
+    while not found:
+        x = input()
+        try:
+            x = int(x)
+            if x in range(1, 5):
+                found = True
+            else:
+                print ("No task with this ID. Try again")
+        except:
+            print ("Value is not an integer. Try again")
+    return x
+
+def main():
+    running = True
+    while True:
+        displayMenu()
+        getInput()
+
+if __name__ == "__main__":
+    main()

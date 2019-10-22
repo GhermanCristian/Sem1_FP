@@ -1,0 +1,38 @@
+#I use this name bc "complex" seems to be a reserved word in python
+
+class Complex():
+    def __init__(self):
+        self.real = 0
+        self.imag = 0
+        
+    #I assume that only numerical values have been introduced, but I think I can fix that in the future
+    
+    #val is a string; the method converts it to either a float or an integer
+    #it's a private method, I hope
+    def __parseValue__(self, val):
+        try:
+            aux = int(val)
+        except:
+            aux = float(val)
+        return aux
+    
+    def readValue(self):
+        r, i = input().split()
+        self.real = self.__parseValue__(r)
+        self.imag = self.__parseValue__(i)
+        
+    def printValue(self):
+        if self.imag == 0:
+            print (self.real)
+        elif self.imag == 1:
+            print (str(self.real) + " i")
+        elif self.imag == -1:
+            print (str(self.real) + " -i")
+        else:
+            print (str(self.real) + " + " + str(self.imag) + "i")
+        
+    #I work with the square of the modulus, bc using sqrt might lose precision
+    def modulus(self):
+        return self.real ** 2 + self.imag ** 2
+     
+        
