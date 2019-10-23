@@ -1,52 +1,9 @@
-from getData import getStudentP1, getStudentP2, getStudentP3
-from setData import createStudent
-from validators import isValidKeyword, isValidPosition
+'''
+Multi-purpose, non-UI module
+'''
 
-def removePosition(position, studentList):
-    '''
-    Sets the score at 'position' from studentList to (0, 0, 0)
-    @param:
-        - position = integer; the position of the student
-        - studentList = list of students
-    @return:
-        - None
-    '''
-    studentList.insert(position, createStudent(0, 0, 0))
-    studentList.pop(position + 1)
+from interact import getStudentP1, getStudentP2, getStudentP3
 
-def removeAllWithProperty(sign, score, studentList):
-    '''
-    Sets the score of all students with a property to 0 
-    @param:
-        - sign = integer representing the type of comparation
-            - 0: a == b
-            - 1: a > b
-            - 2: a < b 
-        - score = integer representing the average score to compare with
-        - studentList = list of students
-    @return:
-        - None
-    '''
-    for i in range(len(studentList)):
-        averageScore = studentAverage(studentList[i])
-        if     (sign == 0 and averageScore == score) \
-            or (sign == 1 and averageScore > score)  \
-            or (sign == 2 and averageScore < score):
-            removePosition(i, studentList)
-
-def removeRange(startPos, endPos, studentList):
-    '''
-    Sets the score at all positions between (startPos, endPos) from studentList to (0, 0, 0)
-    @param:
-        - startPos = integer; the position of the first student in the range
-        - endPos = integer; the position of the last student in the range
-        - studentList = list of students
-    @return:
-        - None
-    '''
-    for i in range(startPos, endPos + 1):
-        removePosition(i, studentList)
-            
 def studentAverage(student):
     '''
     Calculates the average of a student's grades
@@ -102,66 +59,32 @@ def sortStudentGradesPx(studentList, problem):
     
     return studentGrades    
     
-def getAverage(studentList, paramList):
+def getAverage(studentList, startPos, endPos):
     '''
     Computes the average of the average score in a given range
     @param:
         - studentList = list of students
-        - paramList = list of parameters
-            - startPos = first position in range
-            - "to" keyword
-            - endPos = last position in range
+        - startPos = first position in range
+        - endPos = last position in range
     @return:
-        - -1, if the parameters are invalid
-        - average of average grade in given range, otherwise
+        - average of the average score (float)
     '''
-    if len(paramList) != 3:
-        return -1
-    
-    startPos = isValidPosition(paramList[0], studentList)
-    endPos = isValidPosition(paramList[2], studentList)
-    if startPos == -1 or endPos == -1:
-        return -1
-    if not isValidKeyword("to", paramList[1]):
-        return -1
-    
-    if startPos > endPos:
-        print ("Start position is larger than the end position")
-        return -1
-    
     gradeSum = 0
     for i in studentList[startPos : endPos + 1]:
         gradeSum += studentAverage(i)
     
     return int((gradeSum / (endPos + 1 - startPos)) * 1000) / 1000
     
-def getMinimum(studentList, paramList):    
+def getMinimum(studentList, startPos, endPos):    
     '''
     Computes the minimum of the average scores in a given range
     @param:
         - studentList = list of students
-        - paramList = list of parameters
-            - startPos = first position in range
-            - "to" keyword
-            - endPos = last position in range
+        - startPos = first position in range
+        - endPos = last position in range
     @return:
-        - -1, if the parameters are invalid
-        - minValue = integer equal to the minimum average grade in the range, else
+        - minimum of the average score (float)
     '''
-    if len(paramList) != 3:
-        return -1
-    
-    startPos = isValidPosition(paramList[0], studentList)
-    endPos = isValidPosition(paramList[2], studentList)
-    if startPos == -1 or endPos == -1:
-        return -1
-    if not isValidKeyword("to", paramList[1]):
-        return -1
-    
-    if startPos > endPos:
-        print ("Start position is larger than the end position")
-        return -1
-    
     minValue = 11
     for i in studentList[startPos : endPos + 1]:
         average = studentAverage(i)
@@ -193,4 +116,18 @@ def filterProperty(sign, score, studentList):
                 filteredList.append(studentList[i])
                 
     return filteredList
+
+def studentIsEqualTo(student, P1, P2, P3):
+    '''
+    Checks if a student's grades are equal to (P1, P2, P3)
+    @param:
+        - student
+        - P1, P2, P3 = integers, valid grades
+    @return:
+        - True, if the student's grades are equal to (P1, P2, P3)
+        - False, otherwise
+    '''
+    return getStudentP1(student) == P1 and getStudentP2(student) == P2 and getStudentP3(student) == P3
+
+
     

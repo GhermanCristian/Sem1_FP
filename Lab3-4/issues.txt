@@ -1,11 +1,7 @@
-1. error handling
-	- add and implement isValidParamLen
-2. test the validators
+1. undo-ing with an empty history list does not print message (i don't think built-in exceptions can print anything)
+2. test validators, sort functions, undo
 3. add error types to function specification
-4. separate insert and add
-5. separate the validators into ones which return a value (number, position), and other which just check (paramLen)
-
+4. maybe implement compound validators
+5. remove errorMsg from assert
+7. i should separate sorting from the UI and do sth like printStudentsWithArgument
 ====
-
-1. actually test the sort functions
-2. i should have the validators raise exception when not working / return the expected value (or True) when working

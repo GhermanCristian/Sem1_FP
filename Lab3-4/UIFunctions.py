@@ -1,6 +1,6 @@
-from validators import isValidNumber
-from utilFunctions import studentAverage, sortStudentGradesAVG, sortStudentGradesPx
-from getData import *
+from validators import getValidNumber
+from utilFunctions import sortStudentGradesAVG, sortStudentGradesPx
+from interact import *
 from constants import UI_PROMPT_TEXT, MENU_UI_TEXT
 
 def menuBasedUI(COMMAND_ID):
@@ -19,7 +19,7 @@ def menuBasedUI(COMMAND_ID):
             inputCommand.strip()
             inputCommand = inputCommand.split()
             
-            commandID = isValidNumber(inputCommand[0], 'I', 0, 9)
+            commandID = getValidNumber(inputCommand[0], 'I', 0, 9)
             if commandID != -1:
                 return (commandID, inputCommand[1:])
         
@@ -40,18 +40,16 @@ def commandBasedUI(COMMAND_ID):
         if len(inputCommand) > 0:
             inputCommand.strip()
             inputCommand = inputCommand.split()
-            #command name (add, insert etc.)
             inputCommand[0] = inputCommand[0].lower()
             
             if inputCommand[0] in COMMAND_ID.keys():
-                #inputCommand[1:] = the other parameters (from "add 2 3 4", this is "2, 3, 4")
                 return (COMMAND_ID[inputCommand[0]], inputCommand[1:])
         
         print ("Invalid command")
         
 def getUIChoice():
     while True:
-        ID = isValidNumber(input(UI_PROMPT_TEXT), 'I', 1, 2)
+        ID = getValidNumber(input(UI_PROMPT_TEXT), 'I', 1, 2)
         if ID != -1:
             break
     
@@ -60,7 +58,25 @@ def getUIChoice():
     
     print (MENU_UI_TEXT)
     return menuBasedUI
-        
+
+def createStudent(P1, P2, P3):
+    '''
+    Creates a student with the grades P1, P2, P3, if the data is valid
+    @param:
+        - P1, P2, P3 - grades of a student
+    @return: 
+        - a tuple of the form (P1, P2, P3), if the data is valid
+        - -1, otherwise
+    '''
+    try:
+        P1 = getValidNumber(P1, 'I')
+        P2 = getValidNumber(P2, 'I')
+        P3 = getValidNumber(P3, 'I')
+    except:
+        return -1
+    
+    return setStudentGrades(P1, P2, P3)
+     
 def printStudent(student, position):
     '''
     Prints student to console

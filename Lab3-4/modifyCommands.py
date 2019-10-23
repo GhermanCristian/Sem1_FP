@@ -1,43 +1,26 @@
-from utilFunctions import removeAllWithProperty, removePosition, removeRange
-from getData import *
-from setData import createStudent
-from validators import isValidKeyword, isValidPosition, isValidComparator, isValidNumber
+'''
+The implementation of the modifying commands
+- they can't take invalid input
+'''
 
-def add(studentList, paramList, position = -1):
+from utilFunctions import studentAverage
+from interact import getStudentP1, getStudentP2, getStudentP3
+from UIFunctions import createStudent
+#DISCLAIMER - createStudent is only used to create an empty student (0,0,0) - this cannot raise any 
+#           exceptions, hence it will never print anything to the console, so it isn't really UI in this case
+
+def add(studentList, student):
     '''
-    Adds a student in the list at a specified position (by default - at the end of the list)
+    Adds a student to the end of studentList
     @param:
         - studentList = list of students
-        - paramList = list of parameters
-            - 3 integers between 0 and 10 = the three grades of a student
+        - student
     @return:
-        - 1, if the function worked 
-        - -1, otherwise
-    '''
-    if len(paramList) != 3:
-        print ("Incorrect number of parameters in \"add\"")
-        return -1
+        - None
+    '''        
+    studentList.append(student)
     
-    student = createStudent(paramList[0], paramList[1], paramList[2])
-    if student == -1:
-        return -1
-            
-    if position == -1:
-        #actual "add"
-        studentList.append(student)
-    else:
-        #insert
-        P1 = getStudentP1(studentList[position])
-        P2 = getStudentP2(studentList[position])
-        P3 = getStudentP3(studentList[position])
-        studentList.insert(position, student)
-                    
-        if P1 == P2 == P3 == 0:
-            studentList.pop(position + 1)
-                    
-    return 1 #success
-    
-def insert(studentList, paramList):
+def insert(studentList, position, student):
     '''
     Inserts a student in the studentList at a specified position
     @param:
@@ -47,140 +30,94 @@ def insert(studentList, paramList):
             - "at" keyword
             - position at which to insert the value (integer)
     @return:
-        - 1, if the function worked 
-        - -1, otherwise
+        - None
     '''
-    if len(paramList) != 5:
-        print ("Incorrect number of parameters in \"insert\"")
-        return -1
-    if not isValidKeyword("at", paramList[3]):
-        return -1
-        
-    position = isValidPosition(paramList[4], studentList)
-    if position == -1:
-        return -1
+    studentList.insert(position, student)
 
-    add(studentList, paramList[:3], position)
-    return 1 #success
-
-def remove(studentList, paramList):
+def removePosition(position, studentList):
     '''
-    Interface for the remove functions
+    Sets the score at 'position' from studentList to (0, 0, 0)
     @param:
+        - position = integer; the position of the student
         - studentList = list of students
-        - paramList = list of parameters
-            - in this case there are multiple sets of parameters
     @return:
-        - 1, if the function worked correctly
-        - -1, otherwise
+        - None
     '''
-    l = len(paramList)
-    if l == 1:
-        position = isValidPosition(paramList[0], studentList)
-        if position != -1:
-            removePosition(position, studentList)
-        else:
-            return -1
-            
-    elif l == 2:
-        sign = isValidComparator(paramList[0])
-        score = isValidNumber(paramList[1], 'F')
-        if sign != -1 and score != -1:
-            removeAllWithProperty(sign, score, studentList)
-        else:
-            return -1
-        
-    elif l == 3:
-        startPos = isValidPosition(paramList[0], studentList)
-        endPos = isValidPosition(paramList[2], studentList)
-        
-        if startPos != -1 and endPos != -1:
-            if startPos > endPos:
-                print ("Start position is larger than the end position")
-                return -1
-        
-            if isValidKeyword(paramList[1], "to"):
-                removeRange(startPos, endPos, studentList)
-                
-            else:
-                return -1
+    studentList.insert(position, createStudent(0, 0, 0))
+    studentList.pop(position + 1)
 
-    else:
-        print ("Invalid number of parameters in \"remove\"")
-        return -1
-    
-    return 1   
+def removeAllWithProperty(sign, score, studentList):
+    '''
+    Sets the score of all students with a property to 0 
+    @param:
+        - sign = integer representing the type of comparation
+            - 0: a == b
+            - 1: a > b
+            - 2: a < b 
+        - score = integer representing the average score to compare with
+        - studentList = list of students
+    @return:
+        - None
+    '''
+    for i in range(len(studentList)):
+        averageScore = studentAverage(studentList[i])
+        if     (sign == 0 and averageScore == score) \
+            or (sign == 1 and averageScore > score)  \
+            or (sign == 2 and averageScore < score):
+            removePosition(i, studentList)
 
-def replace(studentList, paramList):
+def removeRange(startPos, endPos, studentList):
+    '''
+    Sets the score at all positions between (startPos, endPos) from studentList to (0, 0, 0)
+    @param:
+        - startPos = integer; the position of the first student in the range
+        - endPos = integer; the position of the last student in the range
+        - studentList = list of students
+    @return:
+        - None
+    '''
+    for i in range(startPos, endPos + 1):
+        removePosition(i, studentList)
+
+def replace(studentList, position, problem, grade):
     '''
     Replaces score obtained by student
     @param:
         - studentList = list of students
         - paramList = list of parameters
-            - position of the student to be replaced (integer)
-            - Px = which grade to change (string)
-            - "with" keyword
-            - grade to replace Px with
+            - position = integer, position of student to be replaced 
+            - problem = intger, problem whose score has to be replaced
+            - grade = integer, new grade
     @return:
-        - 1, if the function worked
-        - -1, otherwise
+        - None
     '''
-    if len(paramList) != 4:
-        print ("Invalid number of paramters")
-        return -1
-    
-    position = isValidPosition(paramList[0], studentList)
-    if position == -1:
-        return -1
-    if not isValidKeyword("with", paramList[2]):
-        return -1
-    grade = isValidNumber(paramList[3], 'I')
-    if grade == -1:
-        return -1
+
     student = studentList[position]
                     
     P1 = getStudentP1(student)
     P2 = getStudentP2(student)
     P3 = getStudentP3(student)
                     
-    if P1 == P2 == P3 == 0:
-        print ("Cannot replace an empty position")
-        return -1
-                    
-    if paramList[1] == "P1":
+    if problem == 1:
         P1 = grade
-    elif paramList[1] == "P2":
+    elif problem == 2:
         P2 = grade
-    elif paramList[1] == "P3":
-        P3 = grade
     else:
-        print ("Invalid Px")
-        return -1
+        P3 = grade
                     
     student = createStudent(P1, P2, P3)  
     studentList.insert(position, student)
     studentList.pop(position + 1)
-    return 1 #success
         
-def undo(studentList, paramList, commandStack):
+def undo(studentList, commandStack):
     '''
     Undoes the last command which has modified the studentList
     @param:
         - studentList = list of students
-        - paramList = list of parameters
         - commandStack = list of all previous list states
     @return:
-        - the last list state, if the stack is non-empty
-        - studentList, if the stack is empty
-        - -1 if the function failed (incorrect input)
+        - None
     '''
-    if len(paramList) != 0:
-        print ("Incorrect number of parameters in \"undo\"")
-        return -1
-    
-    if len(commandStack) > 0:
-        return commandStack.pop()[:]
-    
-    print ("No moves left")
-    return studentList[:]
+    studentList.clear()
+    studentList.extend(commandStack.pop())
 

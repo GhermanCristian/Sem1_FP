@@ -4,7 +4,7 @@ Problem 2 ("Contest")
 '''
 
 from constants import COMMAND_ID
-from modifyCommands import add, insert, remove, replace, undo
+from UIModifyCommands import addUI, insertUI, removeUI, replaceUI, undoUI
 from UICommands import listStudents, average, minimumScore, topStudent
 from UIFunctions import getUIChoice
 from exampleLists import exampleList1, exampleList2, exampleList3, exampleList10
@@ -22,15 +22,15 @@ def executeCommand(commandID, commandParams, studentList, commandStack):
     '''
     COMMAND_LIST = [
         exit,
-        add, 
-        insert, 
-        remove, 
-        replace, 
+        addUI, 
+        insertUI, 
+        removeUI, 
+        replaceUI, 
         listStudents, 
         average, 
         minimumScore, 
         topStudent,
-        undo
+        undoUI
     ]
 
     #the first 4 commands actually modify the studentList
@@ -57,9 +57,7 @@ def main():
         
         #undo
         elif commandID == 9:
-            newStudentList = undo(studentList, commandParams, commandStack)
-            if newStudentList != -1:
-                studentList = newStudentList[:]
+            undoUI(studentList, commandParams, commandStack)
                 
         else:
             executeCommand(commandID, commandParams, studentList, commandStack)

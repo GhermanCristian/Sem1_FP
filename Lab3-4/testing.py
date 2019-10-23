@@ -1,10 +1,9 @@
-from utilFunctions import studentAverage, getAverage, getMinimum
-from modifyCommands import add, insert, remove, replace
-from setData import createStudent
-from getData import *
-
-def studentIsEqualTo(student, P1, P2, P3):
-    return getStudentP1(student) == P1 and getStudentP2(student) == P2 and getStudentP3(student) == P3
+from utilFunctions import studentAverage, getAverage, getMinimum, filterProperty, studentIsEqualTo
+from modifyCommands import add, insert, removePosition, removeAllWithProperty, removeRange, replace
+from UIFunctions import createStudent
+from exampleLists import exampleList2, exampleList3
+from validators import isValidKeyword, isValidParamLen, getValidComparator, getValidNumber, \
+                       getValidPosition, getValidProblem
 
 def testCreateStudent():
     errorMsg = "Failed in createStudent"
@@ -12,34 +11,18 @@ def testCreateStudent():
     s = createStudent(2, 3, 4)
     assert studentIsEqualTo(s, 2, 3, 4), errorMsg
     
-    s = createStudent('5', '6', '7')
+    s = createStudent(5, 6, 7)
     assert studentIsEqualTo(s, 5, 6, 7), errorMsg
     
-    s = createStudent('11', '9', '3')
-    assert s == -1, errorMsg
-    
-    s = createStudent('a', 'b', 'c')
-    assert s == -1, errorMsg
-
 def testAdd():
     errorMsg = "Failed in add"
     studentList = []
 
-    result = add(studentList, [2, 3, 4])
-    assert result == 1, errorMsg
+    add(studentList, createStudent(2, 3, 4))
     assert len(studentList) == 1, errorMsg
     assert studentIsEqualTo(studentList[0], 2, 3, 4), errorMsg
-
-    result = add(studentList, ['a', 2, 5])
-    assert result == -1, errorMsg
-    assert len(studentList) == 1, errorMsg
     
-    result = add(studentList, ['10', '11', '12'])
-    assert result == -1, errorMsg
-    assert len(studentList) == 1, errorMsg
-    
-    result = add(studentList, ['0', '3', '3'])
-    assert result == 1, errorMsg
+    add(studentList, createStudent(0, 3, 3))
     assert len(studentList) == 2, errorMsg
     assert studentIsEqualTo(studentList[0], 2, 3, 4), errorMsg
     assert studentIsEqualTo(studentList[1], 0, 3, 3), errorMsg
@@ -48,23 +31,13 @@ def testInsert():
     errorMsg = "Failed in insert"
     studentList = []
     
-    result = insert(studentList, [1, 2, 3, "at", 0])
-    assert result == -1, errorMsg
-    assert len(studentList) == 0, errorMsg
-    
     studentList.append(createStudent(10, 10, 10))
-    result = insert(studentList, [1, 2, 3, "at", 0])
-    assert result == 1, errorMsg
+    insert(studentList, 0, createStudent(1, 2, 3))
     assert len(studentList) == 2, errorMsg
     assert studentIsEqualTo(studentList[0], 1, 2, 3), errorMsg
     assert studentIsEqualTo(studentList[1], 10, 10, 10), errorMsg
     
-    result = insert(studentList, [1, 2, 3, "att", 1])
-    assert result == -1, errorMsg
-    assert len(studentList) == 2, errorMsg
-    
-    result = insert(studentList, [8, 8, 8, "at", 1])
-    assert result == 1, errorMsg
+    insert(studentList, 1, createStudent(8, 8, 8))
     assert len(studentList) == 3, errorMsg
     assert studentIsEqualTo(studentList[0], 1, 2, 3), errorMsg
     assert studentIsEqualTo(studentList[1], 8, 8, 8), errorMsg
@@ -74,45 +47,22 @@ def testRemove():
     errorMsg = "Failed in remove"
     studentList = []
     
-    result = remove(studentList, [0])
-    assert result == -1, errorMsg
-    assert len(studentList) == 0, errorMsg
-    
     studentList.append(createStudent(2, 2, 2))
-    result = remove(studentList, [0])
-    assert result == 1, errorMsg
+    removePosition(0, studentList)
     assert len(studentList) == 1, errorMsg
     assert studentIsEqualTo(studentList[0], 0, 0, 0), errorMsg
     
     studentList.append(createStudent(2, 2, 2))
     studentList.append(createStudent(3, 3, 3))
     studentList.append(createStudent(4, 4, 4))
-    result = remove(studentList, [1, "to", 2])
-    assert result == 1, errorMsg
+    removeRange(1, 2, studentList)
     assert len(studentList) == 4, errorMsg
     assert studentIsEqualTo(studentList[0], 0, 0, 0)
     assert studentIsEqualTo(studentList[1], 0, 0, 0)
     assert studentIsEqualTo(studentList[2], 0, 0, 0)
     assert studentIsEqualTo(studentList[3], 4, 4, 4)
     
-    result = remove(studentList, [3, "too", 3])
-    assert result == -1, errorMsg
-    assert len(studentList) == 4, errorMsg
-    assert studentIsEqualTo(studentList[0], 0, 0, 0)
-    assert studentIsEqualTo(studentList[1], 0, 0, 0)
-    assert studentIsEqualTo(studentList[2], 0, 0, 0)
-    assert studentIsEqualTo(studentList[3], 4, 4, 4)
-    
-    result = remove(studentList, ['<', 4.1])
-    assert result == 1, errorMsg
-    assert len(studentList) == 4, errorMsg
-    assert studentIsEqualTo(studentList[0], 0, 0, 0)
-    assert studentIsEqualTo(studentList[1], 0, 0, 0)
-    assert studentIsEqualTo(studentList[2], 0, 0, 0)
-    assert studentIsEqualTo(studentList[3], 0, 0, 0)
-
-    result = remove(studentList, ['a', 10])
-    assert result == -1, errorMsg
+    removeAllWithProperty(2, 4.1, studentList)
     assert len(studentList) == 4, errorMsg
     assert studentIsEqualTo(studentList[0], 0, 0, 0)
     assert studentIsEqualTo(studentList[1], 0, 0, 0)
@@ -123,23 +73,8 @@ def testReplace():
     errorMsg = "Failed in replace"
     studentList = []
     
-    result = replace(studentList, [0, "P2", "with", 10])
-    assert result == -1, errorMsg
-    assert len(studentList) == 0, errorMsg
-    
     studentList.append(createStudent(1, 3, 3))
-    result = replace(studentList, [0, "P2", "with", 10])
-    assert result == 1, errorMsg
-    assert len(studentList) == 1, errorMsg
-    assert studentIsEqualTo(studentList[0], 1, 10, 3), errorMsg
-    
-    result = replace(studentList, [0, "P2", "with", 19])
-    assert result == -1, errorMsg
-    assert len(studentList) == 1, errorMsg
-    assert studentIsEqualTo(studentList[0], 1, 10, 3), errorMsg
-    
-    result = replace(studentList, [0, "p1", "with", 9])
-    assert result == -1, errorMsg
+    replace(studentList, 0, 2, 10)
     assert len(studentList) == 1, errorMsg
     assert studentIsEqualTo(studentList[0], 1, 10, 3), errorMsg
 
@@ -169,27 +104,16 @@ def testAverageRange():
     errorMsg = "Failed in getAverage"
     studentList = []
     
-    result = getAverage(studentList, [0, "to", 0])
-    assert result == -1, errorMsg
-    assert len(studentList) == 0, errorMsg
-    
     studentList.append(createStudent(2, 3, 4))
-    result = getAverage(studentList, [0, "to", 0])
+    result = getAverage(studentList, 0, 0)
     assert result == 3, errorMsg
     assert len(studentList) == 1, errorMsg
     assert studentIsEqualTo(studentList[0], 2, 3, 4)
     
     studentList.append(createStudent(10, 10, 10))
     studentList.append(createStudent(9, 9, 8))
-    result = getAverage(studentList, [0, "to", 2])
+    result = getAverage(studentList, 0, 2)
     assert result == 7.222, errorMsg
-    assert len(studentList) == 3, errorMsg
-    assert studentIsEqualTo(studentList[0], 2, 3, 4)
-    assert studentIsEqualTo(studentList[1], 10, 10, 10)
-    assert studentIsEqualTo(studentList[2], 9, 9, 8)
-    
-    result = getAverage(studentList, [2, "to", 0])
-    assert result == -1, errorMsg
     assert len(studentList) == 3, errorMsg
     assert studentIsEqualTo(studentList[0], 2, 3, 4)
     assert studentIsEqualTo(studentList[1], 10, 10, 10)
@@ -199,33 +123,101 @@ def testMinRange():
     errorMsg = "Failed in getMinimum"
     studentList = []
     
-    result = getMinimum(studentList, [0, "to", 0])
-    assert result == -1, errorMsg
-    assert len(studentList) == 0, errorMsg
-
     studentList.append(createStudent(2, 3, 4))
     studentList.append(createStudent(8, 9, 10))
     studentList.append(createStudent(9, 9, 10))
-    result = getMinimum(studentList, [0, "to", 2])
+    result = getMinimum(studentList, 0, 2)
     assert result == 3, errorMsg
     assert len(studentList) == 3, errorMsg
     assert studentIsEqualTo(studentList[0], 2, 3, 4), errorMsg
     assert studentIsEqualTo(studentList[1], 8, 9, 10), errorMsg
     assert studentIsEqualTo(studentList[2], 9, 9, 10), errorMsg
     
-    result = getMinimum(studentList, [1, "to", 1])
+    result = getMinimum(studentList, 1, 1)
     assert result == 9, errorMsg
     assert len(studentList) == 3, errorMsg
     assert studentIsEqualTo(studentList[0], 2, 3, 4), errorMsg
     assert studentIsEqualTo(studentList[1], 8, 9, 10), errorMsg
     assert studentIsEqualTo(studentList[2], 9, 9, 10), errorMsg
+
+def testFilter():
+    errorMsg = "Failed in filterProperty"
+    studentList = exampleList2
+
+    filteredList = filterProperty(2, 5, studentList)
+    assert len(filteredList) == 3, errorMsg
+    assert studentIsEqualTo(filteredList[0], 3, 4, 4), errorMsg
+    assert studentIsEqualTo(filteredList[1], 4, 4, 2), errorMsg
+    assert studentIsEqualTo(filteredList[2], 6, 5, 1), errorMsg
     
-    result = getMinimum(studentList, [2, "to", 1])
-    assert result == -1, errorMsg
-    assert len(studentList) == 3, errorMsg
-    assert studentIsEqualTo(studentList[0], 2, 3, 4), errorMsg
-    assert studentIsEqualTo(studentList[1], 8, 9, 10), errorMsg
-    assert studentIsEqualTo(studentList[2], 9, 9, 10), errorMsg
+    filteredList = filterProperty(1, 10, studentList)
+    assert len(filteredList) == 0, errorMsg
+    
+    studentList = exampleList3
+    
+    filteredList = filterProperty(1, 4.95, studentList)
+    assert len(filteredList) == 5, errorMsg
+    assert studentIsEqualTo(filteredList[0], 8, 10, 10), errorMsg
+    assert studentIsEqualTo(filteredList[1], 0, 9, 9), errorMsg
+    assert studentIsEqualTo(filteredList[2], 2, 6, 8), errorMsg
+    assert studentIsEqualTo(filteredList[3], 8, 6, 1), errorMsg
+    assert studentIsEqualTo(filteredList[4], 2, 9, 6), errorMsg
+    
+    filteredList = filterProperty(0, 6, studentList)
+    assert len(filteredList) == 1, errorMsg
+    assert studentIsEqualTo(filteredList[0], 0, 9, 9), errorMsg
+
+def testValidators():
+    #correct input, shouldn't raise any exceptions
+    try:
+        isValidKeyword("word", "word")
+        isValidParamLen(3, 3)
+        
+        x = getValidComparator("<")
+        assert x == 2
+        x = getValidComparator("=")
+        assert x == 0
+        x = getValidComparator(">")
+        assert x == 1
+        
+        x = getValidNumber("123", 'I', 0, 150)
+        assert x == 123
+        x = getValidNumber("7", 'I')
+        assert x == 7
+        x = getValidNumber("12.05", 'F', 0, 15)
+        assert x == 12.05
+        x = getValidNumber("1.02", 'F')
+        assert x == 1.02
+        x = getValidNumber(4, 'I')
+        assert x == 4
+        x = getValidNumber(4.1, 'F')
+        assert x == 4.1
+        
+        studentList = []
+        studentList.append(createStudent(0, 0, 0))
+        x = getValidPosition("0", studentList)
+        assert x == 0
+        studentList.append(createStudent(0, 0, 0))
+        studentList.append(createStudent(0, 0, 0))
+        studentList.append(createStudent(0, 0, 0))
+        studentList.append(createStudent(0, 0, 0))
+        x = getValidPosition("3", studentList)
+        assert x == 3
+        
+        x = getValidProblem("P1")
+        assert x == 1
+        x = getValidProblem("P2")
+        assert x == 2
+        x = getValidProblem("P3")
+        assert x == 3
+        
+        assert True
+        
+    except:
+        assert False
+        
+    #incorrect input
+    
 
 def testFunction():
     testCreateStudent()
@@ -236,6 +228,8 @@ def testFunction():
     testAverage()
     testAverageRange()
     testMinRange()
+    testFilter()
+    testValidators()
 
 testFunction()
 

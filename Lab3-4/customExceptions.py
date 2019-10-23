@@ -23,3 +23,9 @@ class ParamError(Error):
     (e.g. incorrect number of parameters)
     '''
     pass
+
+class EmptyPositionError(Error):
+    '''
+    User-defined error; occurs when trying to do an operation on an empty position
+    '''
+    pass
