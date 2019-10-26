@@ -16,6 +16,9 @@ def studentAverage(student):
     return int(gradeSum / 3 * 1000) / 1000
 
 def sortKeyAVG(element):
+    '''
+    Used for sorting students by their grades' average
+    '''
     return element[1]
 
 def sortStudentGradesAVG(studentList):
@@ -34,6 +37,9 @@ def sortStudentGradesAVG(studentList):
     return studentAVG
 
 def sortKeyProblem(element):
+    '''
+    Used for sorting students by their score for a particular problem
+    '''
     return element[1]
 
 def sortStudentGradesPx(studentList, problem):
@@ -46,14 +52,14 @@ def sortStudentGradesPx(studentList, problem):
         - studentGrades = sorted list of students
     '''
     studentGrades = []
+    problemDict = {
+        1: getStudentP1,
+        2: getStudentP2,
+        3: getStudentP3
+    }
     
     for i in range(len(studentList)):
-        if problem == 1:
-            studentGrades.append((i, getStudentP1(studentList[i])))
-        elif problem == 2:
-            studentGrades.append((i, getStudentP2(studentList[i])))
-        else:
-            studentGrades.append((i, getStudentP3(studentList[i])))
+        studentGrades.append((i, problemDict[problem](studentList[i])))
             
     studentGrades.sort(key = sortKeyProblem, reverse = True)
     
@@ -95,9 +101,9 @@ def getMinimum(studentList, startPos, endPos):
 
 def filterProperty(sign, score, studentList):
     '''
-    Returns a list of students whose average corresponds to the expression "< = > value"
+    Returns a list of students whose average corresponds to the expression "<, =, > value"
     @param:
-        - sign = integer representing the type of comparation
+        - sign = integer representing the type of comparator
             - 0: a == b
             - 1: a > b
             - 2: a < b 

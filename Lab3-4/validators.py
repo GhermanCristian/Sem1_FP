@@ -1,3 +1,7 @@
+'''
+Functions which validate various input values and which raise exceptions
+'''
+
 from customExceptions import RangeError, InputTypeError, ParamError
 
 def getValidPosition(position, studentList):

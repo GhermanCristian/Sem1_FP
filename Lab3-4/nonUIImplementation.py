@@ -1,5 +1,5 @@
 '''
-The implementation of the modifying commands
+The implementation of the commands which modify the studentList
 - they can't take invalid input
 '''
 
@@ -25,7 +25,7 @@ def insert(studentList, position, student):
         - paramList = list of parameters
             - 3 intgers between 0 and 10
             - "at" keyword
-            - position at which to insert the value (integer)
+            - position at which to insert the value (integer) - already validated
     @return:
         - None
     '''
@@ -47,7 +47,7 @@ def removeAllWithProperty(sign, score, studentList):
     '''
     Sets the score of all students with a property to 0 
     @param:
-        - sign = integer representing the type of comparation
+        - sign = integer representing the type of comparator
             - 0: a == b
             - 1: a > b
             - 2: a < b 

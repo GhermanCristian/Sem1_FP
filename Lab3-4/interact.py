@@ -1,3 +1,7 @@
+'''
+A student is represented in memory as a tuple (P1, P2, P3)
+'''
+
 #getters
 def getStudentP1(student):
     return student[0]

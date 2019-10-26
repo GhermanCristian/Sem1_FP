@@ -25,7 +25,7 @@ def addUI(studentList, paramList):
         isValidParamLen(3, len(paramList))
         student = createStudent(paramList[0], paramList[1], paramList[2]) #if invalid raises exception
         
-    except Exception:
+    except:
         return -1 
     
     add(studentList, student)
@@ -49,7 +49,7 @@ def insertUI(studentList, paramList):
         position = getValidPosition(paramList[4], studentList)
         student = createStudent(paramList[0], paramList[1], paramList[2])
         
-    except Exception:
+    except:
         return -1
     
     insert(studentList, position, student)
@@ -78,7 +78,7 @@ def removeUI(studentList, paramList):
         try:
             position = getValidPosition(paramList[0], studentList)
     
-        except Exception:
+        except:
             return -1
         
         removePosition(position, studentList)
@@ -88,7 +88,7 @@ def removeUI(studentList, paramList):
             sign = getValidComparator(paramList[0])
             score = getValidNumber(paramList[1], 'F')
         
-        except Exception:
+        except:
             return -1
         
         removeAllWithProperty(sign, score, studentList)
@@ -101,7 +101,7 @@ def removeUI(studentList, paramList):
                 raise RangeError("Start position is larger than the end position")
             isValidKeyword(paramList[1], "to")
         
-        except Exception:
+        except:
             return -1
         
         removeRange(startPos, endPos, studentList)

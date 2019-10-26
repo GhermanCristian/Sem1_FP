@@ -16,6 +16,7 @@ UI_PROMPT_TEXT = '''
     2. Menu-based UI
     
 '''
+
 MENU_UI_TEXT = '''
     0. Exit
         - no arguments

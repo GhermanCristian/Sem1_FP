@@ -1,3 +1,7 @@
+'''
+UI functions which are not commands, but are used by them
+'''
+
 from validators import getValidNumber
 from interact import *
 from constants import UI_PROMPT_TEXT, MENU_UI_TEXT

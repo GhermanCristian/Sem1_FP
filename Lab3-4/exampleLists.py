@@ -1,5 +1,8 @@
+'''
+hard-coded (and valid) lists of students
+'''
+
 from interact import setStudentGrades
-#DISCLAIMER - as with the import in modifyCommands, this will never print anything, so it isn't UI
 
 exampleList1 = []
 exampleList2 = []

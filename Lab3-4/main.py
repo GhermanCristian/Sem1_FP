@@ -1,6 +1,20 @@
 '''
 Assignment 3-4: due on 22/29 Oct 2019
 Problem 2 ("Contest")
+
+Module description:
+    - constants = contains constant values, to be used by all modules
+    - customExceptions = contains user-defined errors
+    - exampleList = contains hard-coded, valid lists
+    - interact = setters and getters
+    - main = main module, UI, and the one which is called to run the program
+    - nonUIFunctions = functions which are not UI and which are used by other modules
+    - nonUIImplementation = the implementation of non-UI domain functions (add, insert, remove, replace, undo)
+    - testing = contains test functions
+    - UICommands = the UI domain functions (list, average, minimum, top)
+    - UIFunctions = functions which are UI and which are used by other modules
+    - UIModifyCommands = the interface of the functions which modify the list (add, insert, remove, replace, undo)
+    - validators = functions which validate various input values and which raise exceptions
 '''
 
 from constants import COMMAND_ID

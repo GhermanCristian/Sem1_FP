@@ -139,5 +139,3 @@ def topStudent(studentList, paramList):
         sortedList = sortStudentGradesPx(studentList, problem)
         printStudentByCriteria(studentList, sortedList, count)
         
-
-
