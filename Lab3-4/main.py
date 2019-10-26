@@ -7,7 +7,7 @@ from constants import COMMAND_ID
 from UIModifyCommands import addUI, insertUI, removeUI, replaceUI, undoUI
 from UICommands import listStudents, average, minimumScore, topStudent
 from UIFunctions import getUIChoice
-from exampleLists import exampleList1, exampleList2, exampleList3, exampleList10
+from exampleLists import exampleList1, exampleList10
 
 def executeCommand(commandID, commandParams, studentList, commandStack):
     '''
@@ -33,8 +33,8 @@ def executeCommand(commandID, commandParams, studentList, commandStack):
         undoUI
     ]
 
-    #the first 4 commands actually modify the studentList
-    #in this function, commandID will never be 0
+    # the first 4 commands actually modify the studentList,
+    # so I need to make a copy of current state of the list
     if commandID <= 4:
         commandStack.append(studentList[:])
         

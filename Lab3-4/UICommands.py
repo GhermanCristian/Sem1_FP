@@ -7,7 +7,7 @@ from nonUIFunctions import getAverage, getMinimum, filterProperty,\
     sortStudentGradesAVG, sortStudentGradesPx
 from validators import isValidKeyword, getValidComparator, getValidNumber, getValidProblem,\
     isValidParamLen, getValidPosition
-from customExceptions import ParamError
+from customExceptions import ParamError, RangeError
 
 def listStudents(studentList, paramList):
     '''
@@ -68,7 +68,7 @@ def average(studentList, paramList):
         isValidKeyword("to", paramList[1])
         
         if startPos > endPos:
-            raise ArithmeticError("Start position is larger than the end position")
+            raise RangeError("Start position is larger than the end position")
         
     except:
         return 
@@ -92,7 +92,7 @@ def minimumScore(studentList, paramList):
         isValidKeyword("to", paramList[1])
         
         if startPos > endPos:
-            raise ArithmeticError("Start position is larger than the end position")
+            raise RangeError("Start position is larger than the end position")
         
     except:
         return

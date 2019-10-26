@@ -31,14 +31,14 @@ def getValidNumber(number, numberType = 'I', low = 0, high = 10):
         - number (integer), if the input was valid
         - raises an InputTypeError, if the range limits are not integers, or the expected data type is invalid
         - raises an RangeError, if the number is out of range
-        - raises an ArithmeticError, otherwise
+        - raises an RangeError, otherwise
     '''
     if not((isinstance(low, int) or isinstance(low, float)) and \
            (isinstance(high, int) or isinstance(high, float))):
         raise InputTypeError("Invalid number type for range limits")
         
     if low > high:
-        raise ArithmeticError("Invalid range limits")
+        raise RangeError("Invalid range limits")
         
     if numberType == 'I':
         number = int(number)

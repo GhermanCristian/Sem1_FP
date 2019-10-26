@@ -7,7 +7,9 @@ class Error(Exception):
 
 class RangeError(Error):
     '''
-    User-defined error; occurs when an integer / floating point value is not inside a specified range
+    User-defined error; occurs
+    - when an integer / floating point value is not inside a specified range
+    - when the limits of a range [a, b] do not satisfy that a <= b
     '''
     pass
 

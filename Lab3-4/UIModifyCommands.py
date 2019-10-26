@@ -7,7 +7,7 @@ from validators import isValidKeyword, isValidParamLen, getValidComparator, getV
                        getValidPosition, getValidProblem
 from nonUIFunctions import studentIsEqualTo
 from nonUIImplementation import add, insert, removeAllWithProperty, removePosition, removeRange, replace, undo
-from customExceptions import EmptyPositionError, ParamError
+from customExceptions import EmptyPositionError, ParamError, RangeError
 from UIFunctions import createStudent
 
 def addUI(studentList, paramList):
@@ -25,7 +25,7 @@ def addUI(studentList, paramList):
         isValidParamLen(3, len(paramList))
         student = createStudent(paramList[0], paramList[1], paramList[2]) #if invalid raises exception
         
-    except:
+    except Exception:
         return -1 
     
     add(studentList, student)
@@ -49,7 +49,7 @@ def insertUI(studentList, paramList):
         position = getValidPosition(paramList[4], studentList)
         student = createStudent(paramList[0], paramList[1], paramList[2])
         
-    except:
+    except Exception:
         return -1
     
     insert(studentList, position, student)
@@ -78,7 +78,7 @@ def removeUI(studentList, paramList):
         try:
             position = getValidPosition(paramList[0], studentList)
     
-        except:
+        except Exception:
             return -1
         
         removePosition(position, studentList)
@@ -88,7 +88,7 @@ def removeUI(studentList, paramList):
             sign = getValidComparator(paramList[0])
             score = getValidNumber(paramList[1], 'F')
         
-        except:
+        except Exception:
             return -1
         
         removeAllWithProperty(sign, score, studentList)
@@ -98,10 +98,10 @@ def removeUI(studentList, paramList):
             startPos = getValidPosition(paramList[0], studentList)
             endPos = getValidPosition(paramList[2], studentList)
             if startPos > endPos:
-                raise ArithmeticError("Start position is larger than the end position")
+                raise RangeError("Start position is larger than the end position")
             isValidKeyword(paramList[1], "to")
         
-        except:
+        except Exception:
             return -1
         
         removeRange(startPos, endPos, studentList)
@@ -149,7 +149,7 @@ def undoUI(studentList, paramList, commandStack):
         isValidParamLen(0, len(paramList))
         
         if len(commandStack) == 0:
-            raise ValueError("No moves left")
+            raise EmptyPositionError("No moves left - history stack is empty")
         
     except:
         return -1

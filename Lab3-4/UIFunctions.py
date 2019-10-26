@@ -1,7 +1,7 @@
 from validators import getValidNumber
 from interact import *
 from constants import UI_PROMPT_TEXT, MENU_UI_TEXT
-from customExceptions import ParamError
+from customExceptions import ParamError, InputTypeError
 
 def menuBasedUI(COMMAND_ID):
     '''
@@ -15,15 +15,21 @@ def menuBasedUI(COMMAND_ID):
     while True:
         inputCommand = input("Please insert the command and the arguments: ")
         
-        if len(inputCommand) > 0:
-            inputCommand.strip()
-            inputCommand = inputCommand.split()
-            
-            commandID = getValidNumber(inputCommand[0], 'I', 0, 9)
-            if commandID != -1:
-                return (commandID, inputCommand[1:])
+        try:
+            if len(inputCommand) == 0:
+                raise ParamError("Invalid command")
+        except:
+            continue
         
-        print ("Invalid command")
+        inputCommand.strip()
+        inputCommand = inputCommand.split()
+            
+        try:
+            commandID = getValidNumber(inputCommand[0], 'I', 0, 9)
+        except:
+            continue
+
+        return (commandID, inputCommand[1:])
 
 def commandBasedUI(COMMAND_ID):
     '''
@@ -40,16 +46,20 @@ def commandBasedUI(COMMAND_ID):
         try:
             if len(inputCommand) == 0:
                 raise ParamError("Invalid command")
-        
         except:
-            pass
+            continue
         
         inputCommand.strip()
         inputCommand = inputCommand.split()
         inputCommand[0] = inputCommand[0].lower()
             
-        if inputCommand[0] in COMMAND_ID.keys():
-            return (COMMAND_ID[inputCommand[0]], inputCommand[1:])
+        try:
+            if inputCommand[0] not in COMMAND_ID.keys():
+                raise InputTypeError("Invalid command")
+        except:
+            continue
+        
+        return (COMMAND_ID[inputCommand[0]], inputCommand[1:])
         
 def getUIChoice():
     '''
@@ -57,11 +67,14 @@ def getUIChoice():
         1 - command-based
         2 - menu-based
     '''
-    while True:
+    found = False
+    
+    while not found:
         try:
             ID = getValidNumber(input(UI_PROMPT_TEXT), 'I', 1, 2)
+            found = True
         except:
-            pass
+            continue
     
     if ID == 1:
         return commandBasedUI
