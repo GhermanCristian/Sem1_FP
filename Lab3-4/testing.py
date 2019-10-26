@@ -1,9 +1,13 @@
-from utilFunctions import studentAverage, getAverage, getMinimum, filterProperty, studentIsEqualTo
-from modifyCommands import add, insert, removePosition, removeAllWithProperty, removeRange, replace
+from nonUIFunctions import studentAverage, getAverage, getMinimum, filterProperty, studentIsEqualTo
+from nonUIImplementation import add, insert, removePosition, removeAllWithProperty, removeRange, replace
 from UIFunctions import createStudent
 from exampleLists import exampleList2, exampleList3
 from validators import isValidKeyword, isValidParamLen, getValidComparator, getValidNumber, \
                        getValidPosition, getValidProblem
+
+'''
+ALl functions (with the exception of validators), need to have valid input
+'''
 
 def testCreateStudent():
     errorMsg = "Failed in createStudent"
@@ -217,7 +221,54 @@ def testValidators():
         assert False
         
     #incorrect input
-    
+    try:
+        isValidKeyword("word", "woord")
+    except:
+        assert True
+        
+    try:
+        isValidParamLen(3, 5)
+    except:
+        assert True
+        
+    try:
+        x = getValidComparator("x")
+    except:
+        assert True
+        
+    try:
+        x = getValidNumber("12a", "I", 0, 15)
+    except:
+        assert True
+        
+    try:
+        x = getValidNumber("12", "I")
+    except:
+        assert True
+        
+    try:
+        x = getValidNumber("12.1", "I")
+    except:
+        assert True
+        
+    try:
+        x = getValidNumber("12.1", "F")
+    except:
+        assert True
+        
+    try:
+        x = getValidPosition(0, [])
+    except:
+        assert True
+        
+    try:
+        studentList = []
+        studentList.append(createStudent(0, 0, 0))
+        studentList.append(createStudent(0, 0, 0))
+        studentList.append(createStudent(0, 0, 0))
+        x = getValidPosition(3, [])
+    except:
+        assert True
 
 def testFunction():
     testCreateStudent()

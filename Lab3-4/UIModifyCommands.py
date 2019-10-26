@@ -5,8 +5,8 @@ The interface of functions that modify the list
 
 from validators import isValidKeyword, isValidParamLen, getValidComparator, getValidNumber, \
                        getValidPosition, getValidProblem
-from utilFunctions import studentIsEqualTo
-from modifyCommands import add, insert, removeAllWithProperty, removePosition, removeRange, replace, undo
+from nonUIFunctions import studentIsEqualTo
+from nonUIImplementation import add, insert, removeAllWithProperty, removePosition, removeRange, replace, undo
 from customExceptions import EmptyPositionError, ParamError
 from UIFunctions import createStudent
 

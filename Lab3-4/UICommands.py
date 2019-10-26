@@ -2,8 +2,9 @@
 The commands which are strictly UI
 '''
 
-from UIFunctions import printStudentList, printStudentByAVG, printStudentByGrade
-from utilFunctions import getAverage, getMinimum, filterProperty
+from UIFunctions import printStudentList, printStudentByCriteria
+from nonUIFunctions import getAverage, getMinimum, filterProperty,\
+    sortStudentGradesAVG, sortStudentGradesPx
 from validators import isValidKeyword, getValidComparator, getValidNumber, getValidProblem,\
     isValidParamLen, getValidPosition
 from customExceptions import ParamError
@@ -31,20 +32,24 @@ def listStudents(studentList, paramList):
         printStudentList(studentList)
             
     elif l == 1:
-        if isValidKeyword("sorted", paramList[0]):
-            printStudentByAVG(studentList)
+        try:
+            isValidKeyword("sorted", paramList[0])
+        
+        except:
+            return 
+        
+        sortedList = sortStudentGradesAVG(studentList)
+        printStudentByCriteria(studentList, sortedList)
         
     elif l == 2:
-        sign = getValidComparator(paramList[0])
-        if sign == -1:
-            return
+        try:
+            sign = getValidComparator(paramList[0])
+            score = getValidNumber(paramList[1], 'F', 0, 10)
         
-        score = getValidNumber(paramList[1], 'F', 0, 10)
-        if score == -1:
+        except:
             return
 
-        filteredList = filterProperty(sign, score, studentList)
-        printStudentList(filteredList)
+        printStudentList(filterProperty(sign, score, studentList))
 
 def average(studentList, paramList):
     '''
@@ -109,26 +114,30 @@ def topStudent(studentList, paramList):
     try:
         if l == 0 or l > 2:
             raise ParamError("Invalid number of parameters in \"topStudent\"")
+        
     except:
         return
     
     if l == 1:
-        count = getValidNumber(paramList[0], 'I', 1, len(studentList))
-        if count == -1:
+        try:
+            count = getValidNumber(paramList[0], 'I', 1, len(studentList))
+            
+        except:
             return
         
-        printStudentByAVG(studentList, count)
+        sortedList = sortStudentGradesAVG(studentList)
+        printStudentByCriteria(studentList, sortedList, count)
     
     elif l == 2:
-        count = getValidNumber(paramList[0], 'I', 1, len(studentList))
-        if count == -1:
+        try:
+            count = getValidNumber(paramList[0], 'I', 1, len(studentList))
+            problem = getValidProblem(paramList[1])
+        
+        except:
             return
         
-        problem = getValidProblem(paramList[1])
-        if problem == -1:
-            return
-        
-        printStudentByGrade(studentList, count, problem)
+        sortedList = sortStudentGradesPx(studentList, problem)
+        printStudentByCriteria(studentList, sortedList, count)
         
 
 

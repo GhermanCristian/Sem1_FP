@@ -1,7 +1,7 @@
 from validators import getValidNumber
-from utilFunctions import sortStudentGradesAVG, sortStudentGradesPx
 from interact import *
 from constants import UI_PROMPT_TEXT, MENU_UI_TEXT
+from customExceptions import ParamError
 
 def menuBasedUI(COMMAND_ID):
     '''
@@ -37,21 +37,31 @@ def commandBasedUI(COMMAND_ID):
     while True:
         inputCommand = input("Please insert the command and the arguments: ")
         
-        if len(inputCommand) > 0:
-            inputCommand.strip()
-            inputCommand = inputCommand.split()
-            inputCommand[0] = inputCommand[0].lower()
-            
-            if inputCommand[0] in COMMAND_ID.keys():
-                return (COMMAND_ID[inputCommand[0]], inputCommand[1:])
+        try:
+            if len(inputCommand) == 0:
+                raise ParamError("Invalid command")
         
-        print ("Invalid command")
+        except:
+            pass
+        
+        inputCommand.strip()
+        inputCommand = inputCommand.split()
+        inputCommand[0] = inputCommand[0].lower()
+            
+        if inputCommand[0] in COMMAND_ID.keys():
+            return (COMMAND_ID[inputCommand[0]], inputCommand[1:])
         
 def getUIChoice():
+    '''
+    Receives from the user the type of the desired UI 
+        1 - command-based
+        2 - menu-based
+    '''
     while True:
-        ID = getValidNumber(input(UI_PROMPT_TEXT), 'I', 1, 2)
-        if ID != -1:
-            break
+        try:
+            ID = getValidNumber(input(UI_PROMPT_TEXT), 'I', 1, 2)
+        except:
+            pass
     
     if ID == 1:
         return commandBasedUI
@@ -92,6 +102,9 @@ def printStudent(student, position):
     print ("Student " + str(position) + ": " + P1 + " | " + P2 + " | " + P3)
     
 def printStudentList(studentList):
+    '''
+    Prints a studentList
+    '''
     l = len(studentList)
     
     if l == 0:
@@ -99,39 +112,18 @@ def printStudentList(studentList):
     else:
         for i in range(l):
             printStudent(studentList[i], i)
-
-def printStudentByAVG(studentList, count = -1):
-    '''
-    Prints a re-ordered list of students, with their original ID
-    @param:
-        - studentList = list of students
-        - count = number of students to be printed (if -1 => the entire list)
-    @return:
-        - None
-    '''
-    studentAVG = sortStudentGradesAVG(studentList)
     
-    if count != -1:
-        del studentAVG[count: ]
-    
-    for i in studentAVG:
-        printStudent(studentList[i[0]], i[0])
-        
-def printStudentByGrade(studentList, count, problem):
+def printStudentByCriteria(studentList, sortedList, count = -1):
     '''
-    Prints the first 'count' students based on their score on 'problem', with their original ID
+    Prints a re-ordered version of studentList
     @param:
-        - studentList = list of students
+        - studentList = original list of students
+        - sortedList = list of students, sorted on a given criterium
         - count = nr of students to be printed
-        - problem = 
-    @return:
-        - None
     '''
-    studentGrade = sortStudentGradesPx(studentList, problem)
+    if count != -1:
+        sortedList = sortedList[: count]
     
-    del studentGrade[count: ]
-    
-    for i in studentGrade:
+    for i in sortedList:
         printStudent(studentList[i[0]], i[0])
     
-

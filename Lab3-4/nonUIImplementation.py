@@ -3,11 +3,8 @@ The implementation of the modifying commands
 - they can't take invalid input
 '''
 
-from utilFunctions import studentAverage
-from interact import getStudentP1, getStudentP2, getStudentP3
-from UIFunctions import createStudent
-#DISCLAIMER - createStudent is only used to create an empty student (0,0,0) - this cannot raise any 
-#           exceptions, hence it will never print anything to the console, so it isn't really UI in this case
+from nonUIFunctions import studentAverage
+from interact import *
 
 def add(studentList, student):
     '''
@@ -43,7 +40,7 @@ def removePosition(position, studentList):
     @return:
         - None
     '''
-    studentList.insert(position, createStudent(0, 0, 0))
+    studentList.insert(position, setStudentGrades(0, 0, 0))
     studentList.pop(position + 1)
 
 def removeAllWithProperty(sign, score, studentList):
@@ -104,8 +101,9 @@ def replace(studentList, position, problem, grade):
         P2 = grade
     else:
         P3 = grade
-                    
-    student = createStudent(P1, P2, P3)  
+    
+    #we know that P1,2,3 are valid, so no need to use createStudent (which checks input)
+    student = setStudentGrades(P1, P2, P3)  
     studentList.insert(position, student)
     studentList.pop(position + 1)
         
