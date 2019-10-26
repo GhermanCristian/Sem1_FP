@@ -22,6 +22,7 @@ from UIModifyCommands import addUI, insertUI, removeUI, replaceUI, undoUI
 from UICommands import listStudents, average, minimumScore, topStudent
 from UIFunctions import getUIChoice
 from exampleLists import exampleList1, exampleList10
+from regexPatterns import COM_patternList
 
 def executeCommand(commandID, commandParams, studentList, commandStack):
     '''

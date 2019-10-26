@@ -1,11 +1,14 @@
 '''
 UI functions which are not commands, but are used by them
+- the first 3 functions deal with data input
 '''
 
 from validators import getValidNumber
 from interact import *
 from constants import UI_PROMPT_TEXT, MENU_UI_TEXT
 from customExceptions import ParamError, InputTypeError
+from re import *
+from regexPatterns import UI_TYPE_PATTERN
 
 def menuBasedUI(COMMAND_ID):
     '''
@@ -65,20 +68,45 @@ def commandBasedUI(COMMAND_ID):
         
         return (COMMAND_ID[inputCommand[0]], inputCommand[1:])
         
+def getAction(COM_patternList, studentList):
+    '''
+    '''
+    while True:
+        inputAction = input("Please insert the command and the arguments: ")
+          
+        for idx in range(len(COM_patternList)):
+            pattern = COM_patternList[idx]
+            regex = compile(pattern, VERBOSE | IGNORECASE)
+            result = fullmatch(regex, inputAction)
+            
+            if result != None:
+                pass
+                #return (idx, getParams[idx](studentList)) - getparams is a list of validators
+            
+        try:
+            raise InputTypeError("Invalid input")
+        except:
+            continue
+
 def getUIChoice():
     '''
     Receives from the user the type of the desired UI 
         1 - command-based
         2 - menu-based
     '''
-    found = False
-    
-    while not found:
+    while True:
+        ID = input(UI_PROMPT_TEXT)
+        UITypeRegex = compile(UI_TYPE_PATTERN, VERBOSE | IGNORECASE)
+        result = fullmatch(UITypeRegex, ID)
+        
         try:
-            ID = getValidNumber(input(UI_PROMPT_TEXT), 'I', 1, 2)
-            found = True
+            if result == None:
+                raise InputTypeError("Invalid number")
+            break
         except:
             continue
+        
+    ID = int(result.group(1))
     
     if ID == 1:
         return commandBasedUI
