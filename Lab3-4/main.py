@@ -7,16 +7,17 @@ Module description:
     - customExceptions = contains user-defined errors
     - exampleList = contains hard-coded, valid lists
     - interact = setters and getters
-    - main = main module, UI, and the one which is called to run the program
+    - main = main module (UI) and the one which is called to run the program
     - nonUIFunctions = functions which are not UI and which are used by other modules
     - nonUIImplementation = the implementation of non-UI domain functions (add, insert, remove, replace, undo)
+    - regexPatterns = contains regex patterns to be used by either the command-UI or menu-UI
     - testing = contains test functions
     - UICommands = the UI domain functions (list, average, minimum, top)
     - UIFunctions = functions which are UI and which are used by other modules
     - UIModifyCommands = the interface of the functions which modify the list (add, insert, remove, replace, undo)
     - validators = functions which validate various input values and which raise exceptions
     
- The user first chooses the type of UI - this will return a regex pattern list, which will be used from there on
+ The user first chooses the type of UI - this will return a regex pattern list, which will be used from there on.
  Each command inputted by the user is checked against the regex pattern list, and then, if valid, will return a
 commandID and a list of parameters. (each command has a commandID, to ease the implementation of both menu-UI and
 command-UI)
