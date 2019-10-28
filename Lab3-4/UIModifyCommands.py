@@ -3,11 +3,10 @@ The interface of functions that modify the list
 - they can take invalid input
 '''
 
-from validators import isValidKeyword, isValidParamLen, getValidComparator, getValidNumber, \
-                       getValidPosition, getValidProblem
+from validators import getValidComparator, getValidNumber, getValidPosition, getValidProblem
 from nonUIFunctions import studentIsEqualTo
 from nonUIImplementation import add, insert, removeAllWithProperty, removePosition, removeRange, replace, undo
-from customExceptions import EmptyPositionError, ParamError, RangeError
+from customExceptions import EmptyPositionError, RangeError
 from UIFunctions import createStudent
 
 def addUI(studentList, paramList):
@@ -18,16 +17,9 @@ def addUI(studentList, paramList):
         - paramList = list of parameters
             - 3 integers between 0 and 10 = the three grades of a student
     @return:
-        - None, if the input is valid
-        - -1, otherwise
+        - None
     '''
-    try:
-        isValidParamLen(3, len(paramList))
-        student = createStudent(paramList[0], paramList[1], paramList[2]) #if invalid raises exception
-        
-    except:
-        return -1 
-    
+    student = createStudent(paramList[0], paramList[1], paramList[2]) #if invalid raises exception
     add(studentList, student)
     
 def insertUI(studentList, paramList):
@@ -40,18 +32,14 @@ def insertUI(studentList, paramList):
             - "at" keyword
             - position at which to insert the value (integer)
     @return:
-        - None, if the input is valid
-        - -1, otherwise
+        - None
     '''
     try:
-        isValidParamLen(5, len(paramList))
-        isValidKeyword("at", paramList[3])
         position = getValidPosition(paramList[4], studentList)
-        student = createStudent(paramList[0], paramList[1], paramList[2])
-        
     except:
-        return -1
+        return 
     
+    student = createStudent(paramList[0], paramList[1], paramList[2])
     insert(studentList, position, student)
 
 def removeUI(studentList, paramList):
@@ -62,24 +50,16 @@ def removeUI(studentList, paramList):
         - paramList = list of parameters
             - in this case there are multiple sets of parameters
     @return:
-        - None, if the input is valid
-        - -1, otherwise
+        - None
     '''
-    l = len(paramList)
-    
-    try:
-        if l > 3 or l == 0:
-            raise ParamError("Invalid number of parameters")
-    
-    except ParamError:
-        return -1 
+    l = len(paramList) 
     
     if l == 1:
         try:
             position = getValidPosition(paramList[0], studentList)
     
         except:
-            return -1
+            return
         
         removePosition(position, studentList)
     
@@ -89,7 +69,7 @@ def removeUI(studentList, paramList):
             score = getValidNumber(paramList[1], 'F')
         
         except:
-            return -1
+            return
         
         removeAllWithProperty(sign, score, studentList)
     
@@ -99,10 +79,9 @@ def removeUI(studentList, paramList):
             endPos = getValidPosition(paramList[2], studentList)
             if startPos > endPos:
                 raise RangeError("Start position is larger than the end position")
-            isValidKeyword(paramList[1], "to")
-        
+            
         except:
-            return -1
+            return
         
         removeRange(startPos, endPos, studentList)
 
@@ -117,13 +96,10 @@ def replaceUI(studentList, paramList):
             - "with" keyword
             - grade to replace Px with
     @return:
-        - None, if the input is valid
-        - -1, otherwise
+        - None
     '''
     try:
-        isValidParamLen(4, len(paramList))
         position = getValidPosition(paramList[0], studentList)
-        isValidKeyword("with", paramList[2])
         grade = getValidNumber(paramList[3], 'I')
         problem = getValidProblem(paramList[1])
         
@@ -131,27 +107,24 @@ def replaceUI(studentList, paramList):
             raise EmptyPositionError("Cannot replace an empty position")
         
     except:
-        return -1
+        return
     
     replace(studentList, position, problem, grade)
     
-def undoUI(studentList, paramList, commandStack):
+def undoUI(studentList, commandStack):
     '''
     Interface for the 'undo' function
     @param:
         - studentList = list of students
         - commandStack = list of all previous list states
     @return:
-        - None, if the input is valid
-        - -1, otherwise
+        - None
     '''
     try:
-        isValidParamLen(0, len(paramList))
-        
         if len(commandStack) == 0:
             raise EmptyPositionError("No moves left - history stack is empty")
         
     except:
-        return -1
+        return 
 
     undo(studentList, commandStack)

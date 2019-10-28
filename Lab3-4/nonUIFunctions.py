@@ -36,7 +36,7 @@ def sortStudentGradesAVG(studentList):
     
     return studentAVG
 
-def sortKeyProblem(element):
+def sortKeyPx(element):
     '''
     Used for sorting students by their score for a particular problem
     '''
@@ -61,7 +61,7 @@ def sortStudentGradesPx(studentList, problem):
     for i in range(len(studentList)):
         studentGrades.append((i, problemDict[problem](studentList[i])))
             
-    studentGrades.sort(key = sortKeyProblem, reverse = True)
+    studentGrades.sort(key = sortKeyPx, reverse = True)
     
     return studentGrades    
     

@@ -1,16 +1,3 @@
-COMMAND_ID = {
-    "exit": 0,
-    "add": 1,
-    "insert": 2,
-    "remove": 3,
-    "replace": 4,
-    "list": 5,
-    "avg": 6,
-    "min": 7,
-    "top": 8,
-    "undo": 9    
-}
-
 UI_PROMPT_TEXT = '''
     1. Command-based UI
     2. Menu-based UI

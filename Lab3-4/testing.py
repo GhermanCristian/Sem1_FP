@@ -1,14 +1,13 @@
 '''
 ALl the functions (with the exception of validators), need to have valid input
-- error messages will be printed by testValidators, when inputting invalid data
+- error messages will be printed by testValidators, when receiving invalid data
 '''
 
 from nonUIFunctions import studentAverage, getAverage, getMinimum, filterProperty, studentIsEqualTo
 from nonUIImplementation import add, insert, removePosition, removeAllWithProperty, removeRange, replace
 from UIFunctions import createStudent
 from exampleLists import exampleList2, exampleList3
-from validators import isValidKeyword, isValidParamLen, getValidComparator, getValidNumber, \
-                       getValidPosition, getValidProblem
+from validators import getValidComparator, getValidNumber, getValidPosition, getValidProblem
 
 def testCreateStudent():
     s = createStudent(2, 3, 4)
@@ -164,10 +163,7 @@ def testFilter():
 
 def testValidators():
     #correct input, shouldn't raise any exceptions
-    try:
-        isValidKeyword("word", "word")
-        isValidParamLen(3, 3)
-        
+    try:        
         x = getValidComparator("<")
         assert x == 2
         x = getValidComparator("=")
@@ -212,16 +208,6 @@ def testValidators():
         assert False
         
     #incorrect input, should raise exceptions
-    try:
-        isValidKeyword("word", "woord")
-    except:
-        assert True
-        
-    try:
-        isValidParamLen(3, 5)
-    except:
-        assert True
-        
     try:
         x = getValidComparator("x")
     except:

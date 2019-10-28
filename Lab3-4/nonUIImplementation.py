@@ -1,6 +1,6 @@
 '''
 The implementation of the commands which modify the studentList
-- they can't take invalid input
+- they can't take invalid input (the input is validated by their respective UI interface functions)
 '''
 
 from nonUIFunctions import studentAverage
@@ -33,7 +33,7 @@ def insert(studentList, position, student):
 
 def removePosition(position, studentList):
     '''
-    Sets the score at 'position' from studentList to (0, 0, 0)
+    Sets the score at 'position' from the studentList to (0, 0, 0)
     @param:
         - position = integer; the position of the student
         - studentList = list of students
@@ -102,7 +102,7 @@ def replace(studentList, position, problem, grade):
     else:
         P3 = grade
     
-    #we know that P1,2,3 are valid, so no need to use createStudent (which checks input)
+    #we know that P1,2,3 are valid, so no need to use createStudent (which also checks input)
     student = setStudentGrades(P1, P2, P3)  
     studentList.insert(position, student)
     studentList.pop(position + 1)

@@ -2,7 +2,7 @@
 Functions which validate various input values and which raise exceptions
 '''
 
-from customExceptions import RangeError, InputTypeError, ParamError
+from customExceptions import RangeError, InputTypeError
 
 def getValidPosition(position, studentList):
     '''
@@ -94,40 +94,4 @@ def getValidProblem(value):
         return 3
     
     raise InputTypeError("Invalid problem name")
-
-def isValidKeyword(expectedKeyword, actualKeyword):
-    '''
-    Checks if expectedKeyword is equal to actualKeyword
-    @param:
-        - expectedKeyword = string
-        - actualKeyword = string
-    @return:
-        - None, if the condition is valid
-        - raises an InputTypeError, otherwise
-    '''
-    if not(isinstance(expectedKeyword, str) and isinstance(actualKeyword, str)):
-        raise InputTypeError("Invalid type: str required")
-    if not expectedKeyword == actualKeyword:
-        raise InputTypeError("Missing keyword: " + expectedKeyword)
-    return None
-
-def isValidParamLen(expectedLen, actualLen):
-    '''
-    Checks the validity of the length of a parameter list
-    @param:
-        - expectedLen = integer, expected length of a parameter list
-        - actualLen = integer, actual length of a parameter list
-    @return:
-        - None, if the condition is valid
-        - raises an InputTypeError, if the values passed for lengths are not integers
-        - raises an ParamError, otherwise
-    '''
-    if not(isinstance(expectedLen, int) and isinstance(actualLen, int)):
-        raise InputTypeError("Invalid type: int required")
-    if not expectedLen == actualLen:
-        raise ParamError("Invalid number of parameters")
-    
-    #success
-    return None
-
 

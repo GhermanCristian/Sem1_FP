@@ -1,5 +1,5 @@
 '''
-hard-coded (and valid) lists of students
+ hard-coded (and valid) lists of students
 '''
 
 from interact import setStudentGrades

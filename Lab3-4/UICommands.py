@@ -5,9 +5,8 @@ The commands which are strictly UI
 from UIFunctions import printStudentList, printStudentByCriteria
 from nonUIFunctions import getAverage, getMinimum, filterProperty,\
     sortStudentGradesAVG, sortStudentGradesPx
-from validators import isValidKeyword, getValidComparator, getValidNumber, getValidProblem,\
-    isValidParamLen, getValidPosition
-from customExceptions import ParamError, RangeError
+from validators import getValidComparator, getValidNumber, getValidProblem, getValidPosition
+from customExceptions import RangeError
 
 def listStudents(studentList, paramList):
     '''
@@ -21,23 +20,10 @@ def listStudents(studentList, paramList):
     '''
     l = len(paramList)
     
-    try:
-        if l > 2:
-            raise ParamError("Invalid number of parameters in \"list\"")
-    
-    except ParamError:
-        return
-    
     if l == 0:
         printStudentList(studentList)
             
     elif l == 1:
-        try:
-            isValidKeyword("sorted", paramList[0])
-        
-        except:
-            return 
-        
         sortedList = sortStudentGradesAVG(studentList)
         printStudentByCriteria(studentList, sortedList)
         
@@ -49,7 +35,7 @@ def listStudents(studentList, paramList):
         except:
             return
 
-        printStudentList(filterProperty(sign, score, studentList))
+        printStudentByCriteria(studentList, filterProperty(sign, score, studentList))
 
 def average(studentList, paramList):
     '''
@@ -60,12 +46,12 @@ def average(studentList, paramList):
             - startPos
             - "to" keyword
             - endPos
+    @return:
+        - None
     '''
     try:
-        isValidParamLen(3, len(paramList))
         startPos = getValidPosition(paramList[0], studentList)
         endPos = getValidPosition(paramList[2], studentList)
-        isValidKeyword("to", paramList[1])
         
         if startPos > endPos:
             raise RangeError("Start position is larger than the end position")
@@ -84,12 +70,12 @@ def minimumScore(studentList, paramList):
             - startPos
             - "to" keyword
             - endPos
+    @return:
+        - None
     '''
     try:
-        isValidParamLen(3, len(paramList))
         startPos = getValidPosition(paramList[0], studentList)
         endPos = getValidPosition(paramList[2], studentList)
-        isValidKeyword("to", paramList[1])
         
         if startPos > endPos:
             raise RangeError("Start position is larger than the end position")
@@ -110,13 +96,6 @@ def topStudent(studentList, paramList):
         - None
     '''
     l = len(paramList)
-    
-    try:
-        if l == 0 or l > 2:
-            raise ParamError("Invalid number of parameters in \"topStudent\"")
-        
-    except:
-        return
     
     if l == 1:
         try:

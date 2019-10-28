@@ -1,5 +1,6 @@
 '''
-A student is represented in memory as a tuple (P1, P2, P3)
+ Getters and setters
+ A student is represented in memory as a tuple (P1, P2, P3)
 '''
 
 #getters

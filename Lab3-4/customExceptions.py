@@ -22,13 +22,6 @@ class InputTypeError(Error):
     User-defined error; occurs when the type of the input value is invalid
     '''
     pass
-        
-class ParamError(Error):
-    '''
-    User-defined error; occurs when a function's parameters are invalid
-    (e.g. incorrect number of parameters)
-    '''
-    pass
 
 class EmptyPositionError(Error):
     '''
