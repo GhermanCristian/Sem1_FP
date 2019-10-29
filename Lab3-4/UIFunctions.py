@@ -122,6 +122,10 @@ def printStudentByCriteria(studentList, sortedList, count = -1):
         - sortedList = list of students, sorted on a given criterium
         - count = nr of students to be printed
     '''
+    if len(sortedList) == 0:
+        print ("List is empty")
+        return 
+    
     if count != -1:
         sortedList = sortedList[: count]
     

@@ -19,7 +19,7 @@ def addUI(studentList, paramList):
     @return:
         - None
     '''
-    student = createStudent(paramList[0], paramList[1], paramList[2]) #if invalid raises exception
+    student = createStudent(paramList[0], paramList[1], paramList[2])
     add(studentList, student)
     
 def insertUI(studentList, paramList):
