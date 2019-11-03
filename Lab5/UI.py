@@ -1,9 +1,9 @@
 from Complex import ComplexNumber
-from Services import Services
+from Services import Services, generateList
 
 class UI:    
     def __init__(self):
-        self.numberList = []
+        self.numberList = generateList(10)
         self.historyStack = []
     
     def __readCommand(self):
@@ -201,7 +201,6 @@ class UI:
             - None
         '''
         undoObj = Services()
-        print (self.historyStack)
         try:
             undoObj.undo(self.numberList, self.historyStack)
         except:

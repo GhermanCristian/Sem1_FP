@@ -97,3 +97,22 @@ class Services:
         else:
             raise ValueError("Invalid command ID")
 
+def generateList(n):
+    '''
+    Randomly generates a list of 'n' complex numbers
+    @param:
+        - n = integer
+    @return:
+        - numberList = randomly generated list of complex numbers
+    '''
+    import random
+    from Complex import ComplexNumber
+        
+    numberList = []
+        
+    for i in range(n):
+        numberList.append(ComplexNumber(random.randint(0, 100), random.randint(0, 100)))
+            
+    return numberList
+
+
