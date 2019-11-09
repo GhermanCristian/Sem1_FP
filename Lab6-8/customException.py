@@ -11,3 +11,13 @@ class RangeError(Error):
     '''
     '''
     pass
+
+class ArgError(Error):
+    '''
+    '''
+    pass
+
+class EmptyError(Error):
+    '''
+    '''
+    pass

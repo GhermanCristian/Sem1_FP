@@ -2,50 +2,12 @@
     The normal, menu-based UI
 '''
 
-from validator import Validator
-from customException import RangeError
-from service import Service
+from constants import MENU_TEXT
+from transition import Transition
+from customException import EmptyError
 
 class UI(object):
-    def __init__(self):
-        self.MENU_TEXT = """
-            Command list:
-            0. Exit
-            1. Add new client
-                - 
-            2. Remove client
-                -
-            3. Update client
-                - 
-            4. Add new movie
-                - 
-            5. Remove movie
-                -
-            6. Update movie
-                -  
-            7. List
-                - "client"
-                - "movie"
-            9. Rent a movie
-                - 
-            10. Return a movie
-                - 
-            11. *search
-            12. *statistics
-            . undo / redo
-        """
-        self.service = Service()
-        self.commandList = [
-            self.service.addClient, 
-            self.service.removeClient,
-            self.service.updateClient,
-            self.service.addMovie,
-            self.service.removeMovie,
-            self.service.updateMovie,
-            self.service.printAll
-        ]
-    
-    def printAll(self, objList):
+    def __printList(self, objList):
         '''
         Prints a list of objects to the console
         @param:
@@ -61,27 +23,39 @@ class UI(object):
                 print (i)
                 
     def start(self):
-        print (self.MENU_TEXT)
-        
-        valid = Validator()
+        print (MENU_TEXT)
+        trans = Transition()
         
         while True:
-            break
-            index = input("Please insert command:\n")
-            try:
-                index = valid.validateIndex(index, 0, 12)
-            except TypeError as err:
-                pass
-            except RangeError:
-                print(RangeError)
+            userInput = input("Please insert the commandID and the argument list: \n").strip()
             
-            if index == 0:
+            if userInput == "0":
                 print ("Program has ended")
-                return 
+                return
             
+            try:
+                if len(userInput) == 0:
+                    raise EmptyError("No input")
+                userInput = userInput.split()
+            except Exception as exc:
+                print (str(exc))
+                continue
             
+            '''
+            'result' can be a:
+                - string, if it's an error message
+                - list, if we deal with a command which requires printing
+                - None, otherwise (command which doesn't require printing)
+            '''
+            result = trans.call(userInput[0], userInput[1:])
             
-            self.commandList[index](paramList)
+            if result == None:
+                print ("command no print")
+                continue
+            elif isinstance(result, str):
+                print (result)
+            elif isinstance(result, list):
+                self.printList(result)
             
 
 
