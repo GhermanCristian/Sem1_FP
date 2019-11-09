@@ -1,13 +1,12 @@
 '''
     Class of validators
 '''
-from customException import RangeError, ArgError, EmptyError
+from customException import RangeError, ArgError, EmptyError, MatchError
 
 class Validator(object):
     def __init__(self, countClients, countMovies):
         self.clients = countClients
         self.movies = countMovies
-        print ("created new validator, with movies = " + str(self.movies))
     
     def validateIndex(self, index, low, high):
         '''
@@ -40,6 +39,7 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
+            - EmptyError, if the name is an empty string
         '''
         l = len(argList)
         if l is not 1:
@@ -68,6 +68,38 @@ class Validator(object):
         argList[0] = self.validateIndex(argList[0], 1, self.clients)
         
         return argList
+    
+    def valUpdateClient(self, argList):
+        '''
+        Validates input for updateClient
+        @param:
+            - argList = list of arguments, where:
+                [0] = ID = string
+                [1] = property = string
+                [2] = newValue = string
+        @return:
+            - argList, if valid
+        @raise:
+            - ArgError, if the argList is invalid
+            - TypeError, if ID is not an integer
+            - RangeError, if ID is out of range
+            - EmptyError, if the property or the new value are empty strings
+        '''
+        l = len(argList)
+        if l is not 3:
+            raise ArgError("Invalid number of arguments")
+        
+        argList[0] = self.validateIndex(argList[0], 1, self.clients)
+        
+        if len(argList[1]) == 0:
+            raise EmptyError("Property cannot be empty")
+        if argList[1] not in ["name",]:
+            raise MatchError("Input cannot match any property")  
+        
+        if len(argList[2]) == 0:
+            raise EmptyError("New value cannot be empty") 
+        
+        return argList       
          
     def valAddMovie(self, argList):
         '''
@@ -114,4 +146,64 @@ class Validator(object):
         argList[0] = self.validateIndex(argList[0], 1, self.movies)
         
         return argList
+
+    def valUpdateMovie(self, argList):
+        '''
+        Validates input for updateMovie
+        @param:
+            - argList = list of arguments, where:
+                [0] = ID = string
+                [1] = property = string
+                [2] = newValue = string
+        @return:
+            - argList, if valid
+        @raise:
+            - ArgError, if the argList is invalid
+            - TypeError, if ID is not an integer
+            - RangeError, if ID is out of range
+            - MatchError, if the input doesn't match any properties
+            - EmptyError, if the property or the new value are empty strings
+        '''
+        l = len(argList)
+        if l is not 3:
+            raise ArgError("Invalid number of arguments")
+        
+        argList[0] = self.validateIndex(argList[0], 1, self.movies)
+        
+        if len(argList[1]) == 0:
+            raise EmptyError("Property cannot be empty")
+        if argList[1] not in ["title", "description", "genre"]:
+            raise MatchError("Input cannot match any property")  
+        
+        if len(argList[2]) == 0:
+            raise EmptyError("New value cannot be empty") 
+        
+        return argList 
+    
+    def valPrintList(self, argList):
+        '''
+        Validates input for getList
+        @param:
+            - argList = list of arguments, where:
+                [0] = type of list = string
+        @return:
+            - argList, if valid
+        @raise:
+            - ArgError, if the argList is invalid
+            - MatchError, if the input doesn't match either "client" or "movie"
+            - EmptyError, if the given input is an empty string
+        '''
+        l = len(argList)
+        if l is not 1:
+            raise ArgError("Invalid number of arguments")
+        
+        if len(argList[0]) == 0:
+            raise EmptyError("Input cannot be empty")
+        
+        if argList[0] not in ["client", "movie"]:
+            raise MatchError("Input doesn't match any type")
+        
+        return argList
+
+
 

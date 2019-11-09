@@ -13,11 +13,11 @@ class Transition(object):
         self.functionList = [
             self.function.addClient,
             self.function.removeClient,
-            #self.function.updateClient,
+            self.function.updateClient,
             self.function.addMovie,
             self.function.removeMovie,
-            #self.function.updateMovie
-            #self.function.empty,                #used for printList
+            self.function.updateMovie,
+            self.function.getList,
         ] #TO BE EXTENDED
     
     def __initValidator(self):
@@ -28,11 +28,11 @@ class Transition(object):
         self.validatorList = [
             self.validate.valAddClient,
             self.validate.valRemClient,
-            #self.validate.valUpdateClient,
+            self.validate.valUpdateClient,
             self.validate.valAddMovie,
             self.validate.valRemMovie,
-            #self.validate.valUpdateMovie,
-            #self.validate.valPrintList,
+            self.validate.valUpdateMovie,
+            self.validate.valPrintList,
         ] #TO BE EXTENDED
     
     def call(self, commandID, argList):

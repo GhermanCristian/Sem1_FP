@@ -21,3 +21,8 @@ class EmptyError(Error):
     '''
     '''
     pass
+
+class MatchError(Error):
+    '''
+    '''
+    pass

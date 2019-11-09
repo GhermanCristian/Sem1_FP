@@ -50,12 +50,11 @@ class UI(object):
             result = trans.call(userInput[0], userInput[1:])
             
             if result == None:
-                print ("command no print")
                 continue
             elif isinstance(result, str):
                 print (result)
             elif isinstance(result, list):
-                self.printList(result)
+                self.__printList(result)
             
 
 

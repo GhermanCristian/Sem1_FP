@@ -1,1 +1,4 @@
 - check that I don't remove clients that are already removed
+- verify documentation
+- split values by commas, so that I can use names with multiple words
+- update may not work
