@@ -1,4 +1,9 @@
 - check that I don't remove clients that are already removed
 - verify documentation
 - split values by commas, so that I can use names with multiple words
-- update may not work
+- generate lists of clients and movies using a special class 
+
+====================================================
+
+- a client should be able to rent more than 1 movie at a time;
+i should append a list of crtRented movies to a client

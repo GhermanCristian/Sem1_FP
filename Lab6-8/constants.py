@@ -20,13 +20,13 @@ MENU_TEXT = """
     7. Print list
         - "client"
         - "movie"
-    9. Rent a movie
-        - 
-    10. Return a movie
-        - 
-    11. *search
-    12. *statistics
-    13. undo / redo
+    8. Rent a movie
+        - clientID movieID dueDate
+    9. Return a movie
+        - clientID movieID
+    10. *search
+    11. *statistics
+    12. undo / redo
 """
 
 COMMAND_COUNT = 14

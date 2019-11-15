@@ -3,7 +3,8 @@
     All these methods should have valid input
 '''
 
-from domain import Movie, Client
+from domain import Movie, Client, Rental
+from datetime import datetime
 
 class Service(object):    
     def __init__(self):
@@ -11,6 +12,7 @@ class Service(object):
         self.__clientID = 0
         self.movieList = []
         self.__movieID = 0
+        self.__rentID = 0
         
     def countClients(self):
         return self.__clientID
@@ -86,10 +88,10 @@ class Service(object):
         '''
         idx = self.__findClientByID(argList[0])
         if idx is not None:
-            '''prop = {
+            prop = {
                     "name": self.clientList[idx].name
                    }
-            prop[argList[1]] = argList[2]'''
+            prop[argList[1]] = argList[2]
             if argList[1] == "name":
                 
                 self.clientList[idx].name = argList[2]
@@ -136,11 +138,11 @@ class Service(object):
         '''
         idx = self.__findMovieByID(argList[0])
         if idx is not None:
-            prop = {
+            '''prop = {
                     "title": self.movieList[idx].title,
                     "description": self.movieList[idx].description,
                     "genre": self.movieList[idx].genre
-                   }
+                   }'''
             prop[argList[1]] = argList[2]
 
     def getList(self, argList):
@@ -156,4 +158,45 @@ class Service(object):
         if argList[0] == "client":
             return self.clientList
         return self.movieList
+
+    def rentMovie(self, argList):
+        '''
+        Lets the user rent a movie (if available), starting from the current day
+        @param:
+            - argList = list of arguments, where:
+                [0] = clientID = integer (valid)
+                [1] = movieID = integer (valid)
+                [2] = dueDate = date (valid)
+        @return:
+            - None
+        '''
+        clientIDX = self.__findClientByID(argList[0])
+        movieIDX = self.__findMovieByID(argList[1])
+        
+        if clientIDX and movieIDX:
+            if self.clientList[clientIDX].canRent() and self.movieList[movieIDX].isRented == False:
+                self.__rentID += 1
+                rentalObj = Rental(self.__rentID, clientIDX, movieIDX, datetime.today(), argList[2], None)
+                self.clientList[clientIDX].addrental(rentalObj)
+                self.movieList[movieIDX].isRented = True
+                
+    def returnMovie(self, argList):
+        '''
+        Lets the user return a movie 
+        @param:
+            - argList = list of arguments, where:
+                [0] = clientID = integer (valid)
+                [1] = movieID = integer (valid)
+        @return:
+            - None
+        '''
+        clientIDX = self.__findClientByID(argList[0])
+        movieIDX = self.__findMovieByID(argList[1])
+        
+        if clientIDX and movieIDX:
+            if self.movieList[movieIDX].isRented == True:
+                self.clientList[clientIDX].returnMovie(self.movieList[movieIDX])
+                self.movieList[movieIDX].isRented = True
+
+
 

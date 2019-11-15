@@ -18,6 +18,7 @@ class Transition(object):
             self.function.removeMovie,
             self.function.updateMovie,
             self.function.getList,
+            self.function.rentMovie
         ] #TO BE EXTENDED
     
     def __initValidator(self):
@@ -33,6 +34,7 @@ class Transition(object):
             self.validate.valRemMovie,
             self.validate.valUpdateMovie,
             self.validate.valPrintList,
+            self.validate.valRentMovie
         ] #TO BE EXTENDED
     
     def call(self, commandID, argList):

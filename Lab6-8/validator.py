@@ -2,6 +2,7 @@
     Class of validators
 '''
 from customException import RangeError, ArgError, EmptyError, MatchError
+from datetime import datetime
 
 class Validator(object):
     def __init__(self, countClients, countMovies):
@@ -29,6 +30,27 @@ class Validator(object):
         
         return index
     
+    def validateDate(self, dateInput):
+        '''
+        Validates a date
+        @param:
+            - dateInput = string, represents a date, in the form "day-month-year", all numbers
+        @return:
+            - dateInput as a Datetime type, if valid
+        @raise:
+            - EmptyError, if dateInput is an empty string
+            - ValueError, if dateInput is not a valid date
+        '''
+        l = len(dateInput)
+        
+        if l == 0:
+            raise EmptyError("Date cannot be empty")
+        
+        dateInput = datetime.strptime(dateInput, "%d-%m-%Y")
+        
+        return dateInput
+        
+    
     def valAddClient(self, argList):
         '''
         Validates input for addClient
@@ -44,8 +66,8 @@ class Validator(object):
         l = len(argList)
         if l is not 1:
             raise ArgError("Invalid number of arguments")
-        if len(argList[0]) == 0:
-            raise EmptyError("Name cannot be empty")
+        if len(argList[0]) < 3:
+            raise EmptyError("Name is too short")
         
         return argList
     
@@ -96,8 +118,8 @@ class Validator(object):
         if argList[1] not in ["name",]:
             raise MatchError("Input cannot match any property")  
         
-        if len(argList[2]) == 0:
-            raise EmptyError("New value cannot be empty") 
+        if len(argList[2]) < 3:
+            raise EmptyError("Name is too short")
         
         return argList       
          
@@ -116,14 +138,13 @@ class Validator(object):
         '''
         l = len(argList)
         if l is not 3:
-            print("hello wtf")
             raise ArgError("Invalid number of arguments")
-        if len(argList[0]) == 0:
-            raise EmptyError("Title cannot be empty")
-        if len(argList[1]) == 0:
-            raise EmptyError("Description cannot be empty")
-        if len(argList[2]) == 0:
-            raise EmptyError("Genre cannot be empty")
+        if len(argList[0]) < 3:
+            raise EmptyError("Title is too short")
+        if len(argList[1]) < 3:
+            raise EmptyError("Description is too short")
+        if len(argList[2]) < 3:
+            raise EmptyError("Genre is too short")
         
         return argList
 
@@ -173,10 +194,10 @@ class Validator(object):
         if len(argList[1]) == 0:
             raise EmptyError("Property cannot be empty")
         if argList[1] not in ["title", "description", "genre"]:
-            raise MatchError("Input cannot match any property")  
+            raise MatchError("Input doesn't match any property")  
         
-        if len(argList[2]) == 0:
-            raise EmptyError("New value cannot be empty") 
+        if len(argList[2]) < 3:
+            raise EmptyError("New value is too short") 
         
         return argList 
     
@@ -205,5 +226,47 @@ class Validator(object):
         
         return argList
 
+    def valRentMovie(self, argList):
+        '''
+        Validates input for rentMovie
+        @param:
+            - argList = list of arguments, where:
+                [0] = clientID = string
+                [1] = movieID = string
+                [2] = dueDate = string
+        @return:
+            - argList, if valid
+        @raise:
+            - ArgError, if the argList is invalid
+            - TypeError, if any of the IDs are not integers
+            - RangeError, if any of the IDs are out of range
+        '''
+        l = len(argList)
+        
+        if l is not 3:
+            raise ArgError("Invalid number of arguments")
+        
+        argList[0] = self.validateIndex(argList[0], 1, self.clients)
+        argList[1] = self.validateIndex(argList[1], 1, self.movies)
+        argList[2] = self.validateDate(argList[2])
+        
+        return argList
+        
+    def valReturnMovie(self, argList):
+        '''
+        Validates input for returnMovie
+        @param:
+            - argList = list of arguments, where:
+        @return:
+        @raise:
+        '''
+        
+        return argList
 
+'''
+x = Validator(1,2)
+print(x.validateDate("15-12-2020"))
+y = datetime(2019, 12, 15)
+print (x.validateDate("15-12-2020") > y)
+'''
 
