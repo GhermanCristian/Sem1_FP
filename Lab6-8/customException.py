@@ -26,3 +26,14 @@ class MatchError(Error):
     '''
     '''
     pass
+
+class DateError(Error):
+    '''
+    '''
+    pass
+
+class RentError(Error):
+    '''
+    '''
+    pass
+

@@ -6,10 +6,23 @@
 from validator import Validator
 from service import Service
 from constants import COMMAND_COUNT
+from clientRepo import ClientRepo
+from movieRepo import MovieRepo
+from generateList import ListGenerator
 
 class Transition(object):
     def __init__(self):
-        self.function = Service()
+        '''
+        #This starts the program from scratch
+        self.clientList = ClientRepo()
+        self.movieList = MovieRepo()
+        '''
+        
+        #This starts the program with procedurally generated lists
+        self.clientList = ListGenerator.chooseClients()
+        self.movieList = ListGenerator.chooseMovies()
+        
+        self.function = Service(self.clientList, self.movieList)
         self.functionList = [
             self.function.addClient,
             self.function.removeClient,
@@ -18,14 +31,11 @@ class Transition(object):
             self.function.removeMovie,
             self.function.updateMovie,
             self.function.getList,
-            self.function.rentMovie
+            self.function.rentMovie,
+            self.function.returnMovie
         ] #TO BE EXTENDED
-    
-    def __initValidator(self):
-        '''
-        Initialises the validator object and the list of all its methods
-        '''
-        self.validate = Validator(self.function.countClients(), self.function.countMovies())
+        
+        self.validate = Validator(self.clientList, self.movieList)
         self.validatorList = [
             self.validate.valAddClient,
             self.validate.valRemClient,
@@ -34,7 +44,8 @@ class Transition(object):
             self.validate.valRemMovie,
             self.validate.valUpdateMovie,
             self.validate.valPrintList,
-            self.validate.valRentMovie
+            self.validate.valRentMovie,
+            self.validate.valReturnMovie
         ] #TO BE EXTENDED
     
     def call(self, commandID, argList):
@@ -48,9 +59,6 @@ class Transition(object):
             - None, if the command doesn't require any printing
             - list to be printed, otherwise
         '''
-        # I want the validator to be initialised every time I use the 'call' function
-        # so that it is initialised with the latest parameters
-        self.__initValidator()
         
         try:
             commandID = self.validate.validateIndex(commandID, 1, COMMAND_COUNT)

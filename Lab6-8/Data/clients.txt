@@ -1,0 +1,14 @@
+; List of clients from which the program will choose
+; Each client has 1 line
+;	- Name
+
+John
+Mike
+Nike
+Mihai Creanga
+Ion Eminescu
+Ian
+Azteca
+Abi
+Dragonu
+Chimie

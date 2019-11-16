@@ -30,3 +30,6 @@ MENU_TEXT = """
 """
 
 COMMAND_COUNT = 14
+
+MOVIE_FILE = "Data//Movies.txt"
+CLIENT_FILE = "Data//Clients.txt"

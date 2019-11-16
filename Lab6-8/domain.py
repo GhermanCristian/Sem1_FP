@@ -2,8 +2,6 @@
     Contains the Movie, Client, Rental types
 '''
 
-from datetime import date
-
 class Movie(object):
     def __init__(self, ID, title, description, genre):
         self.__daysRented = 0
@@ -15,7 +13,7 @@ class Movie(object):
         #rentMovie will set this to True, returnMovie will set it back to False
         
     def __str__(self):
-        return str(self.__ID) + ". " + str(self.__title) + " - " + str(self.__genre) + "\n" + str(self.__description) 
+        return (("ID: %d\nTitle: %s\nGenre: %s\nDescription: %s\n") % (self.ID, self.title, self.genre, self.description))
       
     # i should overload this to also work with an additional parameter (same for client)
     # maybe use a default argument = None ? 
@@ -66,13 +64,10 @@ class Client(object):
         self.__daysRented = 0
         self.__ID = ID
         self.__name = name
-        self.__rentals = [] #list of Rental objects
+        self.rentals = [] #list of Rental objects
         
-    '''
-    This function will print the ID of a client, not its place in the current list
-    '''
     def __str__(self):
-        return str(self.__ID) + ". " + str(self.__name)
+        return ("ID: %d\nName: %s\n") % (self.ID, self.name)
     
     @property
     def ID(self):
@@ -85,44 +80,34 @@ class Client(object):
     @name.setter
     def name(self, newName):
         self.__name = newName
-        
-    def canRent(self):
-        '''
-        Checks if the client can rent a movie
-        @param:
-            - None
-        @return:
-            - True, if the client can rent movies
-            - False, otherwise
-        '''
-        crtDate = date.today()
-        for rental in self.__rentedMovies:
-            if rental.dueDate > crtDate:
-                return False
-            
-        return True
     
     def addRental(self, rentalObj):
         '''
         Adds a new movie to the rentedMovies list
         @param:
-            - movie, of type Movie
+            - rentalObj, of type Rental
         @return:
             - None
         '''
-        self.__rentals.append(rentalObj)
+        self.rentals.append(rentalObj)
+        print ("This client has rented the following movies:")
+        for i in self.rentals:
+            print (i.movieID)
+            print ("from: " + str(i.rentDate) + " to: " + str(i.dueDate))
         
-    def returnMovie(self, movie):
+    def returnMovie(self, idx):
         '''
         Removes a movie from the rentedMovies list
         @param:
-            - movie, of type Movie
+            - idx = integer, valid = index of the rental in the client's rentalList
         @return:
             - None
         '''
-        for i in range(len(self.__rentedMovies)):
-            if movie == self.__rentedMovies[i]:
-                self.__rentedMovies.pop(i)
+        self.rentals.pop(idx)
+        print ("This client has rented the following movies:")
+        for i in self.rentals:
+            print (i.movieID)
+            print ("from: " + str(i.rentDate) + " to: " + str(i.dueDate))
 
 class Rental(object):
     '''
@@ -143,4 +128,8 @@ class Rental(object):
     @property
     def dueDate(self):
         return self.__dueDate
+    
+    @dueDate.setter
+    def dueDate(self, dueDate):
+        self.__dueDate = dueDate
 
