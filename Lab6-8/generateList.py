@@ -1,4 +1,4 @@
-from constants import CLIENT_FILE, MOVIE_FILE
+from constants import CLIENT_FILE, MOVIE_FILE, CLIENT_COUNT, MOVIE_COUNT
 import os
 import random
 from domain import Client, Movie
@@ -8,7 +8,10 @@ from movieRepo import MovieRepo
 '''
 I will assume that all the input is valid, and that there's no need to verify it
 '''
-class ListGenerator(object):
+class ClientListGenerator(object):
+    def __init__(self):
+        self.count = CLIENT_COUNT
+    
     def __getClients(self):
         '''
         Creates a clientList with the data from CLIENT_FILE
@@ -19,7 +22,7 @@ class ListGenerator(object):
         '''
         clientList = []
         
-        filePath = os.path.join(os.getcwd(), CLIENT_FILE)
+        filePath = os.path.join(os.path.dirname(os.path.abspath(__file__)), CLIENT_FILE)
         clientFile = open(filePath, "r")
     
         while True:
@@ -42,16 +45,21 @@ class ListGenerator(object):
         return clientList
     
     def chooseClients(self):
-        clientList = self.getClients()
+        clientList = self.__getClients()
         random.shuffle(clientList)
         
         clientRepo = ClientRepo()
-        for i in range(10):
+        for i in range(self.count):
             clientRepo.increaseID()
             clientRepo + Client(clientRepo.ID, clientList[i])
             
         return clientRepo
+
     
+class MovieListGenerator(object):
+    def __init__(self):
+        self.count = MOVIE_COUNT
+        
     def __getMovies(self):
         '''
         Creates a movieList with the data from MOVIE_FILE
@@ -62,7 +70,7 @@ class ListGenerator(object):
         '''
         movieList = []
         
-        filePath = os.path.join(os.getcwd(), MOVIE_FILE)
+        filePath = os.path.join(os.path.dirname(os.path.abspath(__file__)), MOVIE_FILE)
         movieFile = open(filePath, "r")
     
         while True:
@@ -94,11 +102,11 @@ class ListGenerator(object):
         @return:
             - movieList = object of type MovieRepo
         '''
-        movieList = self.getMovies()
+        movieList = self.__getMovies()
         random.shuffle(movieList)
         
         movieRepo = MovieRepo()
-        for i in range(10):
+        for i in range(self.count):
             movieRepo.increaseID()
             movieRepo + Movie(movieRepo.ID, movieList[i][0], movieList[i][1], movieList[i][2])
             

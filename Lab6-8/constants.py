@@ -31,5 +31,8 @@ MENU_TEXT = """
 
 COMMAND_COUNT = 14
 
-MOVIE_FILE = "Data//Movies.txt"
-CLIENT_FILE = "Data//Clients.txt"
+MOVIE_FILE = "Data\\Movies.txt"
+CLIENT_FILE = "Data\\Clients.txt"
+
+CLIENT_COUNT = 10
+MOVIE_COUNT = 10

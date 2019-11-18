@@ -14,6 +14,9 @@ class Movie(object):
         
     def __str__(self):
         return (("ID: %d\nTitle: %s\nGenre: %s\nDescription: %s\n") % (self.ID, self.title, self.genre, self.description))
+    
+    def __eq__(self, newMovie):
+        return self.ID == newMovie.ID and self.title == newMovie.title and self.description == newMovie.description and self.genre == newMovie.genre
       
     # i should overload this to also work with an additional parameter (same for client)
     # maybe use a default argument = None ? 
@@ -68,6 +71,9 @@ class Client(object):
         
     def __str__(self):
         return ("ID: %d\nName: %s\n") % (self.ID, self.name)
+    
+    def __eq__(self, newClient):
+        return self.ID == newClient.ID and self.name == newClient.name
     
     @property
     def ID(self):

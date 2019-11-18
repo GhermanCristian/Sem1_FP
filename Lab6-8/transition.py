@@ -8,7 +8,7 @@ from service import Service
 from constants import COMMAND_COUNT
 from clientRepo import ClientRepo
 from movieRepo import MovieRepo
-from generateList import ListGenerator
+from generateList import ClientListGenerator, MovieListGenerator
 
 class Transition(object):
     def __init__(self):
@@ -19,8 +19,8 @@ class Transition(object):
         '''
         
         #This starts the program with procedurally generated lists
-        self.clientList = ListGenerator.chooseClients()
-        self.movieList = ListGenerator.chooseMovies()
+        self.clientList = ClientListGenerator().chooseClients()
+        self.movieList = MovieListGenerator().chooseMovies()
         
         self.function = Service(self.clientList, self.movieList)
         self.functionList = [

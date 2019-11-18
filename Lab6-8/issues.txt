@@ -1,4 +1,4 @@
 - verify documentation
 - split values by commas, so that I can use names with multiple words
-- testing
+- incorporate increaseID in add for both clients and movies
 ====================================================
