@@ -14,7 +14,7 @@ class Service(object):
         
     def addClient(self, argList):
         '''
-        Adds client to clientList
+        Adds a client to clientList
         @param:
             - argList = list of arguments, where:
                 [0] = name = string (valid), representing the client's name

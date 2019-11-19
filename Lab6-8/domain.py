@@ -96,10 +96,10 @@ class Client(object):
             - None
         '''
         self.rentals.append(rentalObj)
-        print ("This client has rented the following movies:")
+        '''print ("This client has rented the following movies:")
         for i in self.rentals:
             print (i.movieID)
-            print ("from: " + str(i.rentDate) + " to: " + str(i.dueDate))
+            print ("from: " + str(i.rentDate) + " to: " + str(i.dueDate))'''
         
     def returnMovie(self, idx):
         '''
@@ -110,10 +110,10 @@ class Client(object):
             - None
         '''
         self.rentals.pop(idx)
-        print ("This client has rented the following movies:")
+        '''print ("This client has rented the following movies:")
         for i in self.rentals:
             print (i.movieID)
-            print ("from: " + str(i.rentDate) + " to: " + str(i.dueDate))
+            print ("from: " + str(i.rentDate) + " to: " + str(i.dueDate))'''
 
 class Rental(object):
     '''
