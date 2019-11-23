@@ -32,7 +32,9 @@ class Transition(object):
             self.function.updateMovie,
             self.function.getList,
             self.function.rentMovie,
-            self.function.returnMovie
+            self.function.returnMovie,
+            self.function.searchClients,
+            self.function.searchMovies
         ] #TO BE EXTENDED
         
         self.validate = Validator(self.clientList, self.movieList, self.rentalList)
@@ -45,7 +47,9 @@ class Transition(object):
             self.validate.valUpdateMovie,
             self.validate.valPrintList,
             self.validate.valRentMovie,
-            self.validate.valReturnMovie
+            self.validate.valReturnMovie,
+            self.validate.valSearch,
+            self.validate.valSearch
         ] #TO BE EXTENDED
     
     def call(self, commandID, argList):

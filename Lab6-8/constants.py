@@ -24,7 +24,8 @@ MENU_TEXT = """
         - clientID movieID rentDate dueDate
     9. Return a movie
         - clientID movieID
-    10. *search
+    10. Search for clients
+    11. Search for movies
     11. *statistics
     12. undo / redo
 """
@@ -36,3 +37,4 @@ CLIENT_FILE = "Data\\Clients.txt"
 
 CLIENT_COUNT = 10
 MOVIE_COUNT = 10
+

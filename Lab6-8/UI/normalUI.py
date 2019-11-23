@@ -16,11 +16,16 @@ class UI(object):
         @return:
             - None
         '''        
+        print ("got to printlist")
         if len(objList) == 0:
             print ("List is empty")
         
-        else:
+        elif isinstance(objList, Repository):
             print (objList)
+            
+        else:
+            for i in objList:
+                print (i)
                 
     def start(self):
         print (MENU_TEXT)
@@ -53,7 +58,7 @@ class UI(object):
                 continue
             elif isinstance(result, str):
                 print (result)
-            elif isinstance(result, Repository) or isinstance(result, Repository):
+            elif isinstance(result, Repository) or isinstance(result, Repository) or isinstance(result, list):
                 self.__printList(result)
             
 

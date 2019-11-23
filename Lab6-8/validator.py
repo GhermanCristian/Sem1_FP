@@ -334,6 +334,41 @@ class Validator(object):
         
         return argList
 
+    def valSearch(self, argList):
+        '''
+        Validates input for searchClient and searchMovie
+        @param:
+            - argList = list of arguments, where:
+                [0] = subStr = string
+        @return:
+            - argList, if valid
+        @raise:
+            - holy shit
+        '''
+        l = len(argList)
+        
+        if l is not 1:
+            raise ArgError("Invalid number of arguments")
+        
+        aux = ""
+        
+        try:
+            aux = self.validateIndex(argList[0], 1, self.clients.ID)
+        except:
+            pass
+        
+        if isinstance(aux, int):
+            argList[0] = aux
+            argList.append(True)
+            return argList
+        
+        if len(argList[0]) < 3:
+            raise EmptyError("Value is too short")
+        
+        argList.append(False)
+        return argList
+        
+
 '''x = Validator(1,2,3)
 print(x.validateDate("15-12-2020"))
 y = datetime(2019, 12, 15)

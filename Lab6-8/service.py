@@ -7,6 +7,7 @@ from Domain.client import Client
 from Domain.movie import Movie
 from Domain.rental import Rental
 from datetime import datetime
+from customException import EmptyError
 
 class Service(object):    
     def __init__(self, clients, movies, rentals):
@@ -66,8 +67,6 @@ class Service(object):
         '''
         self.movieList.increaseID()
         self.movieList + Movie(self.movieList.ID, argList[0], argList[1], argList[2])
-        
-        return None
     
     def removeMovie(self, argList):
         '''
@@ -153,5 +152,65 @@ class Service(object):
         self.movieList[argList[1]].daysRented += nrOfDays
         self.clientList[argList[0]].daysRented += nrOfDays
 
-
+    def searchClients(self, argList):
+        '''
+        Searches for a string in the clientList
+        @param:
+            - argList = list of arguments, where:
+                [0] = subStr = string (valid)
+                [1] = isID = integer (valid)
+        @return:
+            - resultList = string
+        '''
+        self.clientList.setIgnoreFlag(True)
+        
+        if argList[1] == True:
+            for client in self.clientList:
+                if client.ID == argList[0]:
+                    self.clientList.setIgnoreFlag(False)
+                    return [str(client), ]
+            
+            self.clientList.setIgnoreFlag(False)
+            raise EmptyError("No client with this ID")
+        
+        argList[0] = argList[0].lower()
+        resultList = []
+        
+        for client in self.clientList:
+            if argList[0] in client.name.lower():
+                resultList.append(str(client))      
+                
+        self.clientList.setIgnoreFlag(False)
+        return resultList
+    
+    def searchMovies(self, argList):
+        '''
+        Searches for a string in the movieList
+        @param:
+            - argList = list of arguments, where:
+                [0] = subStr = string (valid)
+                [1] = isID = integer (valid)
+        @return:
+            - resultList = list
+        '''
+        self.movieList.setIgnoreFlag(True)
+        
+        if argList[1] == True:
+            for movie in self.movieList:
+                if movie.ID == argList[0]:
+                    self.movieList.setIgnoreFlag(False)
+                    return [str(movie), ]
+            
+            self.movieList.setIgnoreFlag(False)
+            raise EmptyError("No movie with this ID")
+        
+        argList[0] = argList[0].lower()
+        resultList = []
+        
+        for movie in self.movieList:
+            if argList[0] in movie.title.lower() or argList[0] in movie.description.lower() or argList[0] in movie.genre.lower():
+                resultList.append(str(movie))
+                
+        self.movieList.setIgnoreFlag(False)
+        return resultList
 
