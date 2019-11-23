@@ -6,7 +6,7 @@ class Client(object):
         self.__name = name
         
     def __str__(self):
-        return ("ID: %d\nName: %s\n\n") % (self.ID, self.name)
+        return ("ID: %d\nName: %s\n") % (self.ID, self.name)
     
     def __eq__(self, newClient):
         return self.ID == newClient.ID and self.name == newClient.name

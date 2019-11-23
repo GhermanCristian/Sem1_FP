@@ -168,7 +168,7 @@ class Service(object):
             for client in self.clientList:
                 if client.ID == argList[0]:
                     self.clientList.setIgnoreFlag(False)
-                    return [str(client), ]
+                    return [client, ]
             
             self.clientList.setIgnoreFlag(False)
             raise EmptyError("No client with this ID")
@@ -178,7 +178,7 @@ class Service(object):
         
         for client in self.clientList:
             if argList[0] in client.name.lower():
-                resultList.append(str(client))      
+                resultList.append(client)      
                 
         self.clientList.setIgnoreFlag(False)
         return resultList
@@ -199,7 +199,7 @@ class Service(object):
             for movie in self.movieList:
                 if movie.ID == argList[0]:
                     self.movieList.setIgnoreFlag(False)
-                    return [str(movie), ]
+                    return [movie, ]
             
             self.movieList.setIgnoreFlag(False)
             raise EmptyError("No movie with this ID")
@@ -209,8 +209,68 @@ class Service(object):
         
         for movie in self.movieList:
             if argList[0] in movie.title.lower() or argList[0] in movie.description.lower() or argList[0] in movie.genre.lower():
-                resultList.append(str(movie))
+                resultList.append(movie)
                 
         self.movieList.setIgnoreFlag(False)
         return resultList
+    
+    def __sortKeyMostRented(self, movie):
+        return movie.daysRented
+    
+    def mostActive(self, argList):
+        '''
+        Creates a list of the most active clients / most rented movies
+        @param:
+            - argList = list of arguments, where
+                [0] = either "client" or "movie"
+        @return:
+            - auxList = list of strings, if valid
+        '''
+        if argList[0] == "movie":
+            self.objList = self.movieList
+        else:
+            self.objList = self.clientList
+        
+        self.objList.setIgnoreFlag(True)
+        
+        auxList = []
+        
+        for obj in self.objList:
+            auxList.append(obj)
+        
+        self.objList.setIgnoreFlag(False)
+        
+        auxList.sort(key = self.__sortKeyMostRented, reverse = True)
+        return auxList
+    
+    def __sortKeyLateRentals(self, rental):
+        return rental.dueDate
+    
+    def lateRentals(self, argList):
+        '''
+        Creates a list of late rentals
+        @param:
+            - argList = list of arguments = empty
+        @return:
+            - lateRents = list of strings
+        '''
+        lateRents = []
+        
+        self.rentalList.setIgnoreFlag(True)
+        
+        for rent in self.rentalList:
+            if rent.dueDate < datetime.today():
+                lateRents.append(rent)
+                
+        self.rentalList.setIgnoreFlag(False)
+        
+        lateRents.sort(key = self.__sortKeyLateRentals, reverse = True)
+
+        return lateRents
+    
+    def undo(self, argList):
+        pass
+    
+    def redo(self, argList):
+        pass
 

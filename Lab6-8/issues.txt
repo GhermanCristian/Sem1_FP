@@ -1,6 +1,5 @@
 - verify documentation
 - split values by commas, so that I can use names with multiple words
 - incorporate increaseID in add for both clients and movies
-- in rentTesting, fix issue regarding date time
-- valSearch - separate clients from movies
+- valSearch - separate nr of clients from movies
 ====================================================

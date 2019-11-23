@@ -25,12 +25,17 @@ MENU_TEXT = """
     9. Return a movie
         - clientID movieID
     10. Search for clients
+        - ID or name
     11. Search for movies
-    11. *statistics
-    12. undo / redo
+        - ID, title, description or genre
+    12. Most active:
+        - "client" or "movie"
+    13. Late rentals
+    14. Undo
+    15. Redo
 """
 
-COMMAND_COUNT = 14
+COMMAND_COUNT = 15
 
 MOVIE_FILE = "Data\\Movies.txt"
 CLIENT_FILE = "Data\\Clients.txt"

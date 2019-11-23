@@ -346,12 +346,10 @@ class Validator(object):
             - holy shit
         '''
         l = len(argList)
-        
         if l is not 1:
             raise ArgError("Invalid number of arguments")
         
         aux = ""
-        
         try:
             aux = self.validateIndex(argList[0], 1, self.clients.ID)
         except:
@@ -368,6 +366,33 @@ class Validator(object):
         argList.append(False)
         return argList
         
+    def valMostActive(self, argList):
+        '''
+        Validates input for mostRented, mostRents, lateRentals
+        @param:
+            - argList = list of arguments, where:
+                [0] = either "movie" or "client"
+        @return:
+            - argList, if valid
+        @raise:
+            -
+        '''
+        if len(argList) is not 1:
+            raise ArgError("Invalid number of arguments")
+        
+        if argList[0] not in ["movie", "client"]:
+            raise MatchError("Input doesn't match any type")
+        
+        return argList
+    
+    def valLateRentals(self, argList):
+        pass
+    
+    def valUndo(self, argList):
+        pass
+    
+    def valRedo(self, argList):
+        pass
 
 '''x = Validator(1,2,3)
 print(x.validateDate("15-12-2020"))

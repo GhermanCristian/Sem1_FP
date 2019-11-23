@@ -11,12 +11,6 @@ from generateList import ClientListGenerator, MovieListGenerator
 
 class Transition(object):
     def __init__(self):
-        '''
-        #This starts the program from scratch
-        self.clientList = Repository()
-        self.movieList = Repository()
-        '''
-        
         #This starts the program with procedurally generated lists
         self.clientList = ClientListGenerator().chooseClients()
         self.movieList = MovieListGenerator().chooseMovies()
@@ -34,8 +28,12 @@ class Transition(object):
             self.function.rentMovie,
             self.function.returnMovie,
             self.function.searchClients,
-            self.function.searchMovies
-        ] #TO BE EXTENDED
+            self.function.searchMovies,
+            self.function.mostActive,
+            self.function.lateRentals,
+            self.function.undo,
+            self.function.redo
+        ]
         
         self.validate = Validator(self.clientList, self.movieList, self.rentalList)
         self.validatorList = [
@@ -49,8 +47,12 @@ class Transition(object):
             self.validate.valRentMovie,
             self.validate.valReturnMovie,
             self.validate.valSearch,
-            self.validate.valSearch
-        ] #TO BE EXTENDED
+            self.validate.valSearch,
+            self.validate.valMostActive,
+            self.validate.valLateRentals,
+            self.validate.valUndo,
+            self.validate.valRedo
+        ]
     
     def call(self, commandID, argList):
         '''

@@ -8,24 +8,39 @@ from customException import EmptyError
 from repository import Repository
 
 class UI(object):
-    def __printList(self, objList):
+    def __printData(self, entity, code):
         '''
         Prints a list of objects to the console
         @param:
-            - objList = list of either movies or clients
+            - objList = 
         @return:
             - None
         '''        
-        print ("got to printlist")
-        if len(objList) == 0:
-            print ("List is empty")
+        if len(entity) == 0:
+            print ("Entity is empty")
         
-        elif isinstance(objList, Repository):
-            print (objList)
+        #string 
+        if code == 1:
+            print (entity)
             
-        else:
-            for i in objList:
-                print (i)
+        #repository
+        elif code == 2:
+            print (entity)
+        
+        #mostActive list      
+        elif code == 3:
+            for i in entity:
+                print ("Days rented: " + str(i.daysRented)+ "\n" + str(i))
+        
+        #lateRentals list
+        elif code == 4:
+            for i in entity:
+                print ("Days past the due date: " + str(i.daysLate()) + "\n" + str(i))
+        
+        #normal list - search
+        elif code == 5:
+            for i in entity:
+                print (str(i))
                 
     def start(self):
         print (MENU_TEXT)
@@ -46,20 +61,22 @@ class UI(object):
                 print (str(exc))
                 continue
             
-            '''
-            'result' can be a:
-                - string, if it's an error message
-                - list, if we deal with a command which requires printing
-                - None, otherwise (command which doesn't require printing)
-            '''
             result = trans.call(userInput[0], userInput[1:])
             
             if result == None:
                 continue
-            elif isinstance(result, str):
-                print (result)
-            elif isinstance(result, Repository) or isinstance(result, Repository) or isinstance(result, list):
-                self.__printList(result)
+            else:
+                if isinstance(result, str):
+                    self.__printData(result, 1)
+                elif isinstance(result, Repository):
+                    self.__printData(result, 2)
+                elif isinstance(result, list):
+                    if userInput[0] == "10" or userInput[0] == "11":
+                        self.__printData(result, 5)
+                    elif userInput[0] == "12":
+                        self.__printData(result, 3)
+                    elif userInput[0] == "13":
+                        self.__printData(result, 4)
             
 
 

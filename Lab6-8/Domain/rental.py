@@ -1,3 +1,4 @@
+from datetime import datetime
 
 class Rental(object):
     def __init__(self, rentID, clientID, movieID, rentDate, dueDate, returnDate):
@@ -6,10 +7,10 @@ class Rental(object):
         self.__movieID = movieID
         self.__rentDate = rentDate
         self.__dueDate = dueDate
-        self.__returnDate = returnDate
+        self.__returnDate = returnDate      #useless
 
     def __str__(self):
-        return ("Client with ID = " + str(self.__clientID) + " has rented the movie with ID = " + str(self.__movieID) + " from " + str(self.__rentDate) + " to " + str(self.__dueDate) + "\n")
+        return ("ClientID = " + str(self.__clientID) + " movieID = " + str(self.__movieID) + " from " + str(self.__rentDate) + " to " + str(self.__dueDate) + "\n")
     
     @property
     def ID(self):
@@ -50,6 +51,9 @@ class Rental(object):
     @dueDate.setter
     def dueDate(self, dueDate):
         self.__dueDate = dueDate
+        
+    def daysLate(self):
+        return (datetime.today() - self.__dueDate).days
 
 
     

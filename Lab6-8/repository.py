@@ -48,7 +48,7 @@ class Repository(object):
     def __repr__(self):
         toPrint = ""
         for i in self.objList:
-            toPrint += str(i)
+            toPrint += str(i) + "\n"
         return toPrint
     
     def increaseID(self):

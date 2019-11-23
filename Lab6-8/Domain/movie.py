@@ -9,7 +9,7 @@ class Movie(object):
         self.__isRented = False
         
     def __str__(self):
-        return (("ID: %d\nTitle: %s\nGenre: %s\nDescription: %s\n\n") % (self.ID, self.title, self.genre, self.description))
+        return (("ID: %d\nTitle: %s\nGenre: %s\nDescription: %s\n") % (self.ID, self.title, self.genre, self.description))
     
     def __eq__(self, newMovie):
         return self.ID == newMovie.ID and self.title == newMovie.title and self.description == newMovie.description and self.genre == newMovie.genre
