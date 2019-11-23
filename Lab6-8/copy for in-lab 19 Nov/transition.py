@@ -6,25 +6,25 @@
 from validator import Validator
 from service import Service
 from constants import COMMAND_COUNT
-from repository import Repository
+from clientRepo import ClientRepo
+from movieRepo import MovieRepo
 from generateList import ClientListGenerator, MovieListGenerator
 
 class Transition(object):
     def __init__(self):
         '''
         #This starts the program from scratch
-        self.clientList = Repository()
-        self.movieList = Repository()
+        self.clientList = ClientRepo()
+        self.movieList = MovieRepo()
         '''
         
         #This starts the program with procedurally generated lists
         self.clientList = ClientListGenerator().chooseClients()
         self.movieList = MovieListGenerator().chooseMovies()
-        self.rentalList = Repository()
         
-        self.function = Service(self.clientList, self.movieList, self.rentalList)
+        self.function = Service(self.clientList, self.movieList)
         self.functionList = [
-            self.function.addClient,
+            self.function.addClient2,
             self.function.removeClient,
             self.function.updateClient,
             self.function.addMovie,
@@ -35,7 +35,7 @@ class Transition(object):
             self.function.returnMovie
         ] #TO BE EXTENDED
         
-        self.validate = Validator(self.clientList, self.movieList, self.rentalList)
+        self.validate = Validator(self.clientList, self.movieList)
         self.validatorList = [
             self.validate.valAddClient,
             self.validate.valRemClient,
@@ -74,11 +74,6 @@ class Transition(object):
         except Exception as exc:
             return str(exc)
         
-        try:
-            result = self.functionList[commandID](argList)
-        except Exception as exc:
-            return str(exc)
-        
-        return result
+        return self.functionList[commandID](argList)
 
 

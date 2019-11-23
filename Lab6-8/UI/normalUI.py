@@ -5,8 +5,7 @@
 from constants import MENU_TEXT
 from transition import Transition
 from customException import EmptyError
-from clientRepo import ClientRepo
-from movieRepo import MovieRepo
+from repository import Repository
 
 class UI(object):
     def __printList(self, objList):
@@ -19,10 +18,9 @@ class UI(object):
         '''        
         if len(objList) == 0:
             print ("List is empty")
-            
+        
         else:
-            for i in objList:
-                print (i)
+            print (objList)
                 
     def start(self):
         print (MENU_TEXT)
@@ -55,7 +53,7 @@ class UI(object):
                 continue
             elif isinstance(result, str):
                 print (result)
-            elif isinstance(result, ClientRepo) or isinstance(result, MovieRepo):
+            elif isinstance(result, Repository) or isinstance(result, Repository):
                 self.__printList(result)
             
 

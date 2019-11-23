@@ -1,12 +1,13 @@
 import unittest
 from generateList import ClientListGenerator
-from domain import Client
+from Domain.client import Client
 
 class TestClient(unittest.TestCase):
 
     def testAdd(self):
         self.clientRepo = ClientListGenerator().chooseClients()
         self.clientID = self.clientRepo.ID
+        self.clientRepo.setIgnoreFlag(True)
         
         self.clientRepo.increaseID()
         self.clientRepo + Client(self.clientRepo.ID, "Hamilton")
@@ -31,6 +32,7 @@ class TestClient(unittest.TestCase):
     def testRemove(self):
         self.clientRepo = ClientListGenerator().chooseClients()
         self.clientCount = self.clientRepo.ID       #initially the nr of clients = ID of the last client = .ID
+        self.clientRepo.setIgnoreFlag(True)
         
         del self.clientRepo[0]
         del self.clientRepo[0]
@@ -53,6 +55,7 @@ class TestClient(unittest.TestCase):
     def testUpdate(self):
         self.clientRepo = ClientListGenerator().chooseClients()
         self.clientID = self.clientRepo.ID       #initially the nr of clients = ID of the last client = .ID
+        self.clientRepo.setIgnoreFlag(True)
         
         self.clientRepo.increaseID()
         self.clientRepo[0] = Client(self.clientRepo.ID, "Albon")

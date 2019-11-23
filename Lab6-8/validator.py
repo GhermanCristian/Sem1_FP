@@ -1,22 +1,22 @@
 '''
     Class of validators
 '''
-from customException import RangeError, ArgError, EmptyError, MatchError, DateError,\
-    RentError
+from customException import RangeError, ArgError, EmptyError, MatchError, DateError, RentError
 from datetime import datetime
 
 class Validator(object):
-    def __init__(self, clientList, movieList):
+    def __init__(self, clientList, movieList, rentalList):
         self.clients = clientList
         self.movies = movieList
+        self.rentals = rentalList
     
     def validateIndex(self, index, low, high):
         '''
         Validates index
         @param:
-            - index = string(?), current index
-            - low = string, low part of the range
-            - high = string, high part of the range
+            - index - can be either string or integer = current index
+            - low = can be either string or integer = low part of the range
+            - high = can be either string or integer = high part of the range
         @return:
             - integer value of index, if valid
         @raise:
@@ -50,65 +50,41 @@ class Validator(object):
         
         dateInput = datetime.strptime(dateInput, "%d-%m-%Y")
 
-        return dateInput
+        return dateInput 
     
-    def __findClientByID(self, ID):
+    def canRent(self, ID):
         '''
-        Finds a client in clientList
-        @param:
-            - ID = integer (valid)
-        @return:
-            - index of the client in clientList, if it exists
-            - None, otherwise
-        '''
-        for idx in range(len(self.clients)):
-            if self.clients[idx].ID == ID:
-                return idx
-            
-        raise EmptyError("Cannot find a client with that ID. (Maybe it has been deleted ?)")
-    
-    def __findMovieByID(self, ID):
-        '''
-        Finds a movie in movieList
-        @param:
-            - ID = integer (valid)
-        @return:
-            - index of the movie in movieList, if it exists
-            - None, otherwise
-        '''
-        for idx in range(len(self.movies)):
-            if self.movies[idx].ID == ID:
-                return idx
-            
-        raise EmptyError("Cannot find a movie with that ID. (Maybe it has been deleted ?)")    
-    
-    def canRent(self, idx):
-        '''
-        Checks if a client at index idx can rent a movie
+        Checks if a client with ID can rent a movie
         @param:
         @return:
         @raise:
         '''
-        crtDate = datetime.today()
-        for rental in self.clients[idx].rentals:
-            if rental.dueDate < crtDate:
-                print (rental.dueDate)
-                print (crtDate)
-                raise RentError("Client cannot rent movies - needs to return overdue movies") 
+        self.rentals.setIgnoreFlag(True)
+        
+        for idx in range(len(self.rentals)):
+            if self.rentals[idx].clientID == ID and datetime.today() > self.rentals[idx].dueDate:
+                self.rentals.setIgnoreFlag(False)
+                raise RentError("Client cannot rent movies - it needs to return late ones")
+            
+        self.rentals.setIgnoreFlag(False)
 
-    def hasRented(self, clientIDX, movieID):
+    def hasRented(self, clientID, movieID):
         '''
         Checks if a client has rented a movie
         @param:
             - movieID = integer, valid
         @return:
-            - i = integer = index of the rental containing that movie in the client's rentalList
+            - None
         '''    
-        for i in range(len(self.clients[clientIDX].rentals)):
-            if self.clients[clientIDX].rentals[i].movieID == movieID:
-                return i
-            
-        raise RentError("This client has not rented this movie (or has already returned it)")
+        self.rentals.setIgnoreFlag(True)
+        
+        for idx in range(len(self.rentals)):
+            if self.rentals[idx].clientID == clientID and self.rentals[idx].movieID == movieID:
+                self.rentals.setIgnoreFlag(False)
+                return idx
+        
+        self.rentals.setIgnoreFlag(False)
+        raise RentError("This client has not rented this movie (maybe it has already returned it)")
     
     def valAddClient(self, argList):
         '''
@@ -150,7 +126,6 @@ class Validator(object):
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
-        argList[0] = self.__findClientByID(argList[0])
         
         return argList
     
@@ -175,10 +150,6 @@ class Validator(object):
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
-        #argList[3] will be the client's ID
-        argList.append(argList[0])
-        #argList[0] will be the client's index in clientList
-        argList[0] = self.__findClientByID(argList[0])
         
         if len(argList[1]) == 0:
             raise EmptyError("Property cannot be empty")
@@ -232,7 +203,6 @@ class Validator(object):
         if l is not 1:
             raise ArgError("Invalid number of arguments")
         argList[0] = self.validateIndex(argList[0], 1, self.movies.ID)
-        argList[0] = self.__findMovieByID(argList[0])
         
         return argList
 
@@ -258,8 +228,6 @@ class Validator(object):
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.movies.ID)
-        argList.append(argList[0])
-        argList[0] = self.__findMovieByID(argList[0])
         
         if len(argList[1]) == 0:
             raise EmptyError("Property cannot be empty")
@@ -303,7 +271,8 @@ class Validator(object):
             - argList = list of arguments, where:
                 [0] = clientID = string
                 [1] = movieID = string
-                [2] = dueDate = string
+                [2] = rentDate = string
+                [3] = dueDate = string
         @return:
             - argList, if valid
         @raise:
@@ -313,27 +282,25 @@ class Validator(object):
         '''
         l = len(argList)
         
-        if l is not 3:
+        if l is not 4:
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
-        argList.append(argList[0])
-        argList[0] = self.__findClientByID(argList[0])
 
         #check that the client can rent a movie
         self.canRent(argList[0])
         
         argList[1] = self.validateIndex(argList[1], 1, self.movies.ID)
-        argList.append(argList[1])
-        argList[1] = self.__findMovieByID(argList[1])
         
-        #check tht the movie can be rented
+        #check that the movie can be rented
         if self.movies[argList[1]].isRented == True:
             raise RentError("Movie is already rented by someone")
         
         argList[2] = self.validateDate(argList[2])
-        if argList[2] < datetime.today():
-            raise DateError("Due date cannot be in the past")
+        argList[3] = self.validateDate(argList[3])
+        
+        if argList[2] > argList[3]:
+            raise DateError("Due date cannot be before the rent date")
         
         return argList
         
@@ -357,23 +324,20 @@ class Validator(object):
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
-        argList[0] = self.__findClientByID(argList[0])
-        
         argList[1] = self.validateIndex(argList[1], 1, self.movies.ID)
-        argList.append(self.__findMovieByID(argList[1]))
         
         #check that the client has rented this movie
-        argList[1] = self.hasRented(argList[0], argList[1])
+        argList.append(self.hasRented(argList[0], argList[1]))
         
-        if self.movies[argList[2]].isRented == False:
+        if self.movies[argList[1]].isRented == False:
             raise RentError("This movie is not rented by anyone")
         
         return argList
 
-'''
-x = Validator(1,2)
+'''x = Validator(1,2,3)
 print(x.validateDate("15-12-2020"))
 y = datetime(2019, 12, 15)
-print (x.validateDate("15-12-2020") > y)
-'''
+w = 0
+w += (x.validateDate("16-12-2020") - datetime.today()).days
+print (w)'''
 

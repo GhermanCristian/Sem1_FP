@@ -3,7 +3,7 @@
     Problem 3 - movie rental
 '''
 
-from normalUI import UI
+from UI.normalUI import UI
 
 def main():
     mainProgram = UI()

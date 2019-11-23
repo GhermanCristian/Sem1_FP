@@ -1,12 +1,13 @@
 import unittest
 from generateList import MovieListGenerator
-from domain import Movie
+from Domain.movie import Movie
 
 class TestMovie(unittest.TestCase):
     
     def testAdd(self):
         self.movieRepo = MovieListGenerator().chooseMovies()
         self.movieID = self.movieRepo.ID
+        self.movieRepo.setIgnoreFlag(True)
         
         self.movieRepo.increaseID()
         self.movieRepo + Movie(self.movieRepo.ID, "Title1", "Desc1", "Genre1")
@@ -31,6 +32,7 @@ class TestMovie(unittest.TestCase):
     def testRemove(self):
         self.movieRepo = MovieListGenerator().chooseMovies()
         self.movieCount = self.movieRepo.ID
+        self.movieRepo.setIgnoreFlag(True)
         
         del self.movieRepo[0]
         del self.movieRepo[0]
@@ -53,6 +55,7 @@ class TestMovie(unittest.TestCase):
     def testUpdate(self):
         self.movieRepo = MovieListGenerator().chooseMovies()
         self.movieID = self.movieRepo.ID
+        self.movieRepo.setIgnoreFlag(True)
         
         self.movieRepo.increaseID()
         self.movieRepo[0] = Movie(self.movieRepo.ID, "Title1", "Desc1", "Genre1")

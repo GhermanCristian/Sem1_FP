@@ -1,9 +1,9 @@
 from constants import CLIENT_FILE, MOVIE_FILE, CLIENT_COUNT, MOVIE_COUNT
 import os
 import random
-from Domain.client import Client
-from Domain.movie import Movie
-from repository import Repository
+from domain import Client, Movie
+from clientRepo import ClientRepo
+from movieRepo import MovieRepo
 
 '''
 I will assume that all the input is valid, and that there's no need to verify it
@@ -48,7 +48,7 @@ class ClientListGenerator(object):
         clientList = self.__getClients()
         random.shuffle(clientList)
         
-        clientRepo = Repository()
+        clientRepo = ClientRepo()
         for i in range(self.count):
             clientRepo.increaseID()
             clientRepo + Client(clientRepo.ID, clientList[i])
@@ -105,14 +105,15 @@ class MovieListGenerator(object):
         movieList = self.__getMovies()
         random.shuffle(movieList)
         
-        movieRepo = Repository()
+        movieRepo = MovieRepo()
         for i in range(self.count):
             movieRepo.increaseID()
             movieRepo + Movie(movieRepo.ID, movieList[i][0], movieList[i][1], movieList[i][2])
             
         return movieRepo
 
-
+''''x = ClientListGenerator().chooseClients()
+if "John" in x.clientList'''
 
 
 

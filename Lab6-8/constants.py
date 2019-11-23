@@ -21,7 +21,7 @@ MENU_TEXT = """
         - "client"
         - "movie"
     8. Rent a movie
-        - clientID movieID dueDate
+        - clientID movieID rentDate dueDate
     9. Return a movie
         - clientID movieID
     10. *search
