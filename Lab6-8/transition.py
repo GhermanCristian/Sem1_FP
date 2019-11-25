@@ -49,7 +49,7 @@ class Transition(object):
             self.validate.valSearch,
             self.validate.valSearch,
             self.validate.valSeparator,
-            self.validate.valSeparator,
+            self.validate.valLateRentals,
             self.validate.valUndo,
             self.validate.valRedo
         ]

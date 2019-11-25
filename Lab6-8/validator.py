@@ -238,7 +238,7 @@ class Validator(object):
     
     def valSeparator(self, argList):
         '''
-        Validates input for getList, mostActive, lateRental
+        Validates input for getList and mostActive
         @param:
             - argList = list of arguments, where:
                 [0] = type of list = string
@@ -371,7 +371,7 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-        '''
+        '''        
         if len(argList) is not 0:
             raise ArgError("Invalid number of arguments")
         
