@@ -12,28 +12,31 @@ from datetime import datetime
 
 class TestSorting(unittest.TestCase):
     
-    clients = Repository()
-    movies = Repository()
-    rentals = Repository()
-    service = Service(clients, movies, rentals)
-    
-    service.addClient(["John"])
-    service.addClient(["Mike"])
-    service.addClient(["Nike"])
-    
     Client1 = Client(1, "John")
     Client2 = Client(2, "Mike")
     Client3 = Client(3, "Nike")
-    
-    service.addMovie(["Title1", "Desc1", "Genre1"])
-    service.addMovie(["Title2", "Desc2", "Genre2"])
-    service.addMovie(["Title3", "Desc3", "Genre3"])
     
     Movie1 = Movie(1, "Title1", "Desc1", "Genre1")
     Movie2 = Movie(2, "Title2", "Desc2", "Genre2")
     Movie3 = Movie(3, "Title3", "Desc3", "Genre3")
     
+    def __reset(self):
+        self.clients = Repository()
+        self.movies = Repository()
+        self.rentals = Repository()
+        self.service = Service(self.clients, self.movies, self.rentals)
+        
+        self.service.addClient(["John"])
+        self.service.addClient(["Mike"])
+        self.service.addClient(["Nike"])
+        
+        self.service.addMovie(["Title1", "Desc1", "Genre1"])
+        self.service.addMovie(["Title2", "Desc2", "Genre2"])
+        self.service.addMovie(["Title3", "Desc3", "Genre3"])
+    
     def testActiveClients(self):
+        self.__reset()
+        
         self.service.rentMovie([1, 1, datetime(2019, 10, 20), datetime(2019, 10, 29)])
         self.service.rentMovie([2, 2, datetime(2019, 11, 20), datetime(2019, 11, 30)])
         
@@ -46,10 +49,10 @@ class TestSorting(unittest.TestCase):
         result = self.service.mostActive(["client"])
         self.assertEqual(result, [self.Client1, self.Client3, self.Client2])
         self.assertEqual(len(self.rentals), 0)
-        
-        self.rentals.reset()
     
     def testRentedMovies(self):
+        self.__reset()
+        
         self.service.rentMovie([1, 1, datetime(2019, 10, 20), datetime(2019, 10, 29)])
         self.service.rentMovie([2, 2, datetime(2019, 11, 20), datetime(2019, 11, 30)])
         
@@ -62,10 +65,10 @@ class TestSorting(unittest.TestCase):
         result = self.service.mostActive(["movie"])
         self.assertEqual(result, [self.Movie1, self.Movie2, self.Movie3])
         self.assertEqual(len(self.rentals), 0)
-        
-        self.rentals.reset()
     
     def testLateRentals(self):
+        self.__reset()
+        
         self.service.rentMovie([1, 1, datetime(2019, 10, 20), datetime(2019, 10, 29)])
         self.service.rentMovie([2, 2, datetime(2019, 11, 20), datetime(2019, 11, 24)])
         self.service.rentMovie([3, 3, datetime(2018, 10, 20), datetime(2018, 10, 29)])
@@ -83,7 +86,6 @@ class TestSorting(unittest.TestCase):
         self.service.returnMovie([1, 1, 0])
         
         self.assertEqual(len(self.rentals), 0)
-        self.rentals.reset()
 
 
 

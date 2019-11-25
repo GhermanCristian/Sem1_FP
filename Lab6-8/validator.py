@@ -20,7 +20,7 @@ class Validator(object):
         @return:
             - integer value of index, if valid
         @raise:
-            - TypeError, if index, low or high are not integers
+            - ValueError, if index, low or high are not integers
             - RangeError, if index is outside the range
         '''
         index = int(index)
@@ -36,7 +36,7 @@ class Validator(object):
         '''
         Validates a date
         @param:
-            - dateInput = string, represents a date, in the form "day-month-year", all numbers
+            - dateInput = string, represents a date, in the form "DD-MM-YYYY", all numbers
         @return:
             - dateInput as a Datetime type, if valid
         @raise:
@@ -121,7 +121,7 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-            - TypeError, if ID is not an integer
+            - ValueError, if ID is not an integer
             - RangeError, if ID is out of range
         '''
         if len(argList) is not 1:
@@ -143,7 +143,7 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-            - TypeError, if ID is not an integer
+            - ValueError, if ID is not an integer
             - RangeError, if ID is out of range
             - EmptyError, if the new value is too short
             - MatchError, if the input doesn't match any properties
@@ -196,7 +196,7 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-            - TypeError, if ID is not an integer
+            - ValueError, if ID is not an integer
             - RangeError, if ID is out of range
         '''
         if len(argList) is not 1:
@@ -218,7 +218,7 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-            - TypeError, if ID is not an integer
+            - ValueError, if ID is not an integer
             - RangeError, if ID is out of range
             - MatchError, if the input doesn't match any properties
             - EmptyError, if the new value is too short
@@ -236,9 +236,9 @@ class Validator(object):
         
         return argList 
     
-    def valPrintList(self, argList):
+    def valSeparator(self, argList):
         '''
-        Validates input for getList
+        Validates input for getList, mostActive, lateRental
         @param:
             - argList = list of arguments, where:
                 [0] = type of list = string
@@ -269,11 +269,10 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-            - TypeError, if any of the IDs are not integers
+            - ValueError, if any of the IDs are not integers or if the dates are invalid
             - RangeError, if any of the IDs are out of range
             - RentError, if the client cannot rent any movies or if the movie is already rented
             - DateError, if the due date is before the rent date
-            - ValueError, if the dates are invalid
         '''
         if len(argList) is not 4:
             raise ArgError("Invalid number of arguments")
@@ -308,7 +307,7 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-            - TypeError, if any of the IDs are not integers
+            - ValueError, if any of the IDs are not integers
             - RangeError, if any of the IDs are out of range
             - RentError, if the client has not rented the movie or if the movie is not rented by anyone
         '''
@@ -336,7 +335,7 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-            - TypeError, if any of the IDs are not integers
+            - ValueError, if any of the IDs are not integers
             - RangeError, if any of the IDs are out of range
             - EmptyError, if the substring is too short
         '''
@@ -361,26 +360,6 @@ class Validator(object):
         
         #aux is not an integer => isID will be False
         argList.append(False)
-        return argList
-        
-    def valMostActive(self, argList):
-        '''
-        Validates input for mostRented, mostRents, lateRentals
-        @param:
-            - argList = list of arguments, where:
-                [0] = either "movie" or "client"
-        @return:
-            - argList, if valid
-        @raise:
-            - ArgError, if the argList is invalid
-            - MatchError, if the input doesn't match any type
-        '''
-        if len(argList) is not 1:
-            raise ArgError("Invalid number of arguments")
-        
-        if argList[0] not in ["movie", "client"]:
-            raise MatchError("Input doesn't match any type")
-        
         return argList
     
     def valLateRentals(self, argList):

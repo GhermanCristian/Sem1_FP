@@ -43,13 +43,13 @@ class Transition(object):
             self.validate.valAddMovie,
             self.validate.valRemMovie,
             self.validate.valUpdateMovie,
-            self.validate.valPrintList,
+            self.validate.valSeparator,
             self.validate.valRentMovie,
             self.validate.valReturnMovie,
             self.validate.valSearch,
             self.validate.valSearch,
-            self.validate.valMostActive,
-            self.validate.valLateRentals,
+            self.validate.valSeparator,
+            self.validate.valSeparator,
             self.validate.valUndo,
             self.validate.valRedo
         ]

@@ -3,7 +3,7 @@
 - incorporate increaseID in add for both clients and movies
 - valSearch - separate nr of clients from movies
 - testSearch - add tests for lowercase / uppercase words
-
+- test the "difficult" validators
 ====================================================
 
 validator:
