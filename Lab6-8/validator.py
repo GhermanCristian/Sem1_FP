@@ -54,10 +54,13 @@ class Validator(object):
     
     def canRent(self, ID):
         '''
-        Checks if a client with ID can rent a movie
+        Checks if a client, determined by its ID, can rent a movie
         @param:
+            - ID = integer = client's ID
         @return:
+            - None
         @raise:
+            - RentError, if the client cannot rent movies
         '''
         self.rentals.setIgnoreFlag(True)
         
@@ -72,9 +75,12 @@ class Validator(object):
         '''
         Checks if a client has rented a movie
         @param:
-            - movieID = integer, valid
+            - clientID = integer
+            - movieID = integer
         @return:
-            - None
+            - idx = index of client which has rented the movie (if it exists)
+        @raise:
+            - RentError, if the client has not rented the movie
         '''    
         self.rentals.setIgnoreFlag(True)
         
@@ -96,11 +102,9 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
-            - EmptyError, if the name is an empty string
+            - EmptyError, if the name is too short
         '''
-        l = len(argList)
-        
-        if l is not 1:
+        if len(argList) is not 1:
             raise ArgError("Invalid number of arguments")
         if len(argList[0]) < 3:
             raise EmptyError("Name is too short")
@@ -119,10 +123,8 @@ class Validator(object):
             - ArgError, if the argList is invalid
             - TypeError, if ID is not an integer
             - RangeError, if ID is out of range
-            - EmptyError, if the ID is not in the list
         '''
-        l = len(argList)
-        if l is not 1:
+        if len(argList) is not 1:
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
@@ -143,21 +145,19 @@ class Validator(object):
             - ArgError, if the argList is invalid
             - TypeError, if ID is not an integer
             - RangeError, if ID is out of range
-            - EmptyError, if the property or the new value are empty strings
+            - EmptyError, if the new value is too short
+            - MatchError, if the input doesn't match any properties
         '''
-        l = len(argList)
-        if l is not 3:
+        if len(argList) is not 3:
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
-        
-        if len(argList[1]) == 0:
-            raise EmptyError("Property cannot be empty")
+
         if argList[1] not in ["name",]:
             raise MatchError("Input cannot match any property")  
         
         if len(argList[2]) < 3:
-            raise EmptyError("Name is too short")
+            raise EmptyError("New name is too short")
         
         return argList       
          
@@ -173,9 +173,9 @@ class Validator(object):
             - argList, if valid
         @raise:
             - ArgError, if the argList is invalid
+            - EmptyError, if one the properties is too short
         '''
-        l = len(argList)
-        if l is not 3:
+        if len(argList) is not 3:
             raise ArgError("Invalid number of arguments")
         if len(argList[0]) < 3:
             raise EmptyError("Title is too short")
@@ -199,9 +199,9 @@ class Validator(object):
             - TypeError, if ID is not an integer
             - RangeError, if ID is out of range
         '''
-        l = len(argList)
-        if l is not 1:
+        if len(argList) is not 1:
             raise ArgError("Invalid number of arguments")
+        
         argList[0] = self.validateIndex(argList[0], 1, self.movies.ID)
         
         return argList
@@ -221,16 +221,13 @@ class Validator(object):
             - TypeError, if ID is not an integer
             - RangeError, if ID is out of range
             - MatchError, if the input doesn't match any properties
-            - EmptyError, if the property or the new value are empty strings
+            - EmptyError, if the new value is too short
         '''
-        l = len(argList)
-        if l is not 3:
+        if len(argList) is not 3:
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.movies.ID)
         
-        if len(argList[1]) == 0:
-            raise EmptyError("Property cannot be empty")
         if argList[1] not in ["title", "description", "genre"]:
             raise MatchError("Input doesn't match any property")  
         
@@ -250,14 +247,9 @@ class Validator(object):
         @raise:
             - ArgError, if the argList is invalid
             - MatchError, if the input doesn't match either "client" or "movie"
-            - EmptyError, if the given input is an empty string
         '''
-        l = len(argList)
-        if l is not 1:
+        if len(argList) is not 1:
             raise ArgError("Invalid number of arguments")
-        
-        if len(argList[0]) == 0:
-            raise EmptyError("Input cannot be empty")
         
         if argList[0] not in ["client", "movie"]:
             raise MatchError("Input doesn't match any type")
@@ -279,10 +271,11 @@ class Validator(object):
             - ArgError, if the argList is invalid
             - TypeError, if any of the IDs are not integers
             - RangeError, if any of the IDs are out of range
+            - RentError, if the client cannot rent any movies or if the movie is already rented
+            - DateError, if the due date is before the rent date
+            - ValueError, if the dates are invalid
         '''
-        l = len(argList)
-        
-        if l is not 4:
+        if len(argList) is not 4:
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
@@ -317,10 +310,9 @@ class Validator(object):
             - ArgError, if the argList is invalid
             - TypeError, if any of the IDs are not integers
             - RangeError, if any of the IDs are out of range
+            - RentError, if the client has not rented the movie or if the movie is not rented by anyone
         '''
-        l = len(argList)
-        
-        if l is not 2:
+        if len(argList) is not 2:
             raise ArgError("Invalid number of arguments")
         
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
@@ -343,18 +335,22 @@ class Validator(object):
         @return:
             - argList, if valid
         @raise:
-            - holy shit
+            - ArgError, if the argList is invalid
+            - TypeError, if any of the IDs are not integers
+            - RangeError, if any of the IDs are out of range
+            - EmptyError, if the substring is too short
         '''
-        l = len(argList)
-        if l is not 1:
+        if len(argList) is not 1:
             raise ArgError("Invalid number of arguments")
         
+        #if the subStr is not an integer => it is not an ID => it is one of the other properties
         aux = ""
         try:
             aux = self.validateIndex(argList[0], 1, self.clients.ID)
         except:
             pass
         
+        #aux is an integer => is an ID => we set the value of isID to True
         if isinstance(aux, int):
             argList[0] = aux
             argList.append(True)
@@ -363,6 +359,7 @@ class Validator(object):
         if len(argList[0]) < 3:
             raise EmptyError("Value is too short")
         
+        #aux is not an integer => isID will be False
         argList.append(False)
         return argList
         
@@ -375,7 +372,8 @@ class Validator(object):
         @return:
             - argList, if valid
         @raise:
-            -
+            - ArgError, if the argList is invalid
+            - MatchError, if the input doesn't match any type
         '''
         if len(argList) is not 1:
             raise ArgError("Invalid number of arguments")
@@ -386,7 +384,19 @@ class Validator(object):
         return argList
     
     def valLateRentals(self, argList):
-        pass
+        '''
+        Validates input for lateRentals
+        @param:
+            - argList = list of arguments, empty
+        @return:
+            - argList, if valid
+        @raise:
+            - ArgError, if the argList is invalid
+        '''
+        if len(argList) is not 0:
+            raise ArgError("Invalid number of arguments")
+        
+        return argList
     
     def valUndo(self, argList):
         pass
@@ -394,10 +404,5 @@ class Validator(object):
     def valRedo(self, argList):
         pass
 
-'''x = Validator(1,2,3)
-print(x.validateDate("15-12-2020"))
-y = datetime(2019, 12, 15)
-w = 0
-w += (x.validateDate("16-12-2020") - datetime.today()).days
-print (w)'''
+
 

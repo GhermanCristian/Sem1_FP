@@ -32,9 +32,11 @@ class Service(object):
         Removes client by ID
         @param:
             - argList = list of arguments, where:
-                [0] = index = integer (valid, guaranteed to be in the list)
+                [0] = ID = integer (valid, not guaranteed to be in the list)
         @return:
             - None
+        @raise:
+            - EmptyError, if the ID is not in the list
         '''
         del self.clientList[argList[0]]
     
@@ -43,11 +45,13 @@ class Service(object):
         Updates a client's properties
         @param:
             - argList = list of arguments, where:
-                [0] = ID = integer (valid)
+                [0] = ID = integer (valid, not guaranteed to be in the list)
                 [1] = property = string (valid)
                 [2] = newValue = string (valid)
         @return:
             - None
+        @raise:
+            - EmptyError, if the ID is not in the list
         '''
         name = self.clientList[argList[0]].name
         
@@ -73,9 +77,11 @@ class Service(object):
         Removes movie by ID
         @param:
             - argList = list of arguments, where:
-                [0] = ID = integer (valid)
+                [0] = ID = integer (valid, not guaranteed to be in the list)
         @return:
             - None
+        @raise:
+            - EmptyError, if the ID is not in the list
         '''
         del self.movieList[argList[0]]
     
@@ -84,11 +90,13 @@ class Service(object):
         Updates a movie's properties
         @param:
             - argList = list of arguments, where:
-                [0] = ID = integer (valid)
+                [0] = ID = integer (valid, not guaranteed to be in the list)
                 [1] = property = string (valid)
                 [2] = newValue = string (valid)
         @return:
             - None
+        @raise:
+            - EmptyError, if the ID is not in the list
         '''
         title = self.movieList[argList[0]].title
         description = self.movieList[argList[0]].description
@@ -120,12 +128,14 @@ class Service(object):
         Lets the user rent a movie (if available), starting from a given day
         @param:
             - argList = list of arguments, where:
-                [0] = clientID = integer (valid)
-                [1] = movieID = integer (valid)
+                [0] = clientID = integer (valid, not guaranteed to be in the list)
+                [1] = movieID = integer (valid, not guaranteed to be in the list)
                 [2] = rentDate = date (valid)
                 [3] = dueDate = date (valid)
         @return:
             - None
+        @raise:
+            - EmptyError, if the ID is not in the list
         '''
         self.rentalList.increaseID()
         self.rentalList + Rental(self.rentalList.ID, argList[0], argList[1], argList[2], argList[3], None)
@@ -136,14 +146,14 @@ class Service(object):
         Lets the user return a movie 
         @param:
             - argList = list of arguments, where:
-                [0] = clientID = integer (valid)
-                [1] = movieID = integer (valid)
+                [0] = clientID = integer (valid, not guaranteed to be in the list)
+                [1] = movieID = integer (valid, not guaranteed to be in the list)
                 [2] = rentalIDX = integer (valid)
         @return:
             - None
+        @raise:
+            - EmptyError, if the IDs are not in their respective lists
         '''
-        self.movieList[argList[1]].isRented = False
-        
         self.rentalList.setIgnoreFlag(True)
         nrOfDays = (datetime.today() - self.rentalList[argList[2]].rentDate).days + 1
         del self.rentalList[argList[2]]
@@ -151,19 +161,24 @@ class Service(object):
         
         self.movieList[argList[1]].daysRented += nrOfDays
         self.clientList[argList[0]].daysRented += nrOfDays
+        
+        self.movieList[argList[1]].isRented = False
 
     def searchClients(self, argList):
         '''
         Searches for a string in the clientList
         @param:
             - argList = list of arguments, where:
-                [0] = subStr = string (valid)
-                [1] = isID = integer (valid)
+                [0] = subStr = string of integer (if ID) (valid)
+                [1] = isID = boolean
         @return:
-            - resultList = string
+            - resultList = list of Clients
+        @raise:
+            - EmptyError, if the ID is not in the list
         '''
         self.clientList.setIgnoreFlag(True)
         
+        #if the substring is an ID
         if argList[1] == True:
             for client in self.clientList:
                 if client.ID == argList[0]:
@@ -181,6 +196,7 @@ class Service(object):
                 resultList.append(client)      
                 
         self.clientList.setIgnoreFlag(False)
+        
         return resultList
     
     def searchMovies(self, argList):
@@ -188,13 +204,16 @@ class Service(object):
         Searches for a string in the movieList
         @param:
             - argList = list of arguments, where:
-                [0] = subStr = string (valid)
-                [1] = isID = integer (valid)
+                [0] = subStr = string or integer (if ID) (valid)
+                [1] = isID = boolean
         @return:
-            - resultList = list
+            - resultList = list of Movies
+        @raise:
+            - EmptyError, if the ID is not in the list
         '''
         self.movieList.setIgnoreFlag(True)
         
+        #if the substring is an ID
         if argList[1] == True:
             for movie in self.movieList:
                 if movie.ID == argList[0]:
@@ -224,7 +243,7 @@ class Service(object):
             - argList = list of arguments, where
                 [0] = either "client" or "movie"
         @return:
-            - auxList = list of strings, if valid
+            - auxList = list of Clients or Movies
         '''
         if argList[0] == "movie":
             self.objList = self.movieList
@@ -264,7 +283,7 @@ class Service(object):
                 
         self.rentalList.setIgnoreFlag(False)
         
-        lateRents.sort(key = self.__sortKeyLateRentals, reverse = True)
+        lateRents.sort(key = self.__sortKeyLateRentals)
 
         return lateRents
     

@@ -10,7 +10,10 @@ class Rental(object):
         self.__returnDate = returnDate      #useless
 
     def __str__(self):
-        return ("ClientID = " + str(self.__clientID) + " movieID = " + str(self.__movieID) + " from " + str(self.__rentDate) + " to " + str(self.__dueDate) + "\n")
+        return ("ClientID = " + str(self.__clientID) + "; movieID = " + str(self.__movieID) + "; from " + str(self.__rentDate) + " to " + str(self.__dueDate) + "\n")
+    
+    def __eq__(self, newRental):
+        return self.ID == newRental.ID and self.clientID == newRental.clientID and self.movieID == newRental.movieID and self.rentDate == newRental.rentDate and self.dueDate == newRental.dueDate
     
     @property
     def ID(self):

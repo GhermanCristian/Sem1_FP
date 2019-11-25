@@ -2,4 +2,18 @@
 - split values by commas, so that I can use names with multiple words
 - incorporate increaseID in add for both clients and movies
 - valSearch - separate nr of clients from movies
+- testSearch - add tests for lowercase / uppercase words
+
 ====================================================
+
+validator:
+x = Validator(1,2,3)
+print(x.validateDate("15-12-2020"))
+y = datetime(2019, 12, 15)
+w = 0
+w += (x.validateDate("16-12-2020") - datetime.today()).days
+print (w)
+
+repository:
+def __iter__(self):
+	pass
