@@ -1,10 +1,24 @@
-'''
-    Class of validators
-'''
 from customException import RangeError, ArgError, EmptyError, MatchError, DateError, RentError
-from datetime import datetime
+from datetime import date
 
 class Validator(object):
+    '''
+    Class for the validator functionalities
+    Fields:
+        Public:
+            - None
+        Private:
+            - None
+    Methods:
+        Public:
+            - None
+        Private:
+            - None
+    Properties:
+        - None
+    Setters:
+        - None
+    '''
     def __init__(self, clientList, movieList, rentalList):
         self.clients = clientList
         self.movies = movieList
@@ -36,9 +50,9 @@ class Validator(object):
         '''
         Validates a date
         @param:
-            - dateInput = string, represents a date, in the form "DD-MM-YYYY", all numbers
+            - dateInput = string, represents a date, in the form "YYYY-MM-DD", all numbers
         @return:
-            - dateInput as a Datetime type, if valid
+            - dateInput as a Date type, if valid
         @raise:
             - EmptyError, if dateInput is an empty string
             - ValueError, if dateInput is not a valid date
@@ -48,7 +62,7 @@ class Validator(object):
         if l == 0:
             raise EmptyError("Date cannot be empty")
         
-        dateInput = datetime.strptime(dateInput, "%d-%m-%Y")
+        dateInput = date.fromisoformat(dateInput)
 
         return dateInput 
     
@@ -65,7 +79,7 @@ class Validator(object):
         self.rentals.setIgnoreFlag(True)
         
         for idx in range(len(self.rentals)):
-            if self.rentals[idx].clientID == ID and datetime.today() > self.rentals[idx].dueDate:
+            if self.rentals[idx].clientID == ID and date.today() > self.rentals[idx].dueDate and self.rentals[idx].returnDate == None:
                 self.rentals.setIgnoreFlag(False)
                 raise RentError("Client cannot rent movies - it needs to return late ones")
             
@@ -85,7 +99,7 @@ class Validator(object):
         self.rentals.setIgnoreFlag(True)
         
         for idx in range(len(self.rentals)):
-            if self.rentals[idx].clientID == clientID and self.rentals[idx].movieID == movieID:
+            if self.rentals[idx].clientID == clientID and self.rentals[idx].movieID == movieID and self.rentals[idx].returnDate is None:
                 self.rentals.setIgnoreFlag(False)
                 return idx
         
@@ -309,7 +323,7 @@ class Validator(object):
             - ArgError, if the argList is invalid
             - ValueError, if any of the IDs are not integers
             - RangeError, if any of the IDs are out of range
-            - RentError, if the client has not rented the movie or if the movie is not rented by anyone
+            - RentError, if the client has not rented the movie
         '''
         if len(argList) is not 2:
             raise ArgError("Invalid number of arguments")
@@ -317,11 +331,7 @@ class Validator(object):
         argList[0] = self.validateIndex(argList[0], 1, self.clients.ID)
         argList[1] = self.validateIndex(argList[1], 1, self.movies.ID)
         
-        #check that the client has rented this movie
         argList.append(self.hasRented(argList[0], argList[1]))
-        
-        if self.movies[argList[1]].isRented == False:
-            raise RentError("This movie is not rented by anyone")
         
         return argList
 
@@ -362,7 +372,7 @@ class Validator(object):
         argList.append(False)
         return argList
     
-    def valLateRentals(self, argList):
+    def emptyValidator(self, argList):
         '''
         Validates input for lateRentals
         @param:
@@ -376,12 +386,3 @@ class Validator(object):
             raise ArgError("Invalid number of arguments")
         
         return argList
-    
-    def valUndo(self, argList):
-        pass
-    
-    def valRedo(self, argList):
-        pass
-
-
-

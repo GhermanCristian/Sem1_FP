@@ -12,7 +12,7 @@ from customException import EmptyError
 class TestSearch(unittest.TestCase):
     def testSearchClient(self):
         self.clients = Repository()
-        self.service = Service(self.clients, [], [])
+        self.service = Service(self.clients, [], Repository())
         
         self.service.addClient(["John"])
         self.service.addClient(["Mike"])
@@ -46,7 +46,7 @@ class TestSearch(unittest.TestCase):
     
     def testSearchMovie(self):
         self.movies = Repository()
-        self.service = Service([], self.movies, [])
+        self.service = Service([], self.movies, Repository())
 
         self.service.addMovie(["title1", "desc1", "genre1"])
         self.service.addMovie(["tiitle2", "deesc2", "geenre2"])
@@ -74,4 +74,8 @@ class TestSearch(unittest.TestCase):
         self.assertEqual(self.movies[1], Movie(1, "title1", "desc1", "genre1"))
         self.assertEqual(self.movies[3], Movie(3, "title 3", "desc 3", "genre 3"))
 
-
+        result = self.service.searchMovies(["tITlE", False])
+        self.assertEqual(result, [self.movies[1], self.movies[3]])
+        self.assertEqual(len(self.movies), 2)
+        self.assertEqual(self.movies[1], Movie(1, "title1", "desc1", "genre1"))
+        self.assertEqual(self.movies[3], Movie(3, "title 3", "desc 3", "genre 3"))

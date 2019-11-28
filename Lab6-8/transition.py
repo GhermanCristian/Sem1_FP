@@ -6,15 +6,33 @@
 from validator import Validator
 from service import Service
 from constants import COMMAND_COUNT
-from repository import Repository
-from generateList import ClientListGenerator, MovieListGenerator
+from Generators.generateClients import ClientListGenerator
+from Generators.generateMovies import MovieListGenerator
+from Generators.generateRentals import RentalListGenerator
 
 class Transition(object):
+    '''
+    Class for the 
+    Fields:
+        Public:
+            - None
+        Private:
+            - None
+    Methods:
+        Public:
+            - None
+        Private:
+            - None
+    Properties:
+        - None
+    Setters:
+        - None
+    '''
     def __init__(self):
         #This starts the program with procedurally generated lists
         self.clientList = ClientListGenerator().chooseClients()
         self.movieList = MovieListGenerator().chooseMovies()
-        self.rentalList = Repository()
+        self.rentalList = RentalListGenerator(self.clientList, self.movieList).generateList()
         
         self.function = Service(self.clientList, self.movieList, self.rentalList)
         self.functionList = [
@@ -49,9 +67,9 @@ class Transition(object):
             self.validate.valSearch,
             self.validate.valSearch,
             self.validate.valSeparator,
-            self.validate.valLateRentals,
-            self.validate.valUndo,
-            self.validate.valRedo
+            self.validate.emptyValidator,
+            self.validate.emptyValidator,
+            self.validate.emptyValidator
         ]
     
     def call(self, commandID, argList):

@@ -6,14 +6,60 @@
 from Domain.client import Client
 from Domain.movie import Movie
 from Domain.rental import Rental
-from datetime import datetime
+from datetime import date
 from customException import EmptyError
+from undoController import UndoController
 
-class Service(object):    
+class Service(object):
+    '''
+    Class for the 
+    Fields:
+        Public:
+            - None
+        Private:
+            - None
+    Methods:
+        Public:
+            - None
+        Private:
+            - None
+    Properties:
+        - None
+    Setters:
+        - None
+    '''    
     def __init__(self, clients, movies, rentals):
         self.clientList = clients
         self.movieList = movies
         self.rentalList = rentals
+        self.undoController = UndoController()
+        
+        self.__ignoreUndo = False
+        
+        #this is used for the "redo" functionality (the __ignoreUndo flag will be set to True so that calling these functions
+        #does not add new commands to the undoController actionList (cascade effect)
+        self.__normalActionList = [
+            self.addClient,
+            self.removeClient,
+            self.updateClient,
+            self.addMovie,
+            self.removeMovie,
+            self.updateMovie,
+            self.rentMovie,
+            self.returnMovie
+        ]
+        
+        #this is used for the "undo" functionality
+        self.__reverseActionList = [
+            self.__reverseAddClient,
+            self.__reverseRemoveClient,
+            self.__reverseUpdateClient,
+            self.__reverseAddMovie,
+            self.__reverseRemoveMovie,
+            self.__reverseUpdateMovie,
+            self.__reverseRentMovie,
+            self.__reverseReturnMovie
+        ]
         
     def addClient(self, argList):
         '''
@@ -27,6 +73,13 @@ class Service(object):
         self.clientList.increaseID()
         self.clientList + Client(self.clientList.ID, argList[0])
         
+        if self.__ignoreUndo == False:
+            self.undoController.addAction(0, [], argList)
+        
+    def __reverseAddClient(self, argList):
+        del self.clientList[self.clientList.ID]
+        self.clientList.decreaseID()
+        
     def removeClient(self, argList):
         '''
         Removes client by ID
@@ -38,7 +91,26 @@ class Service(object):
         @raise:
             - EmptyError, if the ID is not in the list
         '''
+        #this will contain all the rentals of this client
+        auxList = []
+        
+        self.rentalList.setIgnoreFlag(True)
+        for idx in range(len(self.rentalList) - 1, -1, -1):
+            if self.rentalList[idx].clientID == argList[0]:
+                auxList.append(self.rentalList[idx])
+                del self.rentalList[idx]
+        self.rentalList.setIgnoreFlag(False)
+        
+        clientCopy = self.clientList[argList[0]]
         del self.clientList[argList[0]]
+        
+        if self.__ignoreUndo == False:
+            self.undoController.addAction(1, [clientCopy, auxList], argList)
+        
+    def __reverseRemoveClient(self, argList):
+        self.clientList + argList[0]
+        for rental in argList[1]:
+            self.rentalList + rental
     
     def updateClient(self, argList):
         '''
@@ -53,10 +125,16 @@ class Service(object):
         @raise:
             - EmptyError, if the ID is not in the list
         '''
-        name = self.clientList[argList[0]].name
-        
+        clientCopy = self.clientList[argList[0]]
+
         if argList[1] == "name":
-            self.clientList[argList[0]] = Client(argList[0], name)
+            self.clientList[argList[0]] = Client(argList[0], argList[2])  
+            
+        if self.__ignoreUndo == False:
+            self.undoController.addAction(2, [argList[0], clientCopy], argList)
+            
+    def __reverseUpdateClient(self, argList):
+        self.clientList[argList[0]] = argList[1]
     
     def addMovie(self, argList):
         '''
@@ -71,6 +149,13 @@ class Service(object):
         '''
         self.movieList.increaseID()
         self.movieList + Movie(self.movieList.ID, argList[0], argList[1], argList[2])
+        
+        if self.__ignoreUndo == False:
+            self.undoController.addAction(3, [], argList)
+        
+    def __reverseAddMovie(self, argList):
+        del self.movieList[self.movieList.ID]
+        self.movieList.decreaseID()
     
     def removeMovie(self, argList):
         '''
@@ -83,7 +168,26 @@ class Service(object):
         @raise:
             - EmptyError, if the ID is not in the list
         '''
+        #this will contain all the rentals of this movie
+        auxList = []
+        
+        self.rentalList.setIgnoreFlag(True)
+        for idx in range(len(self.rentalList) - 1, -1, -1):
+            if self.rentalList[idx].movieID == argList[0]:
+                auxList.append(self.rentalList[idx])
+                del self.rentalList[idx]
+        self.rentalList.setIgnoreFlag(False)
+        
+        movieCopy = self.movieList[argList[0]]
         del self.movieList[argList[0]]
+        
+        if self.__ignoreUndo == False:
+            self.undoController.addAction(1, [movieCopy, auxList], argList)
+        
+    def __reverseRemoveMovie(self, argList):
+        self.movieList + argList[0]
+        for rental in argList[1]:
+            self.rentalList + rental
     
     def updateMovie(self, argList):
         '''
@@ -98,6 +202,8 @@ class Service(object):
         @raise:
             - EmptyError, if the ID is not in the list
         '''
+        movieCopy = self.movieList[argList[0]]
+        
         title = self.movieList[argList[0]].title
         description = self.movieList[argList[0]].description
         genre = self.movieList[argList[0]].genre
@@ -108,7 +214,13 @@ class Service(object):
             self.movieList[argList[0]] = Movie(argList[0], title, argList[2], genre)
         else:
             self.movieList[argList[0]] = Movie(argList[0], title, description, argList[2])
+            
+        if self.__ignoreUndo == False:
+            self.undoController.addAction(5, [argList[0], movieCopy], argList)
 
+    def __reverseUpdateMovie(self, argList):
+        self.movieList[argList[0]] = argList[1]
+    
     def getList(self, argList):
         '''
         Returns either clientList or movieList
@@ -140,6 +252,14 @@ class Service(object):
         self.rentalList.increaseID()
         self.rentalList + Rental(self.rentalList.ID, argList[0], argList[1], argList[2], argList[3], None)
         self.movieList[argList[1]].isRented = True
+        
+        if self.__ignoreUndo == False:
+            self.undoController.addAction(6, [argList[1]], argList)
+            
+    def __reverseRentMovie(self, argList):
+        self.movieList[argList[0]].isRented = False
+        del self.rentalList[self.rentalList.ID]
+        self.rentalList.decreaseID()
                 
     def returnMovie(self, argList):
         '''
@@ -153,16 +273,22 @@ class Service(object):
             - None
         @raise:
             - EmptyError, if the IDs are not in their respective lists
-        '''
+        '''        
+        self.movieList[argList[1]].isRented = False
+        
         self.rentalList.setIgnoreFlag(True)
-        nrOfDays = (datetime.today() - self.rentalList[argList[2]].rentDate).days + 1
-        del self.rentalList[argList[2]]
+        self.rentalList[argList[2]].returnDate = date.today()
         self.rentalList.setIgnoreFlag(False)
         
-        self.movieList[argList[1]].daysRented += nrOfDays
-        self.clientList[argList[0]].daysRented += nrOfDays
+        if self.__ignoreUndo == False:
+            self.undoController.addAction(7, [argList[1], argList[2]], argList)
         
-        self.movieList[argList[1]].isRented = False
+    def __reverseReturnMovie(self, argList):
+        self.movieList[argList[0]].isRented = True
+        
+        self.rentalList.setIgnoreFlag(True)
+        self.rentalList[argList[1]].returnDate = None
+        self.rentalList.setIgnoreFlag(False)
 
     def searchClients(self, argList):
         '''
@@ -233,8 +359,8 @@ class Service(object):
         self.movieList.setIgnoreFlag(False)
         return resultList
     
-    def __sortKeyMostRented(self, movie):
-        return movie.daysRented
+    def __sortKeyMostActive(self, obj):
+        return obj.daysRented
     
     def mostActive(self, argList):
         '''
@@ -245,6 +371,21 @@ class Service(object):
         @return:
             - auxList = list of Clients or Movies
         '''
+        self.rentalList.setIgnoreFlag(True)
+        
+        for rental in self.rentalList:
+            if rental.returnDate == None: #hasn't been returned
+                nrOfDays = (date.today() - rental.rentDate).days + 1
+            else:
+                nrOfDays = (rental.returnDate - rental.rentDate).days + 1
+            
+            if argList[0] == "movie":
+                self.movieList[rental.movieID].daysRented += nrOfDays
+            else:
+                self.clientList[rental.clientID].daysRented += nrOfDays
+                
+        self.rentalList.setIgnoreFlag(False)
+        
         if argList[0] == "movie":
             self.objList = self.movieList
         else:
@@ -259,7 +400,7 @@ class Service(object):
         
         self.objList.setIgnoreFlag(False)
         
-        auxList.sort(key = self.__sortKeyMostRented, reverse = True)
+        auxList.sort(key = self.__sortKeyMostActive, reverse = True)
         return auxList
     
     def __sortKeyLateRentals(self, rental):
@@ -278,7 +419,7 @@ class Service(object):
         self.rentalList.setIgnoreFlag(True)
         
         for rent in self.rentalList:
-            if rent.dueDate < datetime.today():
+            if rent.dueDate < date.today() and rent.returnDate == None:
                 lateRents.append(rent)
                 
         self.rentalList.setIgnoreFlag(False)
@@ -288,8 +429,35 @@ class Service(object):
         return lateRents
     
     def undo(self, argList):
-        pass
+        '''
+        Undoes the last performed operation
+        @param:
+            - argList = list of arguments = empty
+        @return:
+            - None
+        '''
+        action = self.undoController.undo()
+        actionID = action[0]
+        revArgList = action[1]
+        self.__reverseActionList[actionID](revArgList)
     
     def redo(self, argList):
-        pass
+        '''
+        Redoes the last performed operation
+        @param:
+            - argList = list of arguments = empty
+        @return:
+            - None
+        '''
+        action = self.undoController.redo()
+        actionID = action[0]
+        normArgList = action[2]
+        
+        #when undo is ignored, the functions called by redo (those in __normalActionList) will no longer append any
+        #commands to the undoController actionList
+        self.__ignoreUndo = True
+        self.__normalActionList[actionID](normArgList)
+        self.__ignoreUndo = False
+
+
 

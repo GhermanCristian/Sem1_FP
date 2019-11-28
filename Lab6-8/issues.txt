@@ -2,9 +2,19 @@
 - split values by commas, so that I can use names with multiple words
 - incorporate increaseID in add for both clients and movies
 - valSearch - separate nr of clients from movies
-- testSearch - add tests for lowercase / uppercase words
 - test the "difficult" validators
+- test generators
+- output generated rentals to a file, then read from it ( it takes too much to actually generate )
+- undo remove client/movie will re-add the entity to the end of the repo list, and not exactly where they were before
+
 ====================================================
+
+- what happens if a client returns a movie before the dueDate (nb: it is allowed to happen)
+!!! file paths depend on a base adress: if i move anything the program doesn't work
+
+====================================================
+
+Extra bits of code
 
 validator:
 x = Validator(1,2,3)
@@ -17,3 +27,4 @@ print (w)
 repository:
 def __iter__(self):
 	pass
+	

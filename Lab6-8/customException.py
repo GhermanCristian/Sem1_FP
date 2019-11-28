@@ -37,3 +37,8 @@ class RentError(Error):
     '''
     pass
 
+class UndoError(Error):
+    '''
+    '''
+    pass
+

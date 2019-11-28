@@ -37,9 +37,10 @@ MENU_TEXT = """
 
 COMMAND_COUNT = 15
 
-MOVIE_FILE = "Data\\Movies.txt"
-CLIENT_FILE = "Data\\Clients.txt"
+MOVIE_FILE = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\Movies.txt"
+CLIENT_FILE = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\Clients.txt"
 
 CLIENT_COUNT = 10
 MOVIE_COUNT = 10
+RENTAL_COUNT = 15
 

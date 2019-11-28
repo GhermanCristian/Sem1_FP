@@ -1,5 +1,5 @@
 import unittest
-from generateList import MovieListGenerator
+from Generators.generateMovies import MovieListGenerator
 from Domain.movie import Movie
 
 class TestMovie(unittest.TestCase):

@@ -2,6 +2,7 @@ from customException import EmptyError
 
 class Repository(object):
     '''
+    Class for the repository type (can contain Clients / Movies / Rentals)
     Fields:
         Public:
             - objList
@@ -11,7 +12,9 @@ class Repository(object):
     Methods:
         Public:
             - increaseID
+            - decreaseID
             - setIgnoreFlag
+            - reset
         Private:
             - __init__
             - __findByID
@@ -87,6 +90,9 @@ class Repository(object):
     
     def increaseID(self):
         self.__ID += 1
+        
+    def decreaseID(self):
+        self.__ID -= 1
     
     #the ignoreFlag is set to True 
     def setIgnoreFlag(self, val):
@@ -95,8 +101,11 @@ class Repository(object):
     def reset(self):
         self.objList.clear()
         self.__ID = 0
-        self.__ignoreFlag = False    
+        self.__ignoreFlag = False
         
     @property
     def ID(self):
         return self.__ID
+
+
+

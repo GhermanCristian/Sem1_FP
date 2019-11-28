@@ -1,5 +1,5 @@
 import unittest
-from generateList import ClientListGenerator
+from Generators.generateClients import ClientListGenerator
 from Domain.client import Client
 
 class TestClient(unittest.TestCase):

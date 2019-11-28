@@ -8,7 +8,7 @@ from Domain.client import Client
 from Domain.movie import Movie
 from Domain.rental import Rental
 from service import Service
-from datetime import datetime
+from datetime import date
 
 class TestSorting(unittest.TestCase):
     
@@ -37,45 +37,33 @@ class TestSorting(unittest.TestCase):
     def testActiveClients(self):
         self.__reset()
         
-        self.service.rentMovie([1, 1, datetime(2019, 10, 20), datetime(2019, 10, 29)])
-        self.service.rentMovie([2, 2, datetime(2019, 11, 20), datetime(2019, 11, 30)])
-        
-        self.service.returnMovie([1, 1, 0])
-        self.service.rentMovie([3, 1, datetime(2019, 10, 30), datetime(2019, 11, 12)])
-        
-        self.service.returnMovie([3, 1, 1])
-        self.service.returnMovie([2, 2, 0])
+        self.service.rentMovie([1, 1, date(2019, 10, 20), date(2019, 10, 29)])
+        self.service.rentMovie([2, 2, date(2019, 11, 20), date(2019, 11, 30)])
+        self.service.rentMovie([3, 1, date(2019, 10, 30), date(2019, 11, 12)])
         
         result = self.service.mostActive(["client"])
         self.assertEqual(result, [self.Client1, self.Client3, self.Client2])
-        self.assertEqual(len(self.rentals), 0)
     
     def testRentedMovies(self):
         self.__reset()
         
-        self.service.rentMovie([1, 1, datetime(2019, 10, 20), datetime(2019, 10, 29)])
-        self.service.rentMovie([2, 2, datetime(2019, 11, 20), datetime(2019, 11, 30)])
-        
-        self.service.returnMovie([1, 1, 0])
-        self.service.rentMovie([3, 1, datetime(2019, 10, 30), datetime(2019, 11, 12)])
-        
-        self.service.returnMovie([3, 1, 1])
-        self.service.returnMovie([2, 2, 0])
+        self.service.rentMovie([1, 1, date(2019, 10, 20), date(2019, 10, 29)])
+        self.service.rentMovie([2, 2, date(2019, 11, 20), date(2019, 11, 30)])
+        self.service.rentMovie([3, 1, date(2019, 10, 30), date(2019, 11, 12)])
         
         result = self.service.mostActive(["movie"])
         self.assertEqual(result, [self.Movie1, self.Movie2, self.Movie3])
-        self.assertEqual(len(self.rentals), 0)
     
     def testLateRentals(self):
         self.__reset()
         
-        self.service.rentMovie([1, 1, datetime(2019, 10, 20), datetime(2019, 10, 29)])
-        self.service.rentMovie([2, 2, datetime(2019, 11, 20), datetime(2019, 11, 24)])
-        self.service.rentMovie([3, 3, datetime(2018, 10, 20), datetime(2018, 10, 29)])
+        self.service.rentMovie([1, 1, date(2019, 10, 20), date(2019, 10, 29)])
+        self.service.rentMovie([2, 2, date(2019, 11, 20), date(2019, 11, 24)])
+        self.service.rentMovie([3, 3, date(2018, 10, 20), date(2018, 10, 29)])
         
-        Rental1 = Rental(1, 1, 1, datetime(2019, 10, 20), datetime(2019, 10, 29), None)
-        Rental2 = Rental(2, 2, 2, datetime(2019, 11, 20), datetime(2019, 11, 24), None)
-        Rental3 = Rental(3, 3, 3, datetime(2018, 10, 20), datetime(2018, 10, 29), None)
+        Rental1 = Rental(1, 1, 1, date(2019, 10, 20), date(2019, 10, 29), None)
+        Rental2 = Rental(2, 2, 2, date(2019, 11, 20), date(2019, 11, 24), None)
+        Rental3 = Rental(3, 3, 3, date(2018, 10, 20), date(2018, 10, 29), None)
         
         result = self.service.lateRentals([])
         
@@ -84,8 +72,6 @@ class TestSorting(unittest.TestCase):
         self.service.returnMovie([3, 3, 2])
         self.service.returnMovie([2, 2, 1])
         self.service.returnMovie([1, 1, 0])
-        
-        self.assertEqual(len(self.rentals), 0)
 
 
 

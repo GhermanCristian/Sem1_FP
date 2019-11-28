@@ -1,5 +1,21 @@
-
 class Client(object):
+    '''
+    Class for the 
+    Fields:
+        Public:
+            - None
+        Private:
+            - None
+    Methods:
+        Public:
+            - None
+        Private:
+            - None
+    Properties:
+        - None
+    Setters:
+        - None
+    '''
     def __init__(self, ID, name):
         self.__daysRented = 0
         self.__ID = ID

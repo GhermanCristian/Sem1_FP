@@ -1,13 +1,13 @@
 '''
-    Tests for the validator methods
+    Tests for the simple validator methods
 '''
 
 import unittest
 from validator import Validator
 from customException import RangeError, EmptyError, ArgError, MatchError
-from datetime import datetime
+from datetime import date
 
-class TestValidators(unittest.TestCase):
+class TestSimpleValidators(unittest.TestCase):
     
     val = Validator([], [], [])
     
@@ -20,15 +20,15 @@ class TestValidators(unittest.TestCase):
         self.assertRaises(RangeError, self.val.validateIndex, "32", 20, 10)
         
     def testValDate(self):
-        result = self.val.validateDate("20-12-2020")
-        self.assertEqual(result, datetime(2020, 12, 20))
+        result = self.val.validateDate("2020-12-20")
+        self.assertEqual(result, date(2020, 12, 20))
         
         self.assertRaises(EmptyError, self.val.validateDate, "")
-        self.assertRaises(ValueError, self.val.validateDate, "32-12-2020")
-        self.assertRaises(ValueError, self.val.validateDate, "29-02-2021")
+        self.assertRaises(ValueError, self.val.validateDate, "2020-12-32")
+        self.assertRaises(ValueError, self.val.validateDate, "2021-02-29")
 
-        result = self.val.validateDate("2-2-2020")
-        self.assertEqual(result, datetime(2020, 2, 2))
+        result = self.val.validateDate("2020-02-02")
+        self.assertEqual(result, date(2020, 2, 2))
         
     def testValAddClient(self):
         result = self.val.valAddClient(["John"])
@@ -63,10 +63,10 @@ class TestValidators(unittest.TestCase):
         self.assertRaises(MatchError, self.val.valSeparator, ["clients"])
         self.assertRaises(ArgError, self.val.valSeparator, [])
         
-    def testValLateRental(self):
-        result = self.val.valLateRentals([])
+    def testEmptyValidator(self):
+        result = self.val.emptyValidator([])
         self.assertEqual(result, [])
         
-        self.assertRaises(ArgError, self.val.valLateRentals, [1])
+        self.assertRaises(ArgError, self.val.emptyValidator, [1])
 
 

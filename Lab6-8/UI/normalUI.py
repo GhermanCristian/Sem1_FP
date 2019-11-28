@@ -8,11 +8,28 @@ from customException import EmptyError
 from repository import Repository
 
 class UI(object):
+    '''
+    Class for the 
+    Fields:
+        Public:
+            - None
+        Private:
+            - None
+    Methods:
+        Public:
+            - None
+        Private:
+            - None
+    Properties:
+        - None
+    Setters:
+        - None
+    '''
     def __printData(self, entity, code):
         '''
         Prints a list of objects to the console
         @param:
-            - objList = 
+            - objList = either string, repository or list
         @return:
             - None
         '''        
