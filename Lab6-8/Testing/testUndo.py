@@ -21,6 +21,8 @@ class TestUndo(unittest.TestCase):
         self.rentals.reset()
     
     def testAddClient(self):
+        self.__reset()
+        
         self.services.addClient(["Maic"])
         self.services.addClient(["Maichi"])
         self.services.addClient(["Maicuta"])
@@ -59,16 +61,16 @@ class TestUndo(unittest.TestCase):
         self.services.undo([])
         self.assertEqual(len(self.clients), 0)
         self.assertRaises(UndoError, self.services.undo, [])
-        
-        self.__reset()
     
     def testRemoveClient(self):
+        self.__reset()
+        
         self.services.addClient(["Maic"])
         self.services.addClient(["Maichi"])
         self.services.addClient(["Maicuta"])
         self.services.addMovie(["title", "desc", "genre"])
         self.services.rentMovie([2, 1, date(2019, 11, 20),  date(2019, 11, 29)])
-        self.services.returnMovie([2, 1, 0])
+        self.services.returnMovie([2, 1, 1])
         
         self.assertEqual(len(self.clients), 3)
         self.assertEqual(len(self.movies), 1)
@@ -129,9 +131,9 @@ class TestUndo(unittest.TestCase):
         self.assertEqual(self.clients[2], Client(2, "Maichi"))
         self.assertEqual(self.clients[3], Client(3, "Maicuta"))
         
-        self.__reset()
-    
     def testUpdateClient(self):
+        self.__reset()
+        
         self.services.addClient(["John"])
         self.assertEqual(self.clients[1].name, "John")
         

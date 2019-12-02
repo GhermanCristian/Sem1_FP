@@ -69,9 +69,9 @@ class TestSorting(unittest.TestCase):
         
         self.assertEqual(result, [Rental3, Rental1, Rental2])
         
-        self.service.returnMovie([3, 3, 2])
-        self.service.returnMovie([2, 2, 1])
-        self.service.returnMovie([1, 1, 0])
+        self.service.returnMovie([3, 3, 3])
+        self.service.returnMovie([2, 2, 2])
+        self.service.returnMovie([1, 1, 1])
 
 
 

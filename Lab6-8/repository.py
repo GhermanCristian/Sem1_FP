@@ -31,11 +31,12 @@ class Repository(object):
         - None
     '''
     def __init__(self):
-        self.objList = []
+        # ID = key; obj = value
+        self.__objList = {}
         self.__ID = 0
         self.__ignoreFlag = False
         
-    def __findByID(self, ID):
+    def __checkID(self, ID):
         '''
         Determines the index in objList of the object with this ID
         @param:
@@ -44,49 +45,49 @@ class Repository(object):
             - index = integer, or object of type Movie, Client, Rental, if the ignoreFlag is True
         @raise:
             - EmptyError, if the ID is not in the list (and ignoreFlag is False)
-        '''
-        if self.__ignoreFlag == True:
-            return ID
+        '''     
+        if isinstance(ID, int) and ID not in self.__objList.keys():
+            raise EmptyError("No entity with this ID exists")
         
-        for idx in range(len(self.objList)):
-            if self.objList[idx].ID == ID:
-                return idx   
-        raise EmptyError("No entity with this ID exists")
-        
+        return True
+    
     #+ operator
     def __add__(self, obj):
-        self.objList.append(obj)
+        self.__objList[obj.ID] = obj
     
     #del obj[idx]
     def __delitem__(self, ID):
-        idx = self.__findByID(ID)
-        self.objList.pop(idx)
+        if self.__checkID(ID):
+            del self.__objList[ID]
     
     #obj[idx] = value - I use it as an update
     def __setitem__(self, ID, newObj):
-        idx = self.__findByID(ID)
-        self.objList.pop(idx)
-        self.objList.insert(idx, newObj)
+        if self.__checkID(ID):
+            self.__objList[ID] = newObj
     
     #len(obj) = nr of elements
     def __len__(self):
-        return len(self.objList)
+        return len(self.__objList)
     
     #obj[idx]
     def __getitem__(self, ID):
-        idx = self.__findByID(ID)
-        return self.objList[idx]
+        if self.__checkID(ID):
+            return self.__objList[ID]
     
     #'in' operator - checks if the object is in the list, doesn't work in for loops
     def __contains__(self, obj):
-        return obj in self.objList
+        return obj in self.__objList.values()
     
     #used when printing the object
     def __repr__(self):
         toPrint = ""
-        for i in self.objList:
+        for i in self.__objList.values():
             toPrint += str(i) + "\n"
         return toPrint
+    
+    def __iter__(self):
+        for i in self.__objList.keys():
+            yield self.__objList[i]
     
     def increaseID(self):
         self.__ID += 1
@@ -98,7 +99,7 @@ class Repository(object):
         self.__ignoreFlag = val
         
     def reset(self):
-        self.objList.clear()
+        self.__objList.clear()
         self.__ID = 0
         self.__ignoreFlag = False
         

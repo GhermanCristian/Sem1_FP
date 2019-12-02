@@ -76,14 +76,9 @@ class Validator(object):
         @raise:
             - RentError, if the client cannot rent movies
         '''
-        self.rentals.setIgnoreFlag(True)
-        
-        for idx in range(len(self.rentals)):
-            if self.rentals[idx].clientID == ID and date.today() > self.rentals[idx].dueDate and self.rentals[idx].returnDate == None:
-                self.rentals.setIgnoreFlag(False)
+        for rent in self.rentals:
+            if rent.clientID == ID and date.today() > rent.dueDate and rent.returnDate == None:
                 raise RentError("Client cannot rent movies - it needs to return late ones")
-            
-        self.rentals.setIgnoreFlag(False)
 
     def hasRented(self, clientID, movieID):
         '''
@@ -96,14 +91,10 @@ class Validator(object):
         @raise:
             - RentError, if the client has not rented the movie
         '''    
-        self.rentals.setIgnoreFlag(True)
+        for rent in self.rentals:
+            if rent.clientID == clientID and rent.movieID == movieID and rent.returnDate is None:
+                return rent.ID
         
-        for idx in range(len(self.rentals)):
-            if self.rentals[idx].clientID == clientID and self.rentals[idx].movieID == movieID and self.rentals[idx].returnDate is None:
-                self.rentals.setIgnoreFlag(False)
-                return idx
-        
-        self.rentals.setIgnoreFlag(False)
         raise RentError("This client has not rented this movie (maybe it has already returned it)")
     
     def valAddClient(self, argList):

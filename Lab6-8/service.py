@@ -93,13 +93,14 @@ class Service(object):
         '''
         #this will contain all the rentals of this client
         auxList = []
-        
-        self.rentalList.setIgnoreFlag(True)
-        for idx in range(len(self.rentalList) - 1, -1, -1):
-            if self.rentalList[idx].clientID == argList[0]:
-                auxList.append(self.rentalList[idx])
-                del self.rentalList[idx]
-        self.rentalList.setIgnoreFlag(False)
+
+        for rent in self.rentalList:
+            if rent.clientID == argList[0]:
+                auxList.append(rent)
+                
+        #I cannot delete directly in the for loop above this, hence why I am using this
+        for rent in auxList:
+            del self.rentalList[rent.ID]
         
         clientCopy = self.clientList[argList[0]]
         del self.clientList[argList[0]]
@@ -171,12 +172,12 @@ class Service(object):
         #this will contain all the rentals of this movie
         auxList = []
         
-        self.rentalList.setIgnoreFlag(True)
-        for idx in range(len(self.rentalList) - 1, -1, -1):
-            if self.rentalList[idx].movieID == argList[0]:
-                auxList.append(self.rentalList[idx])
-                del self.rentalList[idx]
-        self.rentalList.setIgnoreFlag(False)
+        for rent in self.rentalList:
+            if rent.movieID == argList[0]:
+                auxList.append(rent)
+                
+        for rent in auxList:
+            del self.rentalList[rent.ID]
         
         movieCopy = self.movieList[argList[0]]
         del self.movieList[argList[0]]
@@ -268,27 +269,21 @@ class Service(object):
             - argList = list of arguments, where:
                 [0] = clientID = integer (valid, not guaranteed to be in the list)
                 [1] = movieID = integer (valid, not guaranteed to be in the list)
-                [2] = rentalIDX = integer (valid)
+                [2] = rentalID = integer (valid)
         @return:
             - None
         @raise:
             - EmptyError, if the IDs are not in their respective lists
         '''        
         self.movieList[argList[1]].isRented = False
-        
-        self.rentalList.setIgnoreFlag(True)
         self.rentalList[argList[2]].returnDate = date.today()
-        self.rentalList.setIgnoreFlag(False)
         
         if self.__ignoreUndo == False:
             self.undoController.addAction(7, [argList[1], argList[2]], argList)
         
     def __reverseReturnMovie(self, argList):
         self.movieList[argList[0]].isRented = True
-        
-        self.rentalList.setIgnoreFlag(True)
         self.rentalList[argList[1]].returnDate = None
-        self.rentalList.setIgnoreFlag(False)
 
     def searchClients(self, argList):
         '''
@@ -302,16 +297,12 @@ class Service(object):
         @raise:
             - EmptyError, if the ID is not in the list
         '''
-        self.clientList.setIgnoreFlag(True)
-        
         #if the substring is an ID
         if argList[1] == True:
             for client in self.clientList:
                 if client.ID == argList[0]:
-                    self.clientList.setIgnoreFlag(False)
                     return [client, ]
             
-            self.clientList.setIgnoreFlag(False)
             raise EmptyError("No client with this ID")
         
         argList[0] = argList[0].lower()
@@ -320,8 +311,6 @@ class Service(object):
         for client in self.clientList:
             if argList[0] in client.name.lower():
                 resultList.append(client)      
-                
-        self.clientList.setIgnoreFlag(False)
         
         return resultList
     
@@ -337,16 +326,12 @@ class Service(object):
         @raise:
             - EmptyError, if the ID is not in the list
         '''
-        self.movieList.setIgnoreFlag(True)
-        
         #if the substring is an ID
         if argList[1] == True:
             for movie in self.movieList:
                 if movie.ID == argList[0]:
-                    self.movieList.setIgnoreFlag(False)
                     return [movie, ]
             
-            self.movieList.setIgnoreFlag(False)
             raise EmptyError("No movie with this ID")
         
         argList[0] = argList[0].lower()
@@ -355,8 +340,7 @@ class Service(object):
         for movie in self.movieList:
             if argList[0] in movie.title.lower() or argList[0] in movie.description.lower() or argList[0] in movie.genre.lower():
                 resultList.append(movie)
-                
-        self.movieList.setIgnoreFlag(False)
+
         return resultList
     
     def __sortKeyMostActive(self, obj):
@@ -371,8 +355,6 @@ class Service(object):
         @return:
             - auxList = list of Clients or Movies
         '''
-        self.rentalList.setIgnoreFlag(True)
-        
         for rental in self.rentalList:
             if rental.returnDate == None: #hasn't been returned
                 nrOfDays = (date.today() - rental.rentDate).days + 1
@@ -383,22 +365,15 @@ class Service(object):
                 self.movieList[rental.movieID].daysRented += nrOfDays
             else:
                 self.clientList[rental.clientID].daysRented += nrOfDays
-                
-        self.rentalList.setIgnoreFlag(False)
-        
-        if argList[0] == "movie":
-            self.objList = self.movieList
-        else:
-            self.objList = self.clientList
-        
-        self.objList.setIgnoreFlag(True)
         
         auxList = []
         
-        for obj in self.objList:
-            auxList.append(obj)
-        
-        self.objList.setIgnoreFlag(False)
+        if argList[0] == "movie":
+            for movie in self.movieList:
+                auxList.append(movie)
+        else:
+            for client in self.clientList:
+                auxList.append(client)
         
         auxList.sort(key = self.__sortKeyMostActive, reverse = True)
         return auxList
@@ -416,13 +391,9 @@ class Service(object):
         '''
         lateRents = []
         
-        self.rentalList.setIgnoreFlag(True)
-        
         for rent in self.rentalList:
             if rent.dueDate < date.today() and rent.returnDate == None:
                 lateRents.append(rent)
-                
-        self.rentalList.setIgnoreFlag(False)
         
         lateRents.sort(key = self.__sortKeyLateRentals)
 

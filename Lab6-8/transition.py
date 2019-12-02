@@ -71,11 +71,6 @@ class Transition(object):
             self.validate.emptyValidator,
             self.validate.emptyValidator
         ]
-        
-    def setIgnoreFlag(self, val):
-        self.clientList.setIgnoreFlag(val)
-        self.movieList.setIgnoreFlag(val)
-        self.rentalList.setIgnoreFlag(val)
     
     def call(self, commandID, argList):
         '''

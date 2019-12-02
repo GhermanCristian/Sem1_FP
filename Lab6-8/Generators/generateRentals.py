@@ -54,7 +54,7 @@ class RentalListGenerator(object):
         
         self.service.rentMovie([client, movie, date1, date2])
         if not isLate:
-            self.service.returnMovie([client, movie, len(self.rentals) - 1])
+            self.service.returnMovie([client, movie, self.rentals.ID])
         
         return True
     
@@ -76,7 +76,7 @@ class RentalListGenerator(object):
             return False
         
         self.service.rentMovie([client, movie, date1, date2])
-        self.service.returnMovie([client, movie, len(self.rentals) - 1])
+        self.service.returnMovie([client, movie, self.rentals.ID])
         
         return True
 

@@ -42,12 +42,12 @@ class TestRent(unittest.TestCase):
         self.service.rentMovie([3, 3, date(2019, 11, 12), date(2019, 11, 15)])
         self.service.rentMovie([4, 4, date(2019, 11, 12), date(2019, 11, 15)])
         
-        self.service.returnMovie([1, 1, 0])
+        self.service.returnMovie([1, 1, 1])
         self.assertFalse(self.movies[1].isRented)
         self.assertEqual(len(self.rentals), 4)
         self.assertIsNotNone(self.rentals[1].returnDate)
         
-        self.service.returnMovie([3, 3, 2])
+        self.service.returnMovie([3, 3, 3])
         self.assertFalse(self.movies[3].isRented)
         self.assertEqual(len(self.rentals), 4)
         self.assertIsNotNone(self.rentals[3].returnDate)

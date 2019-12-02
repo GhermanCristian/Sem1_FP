@@ -34,7 +34,7 @@ class UI(object):
             - None
         '''        
         if len(entity) == 0:
-            print ("Entity is empty")
+            print ("Empty")
         
         #string 
         if code == 1:
