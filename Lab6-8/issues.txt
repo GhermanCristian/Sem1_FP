@@ -6,11 +6,17 @@
 - test generators
 - output generated rentals to a file, then read from it ( it takes too much to actually generate )
 - undo remove client/movie will re-add the entity to the end of the repo list, and not exactly where they were before
+- determine a table_max_size
+- change to dictionary instead of list
+- separate items per page for clients, movies etc
+- nr of pages < sth - determine that sth
+- print daysrented in UI
 
 ====================================================
 
 - what happens if a client returns a movie before the dueDate (nb: it is allowed to happen)
-!!! file paths depend on a base adress: if i move anything the program doesn't work
+!!! file paths depend on a base adress: if i move anything the program doesn't work - need to change that
+- i can fit about 30 rows in panel (15 clients, 6 movies)
 
 ====================================================
 

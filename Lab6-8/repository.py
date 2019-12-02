@@ -94,7 +94,6 @@ class Repository(object):
     def decreaseID(self):
         self.__ID -= 1
     
-    #the ignoreFlag is set to True 
     def setIgnoreFlag(self, val):
         self.__ignoreFlag = val
         

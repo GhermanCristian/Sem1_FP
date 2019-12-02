@@ -28,14 +28,15 @@ class UndoController(object):
         
     def addAction(self, actionID, revArgList, normArgList):
         self.__idx += 1
+        
+        #when adding a new action to the list, the "redo" part of the list is deleted
+        while len(self.__actionList) >= self.__idx:
+            self.__actionList.pop()
+        
         #revArgList is the argument list used by the reverse function (when doing undo)
         #normArgList is the argument list used by the normal function (when doing redo)
         #    - basically this will always be the original argList
         self.__actionList.append((actionID, revArgList, normArgList))
-        
-        #when adding a new action to the list, the "redo" part of the list is deleted
-        while len(self.__actionList) > self.__idx:
-            self.__actionList.pop()
         
     def undo(self):
         if self.__idx <= 0:

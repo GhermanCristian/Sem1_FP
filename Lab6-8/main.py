@@ -4,9 +4,11 @@
 '''
 
 from UI.normalUI import UI
+from UI.GUI import GUI
 
 def main():
-    mainProgram = UI()
+    #mainProgram = UI()
+    mainProgram = GUI()
     mainProgram.start()
 
 if __name__ == "__main__":

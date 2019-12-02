@@ -71,6 +71,11 @@ class Transition(object):
             self.validate.emptyValidator,
             self.validate.emptyValidator
         ]
+        
+    def setIgnoreFlag(self, val):
+        self.clientList.setIgnoreFlag(val)
+        self.movieList.setIgnoreFlag(val)
+        self.rentalList.setIgnoreFlag(val)
     
     def call(self, commandID, argList):
         '''
@@ -83,7 +88,6 @@ class Transition(object):
             - None, if the command doesn't require any printing
             - list to be printed, otherwise
         '''
-        
         try:
             commandID = self.validate.validateIndex(commandID, 1, COMMAND_COUNT)
         except Exception as exc:
