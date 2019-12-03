@@ -1,81 +1,71 @@
 import unittest
 from Generators.generateClients import ClientListGenerator
 from Domain.client import Client
+from service import Service
 
 class TestClient(unittest.TestCase):
 
     def testAdd(self):
         self.clientRepo = ClientListGenerator().chooseClients()
-        self.clientID = self.clientRepo.ID
-        self.clientRepo.setIgnoreFlag(True)
+        self.service = Service(self.clientRepo, [], [])
+        self.lastID = self.clientRepo.ID
         
-        self.clientRepo.increaseID()
-        self.clientRepo + Client(self.clientRepo.ID, "Hamilton")
-        self.clientRepo.increaseID()
-        self.clientRepo + Client(self.clientRepo.ID, "Bottas")
-        self.clientRepo.increaseID()
-        self.clientRepo + Client(self.clientRepo.ID, "Verstappen")
-        self.clientRepo.increaseID()
-        self.clientRepo + Client(self.clientRepo.ID, "Leclerc")
-        self.clientRepo.increaseID()
-        self.clientRepo + Client(self.clientRepo.ID, "Vettel")
+        self.service.addClient(["Hamilton"])
+        self.service.addClient(["Bottas"])
+        self.service.addClient(["Verstappen"])
+        self.service.addClient(["Leclerc"])
+        self.service.addClient(["Vettel"])
         
-        self.assertEqual(self.clientRepo.ID, self.clientID + 5)
-        self.assertEqual(len(self.clientRepo), self.clientID + 5)
+        self.assertEqual(self.clientRepo.ID, self.lastID + 5)
+        self.assertEqual(len(self.clientRepo), self.lastID + 5)
         
-        self.assertEqual(self.clientRepo[self.clientID], Client(self.clientID + 1, "Hamilton"))
-        self.assertEqual(self.clientRepo[self.clientID + 1], Client(self.clientID + 2, "Bottas"))
-        self.assertEqual(self.clientRepo[self.clientID + 2], Client(self.clientID + 3, "Verstappen"))
-        self.assertEqual(self.clientRepo[self.clientID + 3], Client(self.clientID + 4, "Leclerc"))
-        self.assertEqual(self.clientRepo[self.clientID + 4], Client(self.clientID + 5, "Vettel"))
+        self.assertEqual(self.clientRepo[self.lastID + 1], Client(self.lastID + 1, "Hamilton"))
+        self.assertEqual(self.clientRepo[self.lastID + 2], Client(self.lastID + 2, "Bottas"))
+        self.assertEqual(self.clientRepo[self.lastID + 3], Client(self.lastID + 3, "Verstappen"))
+        self.assertEqual(self.clientRepo[self.lastID + 4], Client(self.lastID + 4, "Leclerc"))
+        self.assertEqual(self.clientRepo[self.lastID + 5], Client(self.lastID + 5, "Vettel"))
         
     def testRemove(self):
         self.clientRepo = ClientListGenerator().chooseClients()
-        self.clientCount = self.clientRepo.ID       #initially the nr of clients = ID of the last client = .ID
-        self.clientRepo.setIgnoreFlag(True)
+        self.lastID = self.clientRepo.ID       #initially the nr of clients = ID of the last client = .ID
         
-        del self.clientRepo[0]
-        del self.clientRepo[0]
-        del self.clientRepo[0]
+        del self.clientRepo[1]
+        del self.clientRepo[2]
+        del self.clientRepo[3]
         
-        self.assertEqual(len(self.clientRepo), self.clientCount - 3)
-        self.assertEqual(self.clientRepo[0].ID, 4)
-        self.assertEqual(self.clientRepo[1].ID, 5)
-        self.assertEqual(self.clientRepo[2].ID, 6)
+        self.assertEqual(len(self.clientRepo), self.lastID - 3)
+        self.assertEqual(self.clientRepo[4].ID, 4)
+        self.assertEqual(self.clientRepo[5].ID, 5)
+        self.assertEqual(self.clientRepo[6].ID, 6)
         
-        del self.clientRepo[0]
-        del self.clientRepo[0]
-        del self.clientRepo[0]
+        del self.clientRepo[4]
+        del self.clientRepo[5]
+        del self.clientRepo[6]
         
-        self.assertEqual(len(self.clientRepo), self.clientCount - 6)
-        self.assertEqual(self.clientRepo[0].ID, 7)
-        self.assertEqual(self.clientRepo[1].ID, 8)
-        self.assertEqual(self.clientRepo[2].ID, 9)
+        self.assertEqual(len(self.clientRepo), self.lastID - 6)
+        self.assertEqual(self.clientRepo[7].ID, 7)
+        self.assertEqual(self.clientRepo[8].ID, 8)
+        self.assertEqual(self.clientRepo[9].ID, 9)
         
     def testUpdate(self):
         self.clientRepo = ClientListGenerator().chooseClients()
-        self.clientID = self.clientRepo.ID       #initially the nr of clients = ID of the last client = .ID
-        self.clientRepo.setIgnoreFlag(True)
+        self.lastID = self.clientRepo.ID       #initially the nr of clients = ID of the last client = .ID
+        self.service = Service(self.clientRepo, [], [])
+                
+        self.service.updateClient([1, "name", "Albon"])
+        self.service.updateClient([2, "name", "Gasly"])
+        self.service.updateClient([3, "name", "Kimi"])
+        self.service.updateClient([4, "name", "Ricciardo"])
+        self.service.updateClient([5, "name", "Sainz"])
         
-        self.clientRepo.increaseID()
-        self.clientRepo[0] = Client(self.clientRepo.ID, "Albon")
-        self.clientRepo.increaseID()
-        self.clientRepo[1] = Client(self.clientRepo.ID, "Gasly")
-        self.clientRepo.increaseID()
-        self.clientRepo[2] = Client(self.clientRepo.ID, "Kimi")
-        self.clientRepo.increaseID()
-        self.clientRepo[3] = Client(self.clientRepo.ID, "Ricciardo")
-        self.clientRepo.increaseID()
-        self.clientRepo[4] = Client(self.clientRepo.ID, "Sainz")
+        self.assertEqual(len(self.clientRepo), self.lastID)
+        self.assertEqual(self.clientRepo.ID, self.lastID)
         
-        self.assertEqual(len(self.clientRepo), self.clientID)
-        self.assertEqual(self.clientRepo.ID, self.clientID + 5)
-        
-        self.assertEqual(self.clientRepo[0], Client(self.clientID + 1, "Albon"))
-        self.assertEqual(self.clientRepo[1], Client(self.clientID + 2, "Gasly"))
-        self.assertEqual(self.clientRepo[2], Client(self.clientID + 3, "Kimi"))
-        self.assertEqual(self.clientRepo[3], Client(self.clientID + 4, "Ricciardo"))
-        self.assertEqual(self.clientRepo[4], Client(self.clientID + 5, "Sainz"))
+        self.assertEqual(self.clientRepo[1], Client(1, "Albon"))
+        self.assertEqual(self.clientRepo[2], Client(2, "Gasly"))
+        self.assertEqual(self.clientRepo[3], Client(3, "Kimi"))
+        self.assertEqual(self.clientRepo[4], Client(4, "Ricciardo"))
+        self.assertEqual(self.clientRepo[5], Client(5, "Sainz"))
 
 
 

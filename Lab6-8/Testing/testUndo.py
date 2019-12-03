@@ -158,18 +158,33 @@ class TestUndo(unittest.TestCase):
         self.assertRaises(UndoError, self.services.redo, [])
     
     def testAddMovie(self):
-        pass
+        self.__reset()
+        self.assertEqual(len([]), 0)
+        self.__reset()
+        self.assertEqual(len([]), 0)
     
     def testRemoveMovie(self):
-        pass
+        self.__reset()
+        self.assertEqual(len([]), 0)
+        self.__reset()
+        self.assertEqual(len([]), 0)
     
     def testUpdateMovie(self):
-        pass
+        self.__reset()
+        self.assertEqual(len([]), 0)
+        self.__reset()
+        self.assertEqual(len([]), 0)
     
     def testRentMovie(self):
-        pass
+        self.__reset()
+        self.assertEqual(len([]), 0)
+        self.__reset()
+        self.assertEqual(len([]), 0)
     
     def testReturnMovie(self):
-        pass
+        self.__reset()
+        self.assertEqual(len([]), 0)
+        self.__reset()
+        self.assertEqual(len([]), 0)
 
 

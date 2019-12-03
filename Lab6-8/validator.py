@@ -256,7 +256,7 @@ class Validator(object):
         if len(argList) is not 1:
             raise ArgError("Invalid number of arguments")
         
-        if argList[0] not in ["client", "movie"]:
+        if argList[0] not in ["client", "movie", "rental"]:
             raise MatchError("Input doesn't match any type")
         
         return argList

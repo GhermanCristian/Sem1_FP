@@ -183,9 +183,10 @@ class Service(object):
         del self.movieList[argList[0]]
         
         if self.__ignoreUndo == False:
-            self.undoController.addAction(1, [movieCopy, auxList], argList)
+            self.undoController.addAction(4, [movieCopy, auxList], argList)
         
     def __reverseRemoveMovie(self, argList):
+        
         self.movieList + argList[0]
         for rental in argList[1]:
             self.rentalList + rental
@@ -211,7 +212,7 @@ class Service(object):
             
         if argList[1] == "title":
             self.movieList[argList[0]] = Movie(argList[0], argList[2], description, genre)
-        elif argList[2] == "description":
+        elif argList[1] == "description":
             self.movieList[argList[0]] = Movie(argList[0], title, argList[2], genre)
         else:
             self.movieList[argList[0]] = Movie(argList[0], title, description, argList[2])
@@ -234,6 +235,8 @@ class Service(object):
         '''
         if argList[0] == "client":
             return self.clientList
+        if argList[0] == "rental":
+            return self.rentalList
         return self.movieList
 
     def rentMovie(self, argList):

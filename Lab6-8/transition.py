@@ -81,7 +81,7 @@ class Transition(object):
         @return:
             - an error message (as a string), if the input is invalid
             - None, if the command doesn't require any printing
-            - list to be printed, otherwise
+            - list or repository to be printed, otherwise
         '''
         try:
             commandID = self.validate.validateIndex(commandID, 1, COMMAND_COUNT)

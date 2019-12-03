@@ -13,7 +13,6 @@ class Repository(object):
         Public:
             - increaseID
             - decreaseID
-            - setIgnoreFlag
             - reset
         Private:
             - __init__
@@ -25,6 +24,7 @@ class Repository(object):
             - __getitem__
             - __contains__
             - __repr__
+            - __iter__
     Properties:
         - ID
     Setters:
@@ -34,7 +34,6 @@ class Repository(object):
         # ID = key; obj = value
         self.__objList = {}
         self.__ID = 0
-        self.__ignoreFlag = False
         
     def __checkID(self, ID):
         '''
@@ -94,9 +93,6 @@ class Repository(object):
         
     def decreaseID(self):
         self.__ID -= 1
-    
-    def setIgnoreFlag(self, val):
-        self.__ignoreFlag = val
         
     def reset(self):
         self.__objList.clear()
