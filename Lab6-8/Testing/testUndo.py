@@ -2,17 +2,17 @@
     Tests for the undo / redo functionalities
 '''
 import unittest
-from repository import Repository
-from service import Service
+from Repository.repository import Repository
+from Controller.service import Service
 from Domain.client import Client
 from Domain.movie import Movie
-from customException import UndoError
+from Controller.customException import UndoError
 from datetime import date
 
 class TestUndo(unittest.TestCase):
-    clients = Repository()
-    movies = Repository()
-    rentals = Repository()
+    clients = Repository("")
+    movies = Repository("")
+    rentals = Repository("")
     services = Service(clients, movies, rentals)
     
     def __reset(self):

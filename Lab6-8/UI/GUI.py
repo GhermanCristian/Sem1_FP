@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from constants import *
 from pygame.constants import *
-from transition import Transition
+from Controller.transition import Transition
 
 class GUI(object):
     '''
@@ -41,7 +41,7 @@ class GUI(object):
             ["Add movie", "- movie title", "- movie desc", "- movie genre"],
             ["Remove movie", "- movie ID"],
             ["Update movie"],
-            ["Print list", '''- "client"''', '''- "movie"'''],
+            ["Print list", '''- "client"''', '''- "movie"''', '''- "rental"'''],
             ["Rent movie", "- clientID", "- movieID", "- rentDate", "- returnDate"],
             ["Return movie", "- clientID", "- movieID"],
             ["Search client", "- ID", "- name"],
@@ -318,16 +318,17 @@ class GUI(object):
                         
                         if len(callResult) == 0:
                             callResult = ["Empty"]
-                        
-                        #mostActive
-                        if commandID == 12:
-                            printType = "daysList"
-                        #lateRentals
-                        elif commandID == 13:
-                            printType = "lateList"
-                        #searchClient, searchMovie
-                        else:
                             printType = "normalList"
+                        else:
+                            #mostActive
+                            if commandID == 12:
+                                printType = "daysList"
+                            #lateRentals
+                            elif commandID == 13:
+                                printType = "lateList"
+                            #searchClient, searchMovie
+                            else:
+                                printType = "normalList"
                     
                         #print either an error, or to the panel, according to the result of the command
                         if isinstance(callResult, str):

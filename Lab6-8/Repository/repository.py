@@ -1,4 +1,4 @@
-from customException import EmptyError
+from Controller.customException import EmptyError
 
 class Repository(object):
     '''
@@ -7,7 +7,7 @@ class Repository(object):
         Public:
             - objList
         Private:
-            - __ID
+            - _ID
             - __ignoreFlag
     Methods:
         Public:
@@ -30,10 +30,10 @@ class Repository(object):
     Setters:
         - None
     '''
-    def __init__(self):
+    def __init__(self, filePath):
         # ID = key; obj = value
-        self.__objList = {}
-        self.__ID = 0
+        self._objList = {}
+        self._ID = 0
         
     def __checkID(self, ID):
         '''
@@ -45,63 +45,74 @@ class Repository(object):
         @raise:
             - EmptyError, if the ID is not in the list (and ignoreFlag is False)
         '''     
-        if isinstance(ID, int) and ID not in self.__objList.keys():
+        if isinstance(ID, int) and ID not in self._objList.keys():
             raise EmptyError("No entity with this ID exists")
         
         return True
     
+    # depending on which sub class calls this function, this will either write to a file or to pickle
+    # (or, if we're working directly with memory, nothing)
+    def _save(self):
+        pass
+    
     #+ operator
     def __add__(self, obj):
-        self.__objList[obj.ID] = obj
+        self._objList[obj.ID] = obj
+        self._save()
     
     #del obj[idx]
     def __delitem__(self, ID):
         if self.__checkID(ID):
-            del self.__objList[ID]
+            del self._objList[ID]
+        self._save()
     
     #obj[idx] = value - I use it as an update
     def __setitem__(self, ID, newObj):
         if self.__checkID(ID):
-            self.__objList[ID] = newObj
-    
+            self._objList[ID] = newObj
+        self._save()
+
     #len(obj) = nr of elements
     def __len__(self):
-        return len(self.__objList)
+        return len(self._objList)
     
     #obj[idx]
     def __getitem__(self, ID):
         if self.__checkID(ID):
-            return self.__objList[ID]
+            return self._objList[ID]
     
     #'in' operator - checks if the object is in the list, doesn't work in for loops
     def __contains__(self, obj):
-        return obj in self.__objList.values()
+        return obj in self._objList.values()
     
     #used when printing the object
     def __repr__(self):
         toPrint = ""
-        for i in self.__objList.values():
+        for i in self._objList.values():
             toPrint += str(i) + "\n"
         return toPrint
     
     def __iter__(self):
-        for i in self.__objList.keys():
-            yield self.__objList[i]
+        for i in self._objList.keys():
+            yield self._objList[i]
     
     def increaseID(self):
-        self.__ID += 1
+        self._ID += 1
         
     def decreaseID(self):
-        self.__ID -= 1
+        self._ID -= 1
         
     def reset(self):
-        self.__objList.clear()
-        self.__ID = 0
-        self.__ignoreFlag = False
+        self._objList.clear()
+        self._ID = 0
         
     @property
     def ID(self):
-        return self.__ID
+        return self._ID
+    
+    @ID.setter
+    def ID(self, newID):
+        self._ID = newID
 
 
 

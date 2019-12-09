@@ -1,7 +1,7 @@
 from constants import CLIENT_COUNT, CLIENT_FILE
 import random
 from Domain.client import Client
-from repository import Repository
+from Repository.repository import Repository
 
 class ClientListGenerator(object):
     '''
@@ -33,15 +33,16 @@ class ClientListGenerator(object):
              - clientList = list of tuples (title, description, genre)
         '''
         clientList = []
-        
         clientFile = open(CLIENT_FILE, "r")
     
         while True:
             line = clientFile.readline()
             
+            #end of file
             if line == "":
                 break
             
+            #empty line
             if line == "\n":
                 continue
             
@@ -62,7 +63,7 @@ class ClientListGenerator(object):
         clientList = self.__getClients()
         random.shuffle(clientList)
         
-        clientRepo = Repository()
+        clientRepo = Repository("")
         for i in range(self.count):
             clientRepo.increaseID()
             clientRepo + Client(clientRepo.ID, clientList[i])

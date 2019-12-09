@@ -1,9 +1,9 @@
 import random
 from datetime import date, timedelta
 from constants import RENTAL_COUNT
-from repository import Repository
-from validator import Validator
-from service import Service
+from Repository.repository import Repository
+from Controller.validator import Validator
+from Controller.service import Service
 
 class RentalListGenerator(object):
     '''
@@ -29,7 +29,7 @@ class RentalListGenerator(object):
         self.clientCount = len(self.clients)
         self.movieCount = len(self.movies)
         
-        self.rentals = Repository()
+        self.rentals = Repository("")
         self.service = Service(self.clients, self.movies, self.rentals)
         self.val = Validator(self.clients, self.movies, self.rentals)
         

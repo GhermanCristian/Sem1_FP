@@ -1,7 +1,7 @@
 import unittest
 from Generators.generateMovies import MovieListGenerator
 from Domain.movie import Movie
-from service import Service
+from Controller.service import Service
 
 class TestMovie(unittest.TestCase):
     

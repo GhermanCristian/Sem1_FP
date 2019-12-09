@@ -2,15 +2,18 @@
 - split values by commas, so that I can use names with multiple words
 - incorporate increaseID in add for both clients and movies
 - valSearch - separate nr of clients from movies
-- test the "difficult" validators
-- test generators
+- tests
 - output generated rentals to a file, then read from it ( it takes too much to actually generate )
 - separate items per page for clients, movies etc
+- implement the sorting thing for the normalUI as well
+- in rental, use % in str and to text
+- fix "None" issue with rentals
+- i don't know if the text files should have things in order
 
 ====================================================
 
 - what happens if a client returns a movie before the dueDate (nb: it is allowed to happen)
-!!! file paths depend on a base adress: if i move anything the program doesn't work - need to change that
+!!! file paths depend on a based adress: if i move anything the program doesn't work - need to change that
 
 ====================================================
 

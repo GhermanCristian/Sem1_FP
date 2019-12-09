@@ -3,8 +3,8 @@
 '''
 
 import unittest
-from validator import Validator
-from customException import RangeError, EmptyError, ArgError, MatchError
+from Controller.validator import Validator
+from Controller.customException import RangeError, EmptyError, ArgError, MatchError
 from datetime import date
 
 class TestSimpleValidators(unittest.TestCase):

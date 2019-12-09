@@ -1,7 +1,7 @@
 import unittest
 from Generators.generateClients import ClientListGenerator
 from Domain.client import Client
-from service import Service
+from Controller.service import Service
 
 class TestClient(unittest.TestCase):
 

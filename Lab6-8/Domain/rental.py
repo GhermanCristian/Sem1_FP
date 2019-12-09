@@ -27,8 +27,11 @@ class Rental(object):
         self.__returnDate = returnDate
 
     def __str__(self):
-        return ("ClientID = " + str(self.__clientID) + "; movieID = " + str(self.__movieID) + "; from " + str(self.__rentDate) + " to " + str(self.__dueDate) + "\nReturned ? " + str(self.__returnDate) + "\n")
+        return ("ClientID = " + str(self.__clientID) + "; movieID = " + str(self.__movieID) + "; from " + str(self.__rentDate) + " to " + str(self.__dueDate) + "\nReturned - " + str(self.__returnDate) + "\n")
     
+    def toText(self):
+        return (str(self.__ID) + "\n" + str(self.__clientID) + "\n" + str(self.__movieID) + "\n" + str(self.__rentDate) + "\n" + str(self.__dueDate) + "\n" + str(self.__returnDate) + "\n")
+
     def __eq__(self, newRental):
         return self.ID == newRental.ID and self.clientID == newRental.clientID and self.movieID == newRental.movieID and self.rentDate == newRental.rentDate and self.dueDate == newRental.dueDate
     

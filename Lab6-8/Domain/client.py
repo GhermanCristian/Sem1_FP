@@ -27,6 +27,9 @@ class Client(object):
     def __eq__(self, newClient):
         return self.ID == newClient.ID and self.name == newClient.name
     
+    def toText(self):
+        return ("%d\n%s\n") % (self.ID, self.name)
+    
     @property
     def ID(self):
         return self.__ID

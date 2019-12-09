@@ -3,9 +3,12 @@
     Will be used by both the normalUI and the GUI
 '''
 
-from validator import Validator
-from service import Service
+from Controller.validator import Validator
+from Controller.service import Service
 from constants import COMMAND_COUNT
+from Repository.pickleRepository import PickleRepository
+from Repository.textRepository import TextRepository
+from settings import Settings
 from Generators.generateClients import ClientListGenerator
 from Generators.generateMovies import MovieListGenerator
 from Generators.generateRentals import RentalListGenerator
@@ -28,11 +31,22 @@ class Transition(object):
     Setters:
         - None
     '''
-    def __init__(self):
-        #This starts the program with procedurally generated lists
-        self.clientList = ClientListGenerator().chooseClients()
-        self.movieList = MovieListGenerator().chooseMovies()
-        self.rentalList = RentalListGenerator(self.clientList, self.movieList).generateList()
+    def __init__(self):        
+        self.__settings = Settings()
+        if self.__settings.repoType == "memory":
+            self.clientList = ClientListGenerator().chooseClients()
+            self.movieList = MovieListGenerator().chooseMovies()
+            self.rentalList = RentalListGenerator(self.clientList, self.movieList).generateList()
+            
+        elif self.__settings.repoType == "text":
+            self.clientList = TextRepository(self.__settings.clients)
+            self.movieList = TextRepository(self.__settings.movies)
+            self.rentalList = TextRepository(self.__settings.rentals)
+            
+        elif self.__settings.repoType == "pickle":
+            self.clientList = PickleRepository(self.__settings.clients)
+            self.movieList = PickleRepository(self.__settings.movies)
+            self.rentalList = PickleRepository(self.__settings.rentals)
         
         self.function = Service(self.clientList, self.movieList, self.rentalList)
         self.functionList = [
@@ -50,7 +64,7 @@ class Transition(object):
             self.function.mostActive,
             self.function.lateRentals,
             self.function.undo,
-            self.function.redo
+            self.function.redo,
         ]
         
         self.validate = Validator(self.clientList, self.movieList, self.rentalList)
@@ -69,7 +83,7 @@ class Transition(object):
             self.validate.valSeparator,
             self.validate.emptyValidator,
             self.validate.emptyValidator,
-            self.validate.emptyValidator
+            self.validate.emptyValidator,
         ]
     
     def call(self, commandID, argList):

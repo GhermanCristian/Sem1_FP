@@ -37,8 +37,13 @@ MENU_TEXT = """
 
 COMMAND_COUNT = 15
 
-MOVIE_FILE = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\Movies.txt"
-CLIENT_FILE = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\Clients.txt"
+CLIENT_FILE = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\copy\\OUTDATEDclients.txt"
+MOVIE_FILE = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\copy\\OUTDATEDmovies.txt"
+RENTAL_FILE = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\rentals.txt"
+
+CLIENT_PICKLE_PATH = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\clients.pickle"
+MOVIE_PICKLE_PATH = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\movies.pickle"
+RENTAL_PICKLE_PATH = "C:\\Users\\gherm\\Documents\\EclipseWorkspace\\FP\\Labs\\Lab6-8\\Data\\rentals.pickle"
 
 CLIENT_COUNT = 10
 MOVIE_COUNT = 10

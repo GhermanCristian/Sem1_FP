@@ -7,8 +7,8 @@ from Domain.client import Client
 from Domain.movie import Movie
 from Domain.rental import Rental
 from datetime import date
-from customException import EmptyError
-from undoController import UndoController
+from Controller.customException import EmptyError
+from Controller.undoController import UndoController
 
 class Service(object):
     '''
@@ -432,6 +432,4 @@ class Service(object):
         self.__ignoreUndo = True
         self.__normalActionList[actionID](normArgList)
         self.__ignoreUndo = False
-
-
 

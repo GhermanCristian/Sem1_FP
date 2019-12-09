@@ -3,9 +3,9 @@
 '''
 
 from constants import MENU_TEXT
-from transition import Transition
-from customException import EmptyError
-from repository import Repository
+from Controller.transition import Transition
+from Controller.customException import EmptyError
+from Repository.repository import Repository
 
 class UI(object):
     '''

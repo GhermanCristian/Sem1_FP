@@ -1,14 +1,35 @@
-; List of clients from which the program will choose
-; Each client has 1 line
+; Client repository
+; Each client has 2 lines
+;	- ID
 ;	- Name
 
+1
 John
+
+2
 Mike
+
+3
 Nike
+
+4
 Mihai Creanga
+
+5
 Ion Eminescu
+
+6
 Ian
+
+7
 Azteca
+
+8
 Abi
+
+9
 Dragonu
+
+10
 Chimie
+

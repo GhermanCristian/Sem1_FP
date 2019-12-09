@@ -3,18 +3,18 @@
 '''
 
 import unittest
-from service import Service
+from Controller.service import Service
 from Generators.generateClients import ClientListGenerator
 from Generators.generateMovies import MovieListGenerator 
 from datetime import date
-from repository import Repository
+from Repository.repository import Repository
 
 class TestRent(unittest.TestCase):
     clients = ClientListGenerator().chooseClients()
     movies = MovieListGenerator().chooseMovies()
     
     def testRent(self):
-        self.rentals = Repository()
+        self.rentals = Repository("")
         self.service = Service(self.clients, self.movies, self.rentals)
         
         self.service.rentMovie([1, 1, date(2019, 11, 12), date(2019, 11, 15)])
@@ -34,7 +34,7 @@ class TestRent(unittest.TestCase):
         self.assertEqual(self.rentals[2].movieID, 2)
     
     def testReturn(self):
-        self.rentals = Repository()
+        self.rentals = Repository("")
         self.service = Service(self.clients, self.movies, self.rentals)
         
         self.service.rentMovie([1, 1, date(2019, 11, 12), date(2019, 11, 15)])

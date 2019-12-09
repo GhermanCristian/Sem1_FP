@@ -1,0 +1,46 @@
+; List of movies from which the program will choose
+; Each movie is composed of 3 lines:
+;	- Title
+;	- Genre
+;	- Description
+
+The Spy Next Door
+Comedy
+Funny, with Jackie Chan
+
+Date Night
+Comedy
+Funny, with Steve Carell and Paul Rudd
+
+Alice in Wonderland
+Fantasy
+Very interesting
+
+Harry Potter and the Deathly Hallows - Part 2
+Fantasy
+End of the H.P. saga
+
+Pirates of the Caribbean: Dead Man's Chest
+Fantasy
+Second movie in the PotC series
+
+8 Mile
+Drama
+Released in 2002, starring Eminem
+
+Home Alone
+Comedy
+First movie in the series
+
+Joker (2019)
+Thriller
+Blew my mind away
+
+Green Book
+Comedy-Drama
+Depicts the atmosphere very nicely
+
+Once Upon a Time in Hollywood
+Comedy-Drama
+A Tarantino movie. Enough said
+
