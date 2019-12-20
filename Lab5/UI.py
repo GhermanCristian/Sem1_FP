@@ -107,7 +107,7 @@ class UI:
         
     def __validateInput(self, val):
         '''
-        Checks if "val" is a valid number (integer of float)
+        Checks if "val" is a valid number (integer or float)
         @param:
             - val = value to be evaluated (string)
         @return:

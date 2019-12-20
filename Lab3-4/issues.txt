@@ -1,0 +1,7 @@
+1. zero position error thingy doesn't print any error msg
+2. test sort functions, undo
+3. add error types to function specification
+4. maybe implement compound validators (and test them)
+
+====
+

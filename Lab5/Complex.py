@@ -18,6 +18,6 @@ class ComplexNumber(object):
     @property
     def Imag(self):
         return self.__imag
-    
+
     def __eq__(self, com):
         return self.Real == com.Real and self.Imag == com.Imag    

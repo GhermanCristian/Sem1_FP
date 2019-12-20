@@ -186,7 +186,6 @@ class Service(object):
             self.undoController.addAction(4, [movieCopy, auxList], argList)
         
     def __reverseRemoveMovie(self, argList):
-        
         self.movieList + argList[0]
         for rental in argList[1]:
             self.rentalList + rental

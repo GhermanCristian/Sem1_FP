@@ -9,12 +9,24 @@ read from the console)
     - undo 
 '''
 from UI import UI
+from newUI import newUI
 from Test import Test
+
+def getUIChoice():
+    while True:
+        x = input("Insert UI Choice: \n")
+        try:
+            x = int(x)
+        except:
+            continue
+        if x == 1:
+            return UI()
+        return newUI()
 
 def main():
     testing = Test()
     testing.testFunction()
-    interface = UI()
+    interface = getUIChoice()
     interface.menuInterface()
 
 if __name__ == "__main__":

@@ -93,7 +93,7 @@ class Services:
         elif commandID == 2:
             self.__filterReverse(numberList, argList)
 
-        #the program should never reach this point
+        #the program should never reach this point, but just in case
         else:
             raise ValueError("Invalid command ID")
 

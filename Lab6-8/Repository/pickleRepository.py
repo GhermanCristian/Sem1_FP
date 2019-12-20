@@ -1,7 +1,5 @@
 import pickle
 from Repository.repository import *
-from Generators.generateClients import ClientListGenerator
-from Generators.generateMovies import MovieListGenerator
 
 class PickleRepository(Repository):
     def __init__(self, filePath):

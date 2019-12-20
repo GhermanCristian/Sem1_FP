@@ -6,7 +6,7 @@ from Controller.transition import Transition
 
 class GUI(object):
     '''
-    Class for the 
+    Class for the GUI
     Fields:
         Public:
             - None
