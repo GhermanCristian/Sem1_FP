@@ -1,0 +1,5 @@
+================================================
+
+last step winning condition
+- get all the "connex components" of the matrix
+- if there's just 1, with area <= 9 -> the computer can win by moving there (need to find the right coords tho - maybe by transofrming to linear coords then doing the arith. mean)
