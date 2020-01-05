@@ -7,6 +7,16 @@ class NormalUI(object):
         pass
     
     def __getPlayerChoice(self):
+        '''
+        Gets user input regarding the order of playing
+        @param:
+            - None
+        @return:
+            - playerChoice = integer, valid
+        @raise:
+            - TypeError, if the input values are not integers
+            - ValueError, if the playerChoice is out of range
+        '''
         while True:
             playerChoice = input("Player 1, player 2 or random (0)?\n")
             
@@ -20,6 +30,16 @@ class NormalUI(object):
                 print (str(e))
     
     def __getBoardSize(self):
+        '''
+        Gets user input regarding the table size
+        @param:
+            - None
+        @return:
+            - tuple of the form (boardWidth, boardHeight) (both valid integers)
+        @raise:
+            - TypeError, if the input values are not integers
+            - ValueError, if the table size is invalid
+        '''
         while True:
             boardWidth = input("Please insert the board width: ")
             boardHeight = input("Please insert the board height: ")
@@ -27,7 +47,7 @@ class NormalUI(object):
             try:
                 boardWidth = int(boardWidth)
                 boardHeight = int(boardHeight)
-                if boardHeight * boardWidth <= 0 or boardHeight < 0:
+                if boardWidth <= 0 or boardHeight <= 0:
                     raise ValueError("Invalid table size")
                 return (boardWidth, boardHeight)
             
@@ -35,23 +55,46 @@ class NormalUI(object):
                 print (str(e))
     
     def __printTable(self, boardHeight, boardWidth, board):
+        '''
+        Prints the table using the textTable module
+        @param:
+            - boardHeight, boardWidth - integers, the size of the table
+            - board = entity of type Table
+        @return:
+            - None
+        @raise:
+            - None
+        '''
         t = Texttable()
 
+        #add a header row with the box coordinates
         header = [" "]
         header.extend(list(range(0, boardWidth)))
         header.append(" ")
         t.add_row(header)
         
         for i in range(boardHeight):
+            #add a header column with the box coordinates
             aux = [i]
+            
             aux.extend(board[i])
             aux.append(i)
             t.add_row(aux)
         
+        #copy the header row as a footer
         t.add_row(header)
         print (t.draw())
     
     def __getPlayerCoords(self):
+        '''
+        Gets the coordinates on which to move, given by the user
+        @param:
+            - None
+        @return:
+            - a tuple which contains the coordinates of the move
+        @raise:
+            - TypeError, if the input values are not integers
+        '''
         while True:
             xCoord = input("Please insert xCoord: ")
             yCoord = input("Please insert yCoord: ")
@@ -82,7 +125,7 @@ class NormalUI(object):
         #self.__printTable(boardHeight, boardWidth, [[" "] * boardWidth] * boardHeight)
             
         while True:
-            #player moves first
+            #the player moves first
             if playerChoice == 1:
                 (xCoord, yCoord) = self.__getPlayerCoords()
                 try:
@@ -101,7 +144,7 @@ class NormalUI(object):
                     self.__printResult(result)
                     return
             
-            #computer moves first
+            #the computer moves first
             elif playerChoice == 2:
                 result = gameEngine.computerMove()
                 if result != None:

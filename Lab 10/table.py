@@ -13,7 +13,8 @@ class Table(object):
                 aux.append(EMPTY_SYMBOL)
             self.__table.append(aux)
         
-        self.__cells = boardHeight * boardWidth
+        #the number of empty cells
+        self.__emptyCells = boardHeight * boardWidth
         
     def getValue(self, xCoord, yCoord):
         '''
@@ -38,12 +39,18 @@ class Table(object):
         @return:
             - None
         @raise:
-            - None
+            - RangeError, if the coordinates are outside of the table
         '''
-        if xCoord >= 0 and yCoord >= 0 and xCoord < self.__height and yCoord < self.__width:
-            if self.__table[xCoord][yCoord] == EMPTY_SYMBOL:
-                self.__cells -= 1
-            self.__table[xCoord][yCoord] = value
+        if xCoord < 0 or yCoord < 0 or xCoord >= self.__height or yCoord >= self.__width:
+            return
+            
+        if self.__table[xCoord][yCoord] == EMPTY_SYMBOL and value != EMPTY_SYMBOL:
+            self.__emptyCells -= 1
+        #used when restoring the table
+        elif self.__table[xCoord][yCoord] != EMPTY_SYMBOL and value == EMPTY_SYMBOL:
+            self.__emptyCells += 1
+
+        self.__table[xCoord][yCoord] = value
         
     def isFull(self):
         '''
@@ -56,15 +63,33 @@ class Table(object):
         @raise:
             - None
         '''
-        return self.__cells == 0
+        return self.__emptyCells == 0
     
     def getFirstEmpty(self):
+        '''
+        Gets the first empty position in the table (we are sure that one exists)
+        @param:
+            - None
+        @return:
+            - tuple containing the coordinates
+        @raise:
+            - None
+        '''
         for i in range(self.__height):
             for j in range(self.__width):
                 if self.__table[i][j] == EMPTY_SYMBOL: 
                     return (i, j)   
                 
     def getAllEmpty(self):
+        '''
+        Gets all the empty positions in the table (we are sure that at least one exists)
+        @param:
+            - None
+        @return:
+            - list of tuples, each containing the coordinates
+        @raise:
+            - None
+        '''
         auxList = []
         
         for i in range(self.__height):
@@ -74,6 +99,19 @@ class Table(object):
                     
         return auxList
                 
-    def getPrintable(self):
+    def content(self):
         return self.__table
+    
+    @property
+    def width(self):
+        return self.__width
+    
+    @property
+    def height(self):
+        return self.__height
+    
+    #only used in testing
+    @property
+    def emptyCells(self):
+        return self.__emptyCells
 
