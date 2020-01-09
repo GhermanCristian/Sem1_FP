@@ -11,8 +11,8 @@ from Controller.customException import EmptyError
 
 class TestSearch(unittest.TestCase):
     def testSearchClient(self):
-        self.clients = Repository("")
-        self.service = Service(self.clients, [], Repository(""))
+        self.clients = Repository()
+        self.service = Service(self.clients, [], Repository())
         
         self.service.addClient(["John"])
         self.service.addClient(["Mike"])
@@ -45,8 +45,8 @@ class TestSearch(unittest.TestCase):
         self.assertEqual(self.clients[3], Client(3, "zmaili"))
     
     def testSearchMovie(self):
-        self.movies = Repository("")
-        self.service = Service([], self.movies, Repository(""))
+        self.movies = Repository()
+        self.service = Service([], self.movies, Repository())
 
         self.service.addMovie(["title1", "desc1", "genre1"])
         self.service.addMovie(["tiitle2", "deesc2", "geenre2"])

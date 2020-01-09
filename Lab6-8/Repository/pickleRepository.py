@@ -3,7 +3,7 @@ from Repository.repository import *
 
 class PickleRepository(Repository):
     def __init__(self, filePath):
-        Repository.__init__(self, filePath)
+        Repository.__init__(self)
         self.__filePath = filePath
         self.__loadPickle()
         

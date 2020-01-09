@@ -69,7 +69,7 @@ class MovieListGenerator(object):
         movieList = self.__getMovies()
         random.shuffle(movieList)
         
-        movieRepo = Repository("")
+        movieRepo = Repository()
         for i in range(self.count):
             movieRepo.increaseID()
             movieRepo + Movie(movieRepo.ID, movieList[i][0], movieList[i][1], movieList[i][2])

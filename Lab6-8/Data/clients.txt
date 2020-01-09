@@ -6,6 +6,9 @@
 1
 John
 
+2
+Mike
+
 3
 Nike
 
@@ -29,16 +32,4 @@ Dragonu
 
 10
 Chimie
-
-
-
-11
-dfdfdfdfd
-
-
-12
-sdsds
-
-13
-newclient
 

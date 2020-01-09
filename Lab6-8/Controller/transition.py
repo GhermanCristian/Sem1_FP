@@ -8,7 +8,6 @@ from Controller.service import Service
 from constants import COMMAND_COUNT
 from Repository.pickleRepository import PickleRepository
 from Repository.textRepository import TextRepository
-from Repository.textRepository2 import TextRepository2
 from settings import Settings
 from Generators.generateClients import ClientListGenerator
 from Generators.generateMovies import MovieListGenerator

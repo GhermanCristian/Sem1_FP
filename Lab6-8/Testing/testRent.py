@@ -14,7 +14,7 @@ class TestRent(unittest.TestCase):
     movies = MovieListGenerator().chooseMovies()
     
     def testRent(self):
-        self.rentals = Repository("")
+        self.rentals = Repository()
         self.service = Service(self.clients, self.movies, self.rentals)
         
         self.service.rentMovie([1, 1, date(2019, 11, 12), date(2019, 11, 15)])
@@ -34,7 +34,7 @@ class TestRent(unittest.TestCase):
         self.assertEqual(self.rentals[2].movieID, 2)
     
     def testReturn(self):
-        self.rentals = Repository("")
+        self.rentals = Repository()
         self.service = Service(self.clients, self.movies, self.rentals)
         
         self.service.rentMovie([1, 1, date(2019, 11, 12), date(2019, 11, 15)])

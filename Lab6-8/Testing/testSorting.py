@@ -21,9 +21,9 @@ class TestSorting(unittest.TestCase):
     Movie3 = Movie(3, "Title3", "Desc3", "Genre3")
     
     def __reset(self):
-        self.clients = Repository("")
-        self.movies = Repository("")
-        self.rentals = Repository("")
+        self.clients = Repository()
+        self.movies = Repository()
+        self.rentals = Repository()
         self.service = Service(self.clients, self.movies, self.rentals)
         
         self.service.addClient(["John"])

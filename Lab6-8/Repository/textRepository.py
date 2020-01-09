@@ -6,7 +6,7 @@ from datetime import date
 
 class TextRepository(Repository):
     def __init__(self, filePath):
-        Repository.__init__(self, filePath)
+        Repository.__init__(self)
         
         if "client" in filePath:
             self.__entityType = "client"

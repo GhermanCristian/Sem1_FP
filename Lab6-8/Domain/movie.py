@@ -25,10 +25,10 @@ class Movie(object):
         self.__isRented = False
         
     def __str__(self):
-        return ("ID: %d\nTitle: %s\nGenre: %s\nDescription: %s\n") % (self.ID, self.title, self.genre, self.description)
+        return ("ID: %d\nTitle: %s\nDescription: %s\nGenre: %s\n") % (self.ID, self.title, self.description, self.genre)
     
     def toText(self):
-        return ("%d\n%s\n%s\n%s\n") % (self.ID, self.title, self.genre, self.description)
+        return ("%d\n%s\n%s\n%s\n") % (self.ID, self.title, self.description, self.genre)
     
     def __eq__(self, newMovie):
         return self.ID == newMovie.ID and self.title == newMovie.title and self.description == newMovie.description and self.genre == newMovie.genre

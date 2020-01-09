@@ -29,7 +29,7 @@ class RentalListGenerator(object):
         self.clientCount = len(self.clients)
         self.movieCount = len(self.movies)
         
-        self.rentals = Repository("")
+        self.rentals = Repository()
         self.service = Service(self.clients, self.movies, self.rentals)
         self.val = Validator(self.clients, self.movies, self.rentals)
         

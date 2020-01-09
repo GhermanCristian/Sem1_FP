@@ -20,6 +20,7 @@ MENU_TEXT = """
     7. Print list
         - "client"
         - "movie"
+        - "rental"
     8. Rent a movie
         - clientID movieID rentDate dueDate
     9. Return a movie

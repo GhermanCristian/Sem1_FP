@@ -191,7 +191,7 @@ class GUI(object):
             IDList.sort()
         
             for ID in IDList[self.__page * ITEMS_PER_PAGE : (self.__page + 1) * ITEMS_PER_PAGE]:
-                toPrint = str(entityList[ID]).split('\n') 
+                toPrint = str(entityList[ID]).split('\n')
                 for j in toPrint:
                     self.__displayText(j, left, UPPER_MARGIN + i * GAME_FONT_SIZE + 5, self.__font, TEXT_COLOR)
                     i += 1

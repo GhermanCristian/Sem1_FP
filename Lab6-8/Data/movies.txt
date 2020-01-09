@@ -2,8 +2,8 @@
 ; Each movie is composed of 4 lines:
 ;	- ID
 ;	- Title
-;	- Genre
 ;	- Description
+;	- Genre
 
 1
 The Spy Next Door
@@ -18,6 +18,11 @@ Comedy
 3
 Alice in Wonderland
 Very interesting
+Fantasy
+
+4
+Harry Potter and the Deathly Hallows - Part 2
+End of the H.P. saga
 Fantasy
 
 5

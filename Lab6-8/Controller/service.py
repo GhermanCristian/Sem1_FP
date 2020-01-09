@@ -287,34 +287,37 @@ class Service(object):
         self.movieList[argList[0]].isRented = True
         self.rentalList[argList[1]].returnDate = None
 
+    def __clientFilter(self, isID, val, client):
+        '''
+        '''
+        if isID == True:
+            return client.ID == val
+        
+        val = val.lower()
+        return val in client.name.lower()
+
     def searchClients(self, argList):
         '''
         Searches for a string in the clientList
         @param:
             - argList = list of arguments, where:
-                [0] = subStr = string of integer (if ID) (valid)
+                [0] = subStr = string or integer (if ID) (valid)
                 [1] = isID = boolean
         @return:
             - resultList = list of Clients
         @raise:
             - EmptyError, if the ID is not in the list
         '''
-        #if the substring is an ID
-        if argList[1] == True:
-            for client in self.clientList:
-                if client.ID == argList[0]:
-                    return [client, ]
-            
-            raise EmptyError("No client with this ID")
+        return self.clientList.filter(self.__clientFilter, argList[0], argList[1])
+    
+    def __movieFilter(self, isID, val, movie):
+        '''
+        '''
+        if isID == True:
+            return movie.ID == val
         
-        argList[0] = argList[0].lower()
-        resultList = []
-        
-        for client in self.clientList:
-            if argList[0] in client.name.lower():
-                resultList.append(client)      
-        
-        return resultList
+        val = val.lower()
+        return val in movie.title.lower() or val in movie.description.lower() or val in movie.genre.lower()
     
     def searchMovies(self, argList):
         '''
@@ -328,25 +331,10 @@ class Service(object):
         @raise:
             - EmptyError, if the ID is not in the list
         '''
-        #if the substring is an ID
-        if argList[1] == True:
-            for movie in self.movieList:
-                if movie.ID == argList[0]:
-                    return [movie, ]
-            
-            raise EmptyError("No movie with this ID")
-        
-        argList[0] = argList[0].lower()
-        resultList = []
-        
-        for movie in self.movieList:
-            if argList[0] in movie.title.lower() or argList[0] in movie.description.lower() or argList[0] in movie.genre.lower():
-                resultList.append(movie)
-
-        return resultList
+        return self.movieList.filter(self.__movieFilter, argList[0], argList[1])
     
-    def __sortKeyMostActive(self, obj):
-        return obj.daysRented
+    def __cmpMostActive(self, obj1, obj2):
+        return obj1.daysRented > obj2.daysRented
     
     def mostActive(self, argList):
         '''
@@ -368,17 +356,9 @@ class Service(object):
             else:
                 self.clientList[rental.clientID].daysRented += nrOfDays
         
-        auxList = []
-        
         if argList[0] == "movie":
-            for movie in self.movieList:
-                auxList.append(movie)
-        else:
-            for client in self.clientList:
-                auxList.append(client)
-        
-        auxList.sort(key = self.__sortKeyMostActive, reverse = True)
-        return auxList
+            return self.movieList.sort(self.__cmpMostActive)
+        return self.clientList.sort(self.__cmpMostActive)
     
     def __sortKeyLateRentals(self, rental):
         return rental.dueDate

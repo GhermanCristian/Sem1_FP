@@ -10,9 +10,9 @@ from Controller.customException import UndoError
 from datetime import date
 
 class TestUndo(unittest.TestCase):
-    clients = Repository("")
-    movies = Repository("")
-    rentals = Repository("")
+    clients = Repository()
+    movies = Repository()
+    rentals = Repository()
     services = Service(clients, movies, rentals)
     
     def __reset(self):

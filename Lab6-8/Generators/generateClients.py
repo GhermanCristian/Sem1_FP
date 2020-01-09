@@ -63,7 +63,7 @@ class ClientListGenerator(object):
         clientList = self.__getClients()
         random.shuffle(clientList)
         
-        clientRepo = Repository("")
+        clientRepo = Repository()
         for i in range(self.count):
             clientRepo.increaseID()
             clientRepo + Client(clientRepo.ID, clientList[i])
