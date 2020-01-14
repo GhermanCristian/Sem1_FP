@@ -10,11 +10,13 @@ def recBKT(n, pos, stack, seq):
     printStack(stack, seq)
     
     for i in range(pos, n):
+        #stack[-1] = top
         if seq[i] > seq[stack[-1]]:
             stack.append(i)
             recBKT(n, i + 1, stack, seq)
             
     temp = stack.pop()
+    
     #we have finished all the sequences which begin with a particular value, so we continue with all the sequences
     #which start with the next value in the sequence
     if len(stack) == 0:
@@ -35,13 +37,13 @@ def BKT(n, stack, seq):
             if seq[i] > seq[top]:
                 stack.append(i)
                 printStack(stack, seq)
-                i = n + 1
+                i = n + 1           #used to exit the while loop
             i += 1
         
         #the while loop has not found any new elements (we haven't reached the 'i = n + 1' line)
         #which means that the current top of the stack does not have any successors larger than it
-        #when this happens, we need to continue the search of the previous top, which requires us to set the index
-        #to the position it had before the new top was added, which is exactly the position after the top
+        #when this happens, we need to continue the search of the previous top where it left off, which requires us to set the
+        #index to the position it had before the new top was added, which is exactly the position after the top
         if i == n:
             i = stack.pop() + 1
             
@@ -56,6 +58,7 @@ def BKT(n, stack, seq):
 def main():
     sequence = [2, 1, 3, 5, 4, 0]
     
+    #the stack will hold indices, not the actual values
     stack = [0, ]
 
     recBKT(len(sequence), 0, stack, sequence)
